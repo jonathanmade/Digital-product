@@ -1,0 +1,26 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+.container{
+    max-width: 900px;
+    margin: auto;
+}
+
+/*container > row > column*/
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    width: 90%;
+    max-width: 1100px;
+    height: 100%;
+    margin: auto;
+    gap: 20px;
+    overflow: hidden;
+    align-items: center;
+  }
+
+  

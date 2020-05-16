@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">-->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+    <title>Brand</title>
+</head>
+<body>
+    <!--Aqui empieza el navbar-->
+    <nav class="fadeInDown">
+        <div class="brand_image">
+            <a href="Index.html">
+                <img src="Images/logo.png"  alt="">
+            </a>
+        </div>
+        <div class="nav_options">
+          <ul>
+              <li> <a href=""> FAQ </a> </li>
+              <li> <a href=""> Productos y descripción </a> </li>
+          </ul>
+        </div>
+    </nav>
+    <!--mmodulo pago-->
+    <div class="modulo-pago">
+        <div class="grid">
+            <div class="ipago">
+                <div class="imagen-pago">
+                    <img src="images/box2.png" alt="">
+                </div>
+                <h3>
+                    Producto1
+                </h3>
+                <p>
+                    Aca estoy agregando datos
+                </p>
+            </div>
+            <div class="form-pago">
+                <form action="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZKR3V89G5V432" method=post">
+                    <label for="name">Nombre</label>
+                    <br>
+                    <input type="text" name="name" id="nombre" class="data">
+                    <br>
+                    <label for="email">correo electronico</label>
+                    <br>
+                    <input type="text" name="email" id="" class="data">
+                    <br>
+                    <label for="phone">Telefono</label>
+                    <br>
+                    <input type="text" placeholder="" name="phone" id="apellido" class="data">
+                    <br>
+                    <input type="submit" value="Enviar" class="main_button">
+                </form>
+            </div>
+        </div>
+    </div>
+  
+    <footer>
+        <div class="option">Terminos y condiciones</div>
+        <div class="option contact"><a href="mailto:jona@gmail.com">contactenos: jona@gmail.com</a> </div>
+    </footer>
+
+    <script src="scripts/index.js">  </script>
+</body>
+</html>
