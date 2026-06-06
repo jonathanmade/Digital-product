@@ -22,7 +22,7 @@ function ParticleCanvas() {
     const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 1000)
     camera.position.z = 80
 
-    const NODE_COUNT = 120
+    const NODE_COUNT = 60
     const positions = new Float32Array(NODE_COUNT * 3)
     const nodeData = []
     for (let i = 0; i < NODE_COUNT; i++) {
@@ -32,12 +32,12 @@ function ParticleCanvas() {
       positions[i * 3] = x
       positions[i * 3 + 1] = y
       positions[i * 3 + 2] = z
-      nodeData.push({ x, y, z, vx: (Math.random() - 0.5) * 0.04, vy: (Math.random() - 0.5) * 0.02 })
+      nodeData.push({ x, y, z, vx: (Math.random() - 0.5) * 0.024, vy: (Math.random() - 0.5) * 0.012 })
     }
 
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    const mat = new THREE.PointsMaterial({ color: 0x00F5FF, size: 0.8, transparent: true, opacity: 0.7 })
+    const mat = new THREE.PointsMaterial({ color: 0x00F5FF, size: 0.56, transparent: true, opacity: 0.6 })
     const points = new THREE.Points(geo, mat)
     scene.add(points)
 
@@ -57,7 +57,7 @@ function ParticleCanvas() {
     const linePositions = new Float32Array(linePairs.length * 6)
     const lineGeo = new THREE.BufferGeometry()
     lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3))
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x7B2FFF, transparent: true, opacity: 0.18 })
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x00F5FF, transparent: true, opacity: 0.08 })
     const lines = new THREE.LineSegments(lineGeo, lineMat)
     scene.add(lines)
 

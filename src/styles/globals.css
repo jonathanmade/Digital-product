@@ -6,17 +6,15 @@
   --border: #1a2540;
   --border2: #243050;
   --cyan: #00F5FF;
-  --cyan-dim: rgba(0, 245, 255, 0.15);
-  --cyan-glow: rgba(0, 245, 255, 0.4);
-  --violet: #7B2FFF;
-  --violet-dim: rgba(123, 47, 255, 0.15);
-  --violet-glow: rgba(123, 47, 255, 0.4);
-  --gold: #FFB800;
-  --gold-dim: rgba(255, 184, 0, 0.12);
-  --gold-glow: rgba(255, 184, 0, 0.4);
+  --cyan-dim: rgba(0, 245, 255, 0.1);
+  --cyan-dim2: rgba(0, 245, 255, 0.15);
+  --cyan-glow: rgba(0, 245, 255, 0.35);
+  /* Semantic-only — never use in general UI */
   --bronze: #b87333;
   --silver: #C0C0C0;
+  --gold: #FFB800;
   --text: #c8d6f0;
+  --text2: #8a9ab8;
   --muted: #5a6a8a;
   --font-display: 'Orbitron', 'Rajdhani', sans-serif;
   --font-ui: 'Rajdhani', sans-serif;
@@ -70,7 +68,7 @@ img {
   background: var(--cyan);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9999;
+  z-index: 9998;
   transform: translate(-50%, -50%);
   transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
   mix-blend-mode: screen;
@@ -85,23 +83,21 @@ img {
   border: 1px solid var(--cyan);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9998;
+  z-index: 9997;
   transform: translate(-50%, -50%);
-  transition: transform 0.08s linear, width 0.3s, height 0.3s, opacity 0.3s, border-color 0.3s;
-  opacity: 0.5;
+  transition: transform 0.08s linear, width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.4;
 }
 
 .cursor-dot.hover {
   width: 14px;
   height: 14px;
-  background: var(--violet);
 }
 
 .cursor-ring.hover {
   width: 52px;
   height: 52px;
-  border-color: var(--violet);
-  opacity: 0.3;
+  opacity: 0.25;
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────────── */
@@ -120,6 +116,11 @@ img {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--cyan);
+}
+
+* {
+  scrollbar-color: var(--cyan) var(--bg);
+  scrollbar-width: thin;
 }
 
 /* ─── Section layout ────────────────────────────────────────── */
@@ -164,7 +165,7 @@ section {
 }
 
 .section-title span {
-  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  background: linear-gradient(90deg, var(--cyan), rgba(0,245,255,0.5));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -203,7 +204,7 @@ section {
 }
 
 .btn-neon.primary {
-  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  background: var(--cyan);
   color: #000;
 }
 

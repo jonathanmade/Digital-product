@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Navbar from './components/Navbar/Navbar'
 import './App.css'
 import Hero from './components/Hero/Hero'
@@ -7,6 +8,7 @@ import Projects from './components/Projects/Projects'
 import PowerBIDemo from './components/PowerBIDemo/PowerBIDemo'
 import Contact from './components/Contact/Contact'
 import { useCustomCursor } from './hooks/useCustomCursor'
+import { storm } from './utils/stormSystem'
 
 function Footer() {
   return (
@@ -24,6 +26,7 @@ function Footer() {
 
 export default function App() {
   useCustomCursor()
+  useEffect(() => { storm.init(); return () => storm.destroy() }, [])
 
   return (
     <>

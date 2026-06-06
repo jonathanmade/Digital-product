@@ -61,6 +61,39 @@ src/
     PowerBIDemo/
     Contact/
   hooks/
+  utils/
+    stormSystem.js
   styles/
     globals.css
 ```
+
+## Decisiones de diseño v2 (ajustes post-deploy)
+
+### Paleta simplificada
+- Monocromático oscuro con UN SOLO acento: cyan #00F5FF
+- Violeta (#7B2FFF) y dorado (#FFB800) eliminados de la UI general
+- Violeta permitido únicamente en gradientes radiales de fondo con opacidad < 0.05
+- Excepción semántica: colores Bronze/Silver/Gold solo en MedallionArchitecture (son colores de datos, no chrome UI)
+- Glassmorphism cards: border rgba(0,245,255,0.1), hover border rgba(0,245,255,0.3)
+- Botones: solo dos variantes — filled cyan y outline cyan
+
+### Sistema de tormenta (StormSystem)
+- Archivo: src/utils/stormSystem.js — clase StormSystem + singleton exportado
+- Canvas fijo global (position:fixed, z-index:9999, pointer-events:none)
+- Dos tipos de partículas:
+  - Tipo A: puntos flotantes suaves, suben lentamente, vida 400-800ms
+  - Tipo B: rayos eléctricos en zigzag, vida 150-400ms, solo con scroll rápido (velocity > 8)
+- Intensidad reactiva a scroll velocity (0-1 → idle, 2-15 → suave, >15 → intenso)
+- Límite: 80 partículas simultáneas, requestAnimationFrame loop
+- Inicializado en App.jsx con useEffect + cleanup (storm.init / storm.destroy)
+
+### Hero particles (Three.js)
+- NODE_COUNT reducido a 60 (mitad del original)
+- Tamaño reducido: size 0.56 (vs 0.8 original)
+- Velocidad reducida: factor 0.6x
+- Solo color cyan, líneas de conexión también cyan con opacity 0.08
+
+### Reglas de color para futuros cambios
+- NUNCA añadir nuevos colores de acento sin revisar estas notas
+- Cualquier elemento interactivo usa cyan o outline cyan
+- Los colores Medallion (Bronze/Silver/Gold) son datos, no UI — no replicar en otras secciones

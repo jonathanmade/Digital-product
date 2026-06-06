@@ -147,10 +147,10 @@ function DonutChart() {
 }
 
 const KPIS = [
-  { icon: '💰', label: 'Revenue Processed', target: 4872340, prefix: '€', suffix: '', color: '#FFB800', trend: '+12.4% MoM', trendUp: true },
+  { icon: '💰', label: 'Revenue Processed', target: 4872340, prefix: '€', suffix: '', color: '#00F5FF', trend: '+12.4% MoM', trendUp: true },
   { icon: '⚡', label: 'Pipelines Active', target: 247, prefix: '', suffix: '', color: '#00F5FF', trend: '+8 this week', trendUp: true },
-  { icon: '👥', label: 'Active Users', target: 532, prefix: '', suffix: '', color: '#7B2FFF', trend: '+3.1% WoW', trendUp: true },
-  { icon: '⏱', label: 'Avg Latency (ms)', target: 380, prefix: '', suffix: 'ms', color: '#b87333', trend: '-45ms', trendUp: false },
+  { icon: '👥', label: 'Active Users', target: 532, prefix: '', suffix: '', color: '#00F5FF', trend: '+3.1% WoW', trendUp: true },
+  { icon: '⏱', label: 'Avg Latency (ms)', target: 380, prefix: '', suffix: 'ms', color: '#00F5FF', trend: '-45ms', trendUp: false },
 ]
 
 export default function PowerBIDemo() {

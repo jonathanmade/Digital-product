@@ -45,14 +45,15 @@
 }
 
 .skill-card:hover {
-  border-color: var(--skill-color);
-  box-shadow: 0 0 30px rgba(0,0,0,0.4), 0 0 20px color-mix(in srgb, var(--skill-color) 30%, transparent);
+  border-color: rgba(0, 245, 255, 0.4);
+  box-shadow: 0 0 24px rgba(0,0,0,0.5), 0 0 16px rgba(0,245,255,0.12);
   transform: translateY(-4px);
-  background: rgba(20, 28, 50, 0.85);
+  background: rgba(13, 24, 40, 0.9);
 }
 
 .skill-card:hover::before {
   opacity: 1;
+  background: var(--cyan);
 }
 
 .skill-top {

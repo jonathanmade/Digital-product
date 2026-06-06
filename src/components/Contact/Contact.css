@@ -80,7 +80,7 @@
 
 .term-system pre { color: var(--muted); }
 .term-input { color: var(--cyan); }
-.term-input .term-prompt { color: var(--violet); }
+.term-input .term-prompt { color: var(--cyan); opacity: 0.7; }
 .term-output pre { color: var(--text); }
 .term-error pre { color: #ff6b6b; }
 
@@ -92,7 +92,8 @@
 }
 
 .term-prompt {
-  color: var(--violet);
+  color: var(--cyan);
+  opacity: 0.7;
   flex-shrink: 0;
 }
 

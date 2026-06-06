@@ -139,9 +139,9 @@
 }
 
 .kpi-trend.down {
-  color: var(--gold);
-  background: rgba(255, 184, 0, 0.08);
-  border: 1px solid rgba(255, 184, 0, 0.2);
+  color: var(--cyan);
+  background: rgba(0, 245, 255, 0.06);
+  border: 1px solid rgba(0, 245, 255, 0.15);
 }
 
 /* Charts */
@@ -190,7 +190,7 @@
 
 .bar-fill {
   width: 100%;
-  background: linear-gradient(180deg, var(--cyan), var(--violet));
+  background: linear-gradient(180deg, var(--cyan), rgba(0,245,255,0.3));
   border-radius: 2px 2px 0 0;
   height: 0;
   transition: height 0.3s;

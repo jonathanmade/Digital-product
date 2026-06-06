@@ -67,10 +67,7 @@
 }
 
 .hero-surname {
-  background: linear-gradient(135deg, var(--cyan), var(--violet));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--cyan);
 }
 
 /* Glitch effect */
@@ -97,7 +94,7 @@
 
 .glitch:hover::after {
   animation: glitch-2 0.3s steps(2) 0.05s forwards;
-  color: var(--violet);
+  color: rgba(0,245,255,0.5);
   clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
 }
 
@@ -126,7 +123,8 @@
 
 .typewriter .cursor-blink {
   animation: blink 1s step-start infinite;
-  color: var(--violet);
+  color: var(--cyan);
+  opacity: 0.6;
 }
 
 @keyframes blink {
@@ -145,7 +143,8 @@
 }
 
 .loc-icon {
-  color: var(--gold);
+  color: var(--cyan);
+  opacity: 0.6;
 }
 
 .hero-ctas {

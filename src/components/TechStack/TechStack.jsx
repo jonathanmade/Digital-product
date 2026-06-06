@@ -13,7 +13,8 @@ const SKILLS = [
   { name: 'Azure', level: 83, color: '#008AD7', category: 'Cloud' },
 ]
 
-function ArcGauge({ level, color, size = 100 }) {
+function ArcGauge({ level, size = 100 }) {
+  const color = '#00F5FF'
   const r = 36
   const cx = size / 2
   const cy = size / 2
@@ -60,11 +61,11 @@ function SkillCard({ skill, index, visible }) {
   return (
     <div
       className={`skill-card${visible ? ' visible' : ''}`}
-      style={{ '--skill-color': skill.color, animationDelay: `${index * 0.07}s` }}
+      style={{ animationDelay: `${index * 0.07}s` }}
       data-cursor-hover
     >
       <div className="skill-top">
-        <ArcGauge level={skill.level} color={skill.color} size={90} />
+        <ArcGauge level={skill.level} size={90} />
       </div>
       <div className="skill-name">{skill.name}</div>
       <div className="skill-category">{skill.category}</div>
