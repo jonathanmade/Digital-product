@@ -1,0 +1,243 @@
+.contact {
+  background: linear-gradient(180deg, #080c18 0%, var(--bg) 100%);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease 0.3s, transform 0.7s ease 0.3s;
+}
+
+.contact-grid.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Terminal */
+.terminal-panel {
+  background: rgba(2, 4, 10, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: rgba(5, 8, 16, 0.9);
+  border-bottom: 1px solid var(--border);
+}
+
+.term-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.term-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.term-dots span:nth-child(1) { background: #ff5f57; }
+.term-dots span:nth-child(2) { background: #febc2e; }
+.term-dots span:nth-child(3) { background: #28c840; }
+
+.term-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.terminal-body {
+  padding: 16px;
+  flex: 1;
+  min-height: 300px;
+  max-height: 380px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.8;
+  scroll-behavior: smooth;
+}
+
+.term-line {
+  margin-bottom: 4px;
+}
+
+.term-line pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.term-system pre { color: var(--muted); }
+.term-input { color: var(--cyan); }
+.term-input .term-prompt { color: var(--violet); }
+.term-output pre { color: var(--text); }
+.term-error pre { color: #ff6b6b; }
+
+.term-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.term-prompt {
+  color: var(--violet);
+  flex-shrink: 0;
+}
+
+.term-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cyan);
+  caret-color: var(--cyan);
+}
+
+/* Contact form */
+.contact-form-panel {
+  background: rgba(13, 19, 33, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+}
+
+.field-input {
+  background: rgba(5, 8, 16, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field-input::placeholder {
+  color: var(--muted);
+}
+
+.field-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 2px var(--cyan-dim);
+}
+
+.send-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.send-btn:disabled {
+  opacity: 0.7;
+}
+
+.sending-spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Sent message */
+.sent-msg {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.sent-icon {
+  font-size: 48px;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+}
+
+.sent-msg h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: #fff;
+}
+
+.sent-msg p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Social links */
+.social-links {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: color 0.2s, border-color 0.2s;
+  flex: 1;
+  justify-content: center;
+}
+
+.social-link:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
