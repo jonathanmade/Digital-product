@@ -7,7 +7,6 @@ import TechStack from './components/TechStack/TechStack'
 import Projects from './components/Projects/Projects'
 import PowerBIDemo from './components/PowerBIDemo/PowerBIDemo'
 import Contact from './components/Contact/Contact'
-import { useCustomCursor } from './hooks/useCustomCursor'
 import { storm } from './utils/stormSystem'
 
 function Footer() {
@@ -25,13 +24,10 @@ function Footer() {
 }
 
 export default function App() {
-  useCustomCursor()
   useEffect(() => { storm.init(); return () => storm.destroy() }, [])
 
   return (
     <>
-      <div className="cursor-dot" />
-      <div className="cursor-ring" />
       <Navbar />
       <main>
         <Hero />

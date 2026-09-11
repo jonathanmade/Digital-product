@@ -41,7 +41,6 @@ body {
   font-size: 15px;
   line-height: 1.7;
   overflow-x: hidden;
-  cursor: none;
 }
 
 a {
@@ -50,54 +49,12 @@ a {
 }
 
 button {
-  cursor: none;
+  cursor: pointer;
 }
 
 img {
   display: block;
   max-width: 100%;
-}
-
-/* ─── Custom Cursor ─────────────────────────────────────────── */
-.cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  background: var(--cyan);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
-  mix-blend-mode: screen;
-}
-
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--cyan);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9997;
-  transform: translate(-50%, -50%);
-  transition: transform 0.08s linear, width 0.3s, height 0.3s, opacity 0.3s;
-  opacity: 0.4;
-}
-
-.cursor-dot.hover {
-  width: 14px;
-  height: 14px;
-}
-
-.cursor-ring.hover {
-  width: 52px;
-  height: 52px;
-  opacity: 0.25;
 }
 
 /* ─── Scrollbar ─────────────────────────────────────────────── */
@@ -269,12 +226,5 @@ section {
 @media (max-width: 768px) {
   section {
     padding: 70px 16px;
-  }
-  body {
-    cursor: auto;
-  }
-  .cursor-dot,
-  .cursor-ring {
-    display: none;
   }
 }
