@@ -150,8 +150,9 @@
   flex: 1;
 }
 
-.layer-emoji {
-  font-size: 22px;
+.layer-icon {
+  display: flex;
+  color: var(--layer-color);
 }
 
 .layer-label {

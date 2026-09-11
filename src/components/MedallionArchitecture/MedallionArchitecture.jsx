@@ -2,6 +2,33 @@ import { useRef, useState, useEffect } from 'react'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import './MedallionArchitecture.css'
 
+function BronzeIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <ellipse cx="12" cy="6" rx="8" ry="3" />
+      <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
+      <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+    </svg>
+  )
+}
+
+function SilverIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 4h18l-7 9v6l-4 2v-8L3 4z" />
+    </svg>
+  )
+}
+
+function GoldIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 20V13M10 20V7M16 20V11M22 20V4" />
+      <path d="M2 20h20" />
+    </svg>
+  )
+}
+
 const LAYERS = [
   {
     id: 'bronze',
@@ -9,7 +36,7 @@ const LAYERS = [
     glow: 'rgba(184,115,51,0.4)',
     dim: 'rgba(184,115,51,0.08)',
     label: 'BRONZE LAYER',
-    emoji: '🥉',
+    icon: BronzeIcon,
     subtitle: 'Raw Ingestion',
     description: 'Unprocessed data as-is from enterprise systems. Schema-on-read, full history preserved, no transformations applied.',
     nodes: ['SAP ERP', 'Salesforce CRM', 'Odoo ERP', 'Zinc WMS'],
@@ -21,7 +48,7 @@ const LAYERS = [
     glow: 'rgba(192,192,192,0.4)',
     dim: 'rgba(192,192,192,0.06)',
     label: 'SILVER LAYER',
-    emoji: '🥈',
+    icon: SilverIcon,
     subtitle: 'Cleanse & Validate',
     description: 'Cleaned, deduplicated and standardized data. Business rules enforced, schema-on-write, referential integrity validated.',
     nodes: ['PySpark Jobs', 'Delta Live Tables', 'Data Quality', 'Deduplication'],
@@ -33,7 +60,7 @@ const LAYERS = [
     glow: 'rgba(255,184,0,0.4)',
     dim: 'rgba(255,184,0,0.08)',
     label: 'GOLD LAYER',
-    emoji: '🥇',
+    icon: GoldIcon,
     subtitle: 'Business Ready',
     description: 'Aggregated, optimized semantic models. Direct Lake mode for Power BI — sub-second query response on millions of rows.',
     nodes: ['Power BI Embedded', 'Direct Lake Mode', 'Semantic Models', 'KPI Dashboards'],
@@ -124,7 +151,6 @@ export default function MedallionArchitecture() {
               style={{ animationDelay: `${i * 0.2}s`, '--layer-color': layer.color, '--layer-glow': layer.glow, '--layer-dim': layer.dim }}
               onMouseEnter={() => setActiveLayer(layer.id)}
               onMouseLeave={() => setActiveLayer(null)}
-              data-cursor-hover
             >
               <div className="layer-header">
                 <div className="layer-indicator">
@@ -133,7 +159,7 @@ export default function MedallionArchitecture() {
                   </div>
                 </div>
                 <div className="layer-title-group">
-                  <span className="layer-emoji">{layer.emoji}</span>
+                  <span className="layer-icon"><layer.icon /></span>
                   <div>
                     <div className="layer-label">{layer.label}</div>
                     <div className="layer-subtitle">{layer.subtitle}</div>

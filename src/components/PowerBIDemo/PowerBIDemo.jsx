@@ -19,12 +19,50 @@ function useCounter(target, duration = 1800, active) {
   return value
 }
 
+function RevenueIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v10M9.5 9.5c0-1.1 1.12-2 2.5-2s2.5.7 2.5 1.75-1.12 1.75-2.5 1.75-2.5.8-2.5 1.9 1.12 1.85 2.5 1.85 2.5-.65 2.5-1.85" />
+    </svg>
+  )
+}
+
+function PipelineIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />
+    </svg>
+  )
+}
+
+function UsersIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
+      <circle cx="17" cy="8.5" r="2.4" />
+      <path d="M15.5 14.2c2.6.4 4 2.3 4 5.8" />
+    </svg>
+  )
+}
+
+function LatencyIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3.5 2" />
+    </svg>
+  )
+}
+
 function KPICard({ kpi, active }) {
   const count = useCounter(kpi.target, 1800, active)
+  const Icon = kpi.icon
 
   return (
     <div className="kpi-card" style={{ '--kpi-color': kpi.color }}>
-      <div className="kpi-icon">{kpi.icon}</div>
+      <div className="kpi-icon"><Icon /></div>
       <div className="kpi-value">
         {kpi.prefix}{count.toLocaleString()}{kpi.suffix}
       </div>
@@ -147,10 +185,10 @@ function DonutChart() {
 }
 
 const KPIS = [
-  { icon: '💰', label: 'Revenue Processed', target: 4872340, prefix: '€', suffix: '', color: '#00F5FF', trend: '+12.4% MoM', trendUp: true },
-  { icon: '⚡', label: 'Pipelines Active', target: 247, prefix: '', suffix: '', color: '#00F5FF', trend: '+8 this week', trendUp: true },
-  { icon: '👥', label: 'Active Users', target: 532, prefix: '', suffix: '', color: '#00F5FF', trend: '+3.1% WoW', trendUp: true },
-  { icon: '⏱', label: 'Avg Latency (ms)', target: 380, prefix: '', suffix: 'ms', color: '#00F5FF', trend: '-45ms', trendUp: false },
+  { icon: RevenueIcon, label: 'Revenue Processed', target: 4872340, prefix: '€', suffix: '', color: '#00F5FF', trend: '+12.4% MoM', trendUp: true },
+  { icon: PipelineIcon, label: 'Pipelines Active', target: 247, prefix: '', suffix: '', color: '#00F5FF', trend: '+8 this week', trendUp: true },
+  { icon: UsersIcon, label: 'Active Users', target: 532, prefix: '', suffix: '', color: '#00F5FF', trend: '+3.1% WoW', trendUp: true },
+  { icon: LatencyIcon, label: 'Avg Latency (ms)', target: 380, prefix: '', suffix: 'ms', color: '#00F5FF', trend: '-45ms', trendUp: false },
 ]
 
 export default function PowerBIDemo() {

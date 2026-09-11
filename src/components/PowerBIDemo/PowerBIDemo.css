@@ -101,7 +101,7 @@
 }
 
 .kpi-icon {
-  font-size: 20px;
+  color: var(--kpi-color);
   margin-bottom: 8px;
 }
 
