@@ -1,0 +1,239 @@
+.scene3d-wrap {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.scene3d-canvas-area {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: radial-gradient(ellipse at 50% 30%, rgba(var(--cyan-rgb), 0.08), rgba(var(--panel-rgb), 0.9) 70%);
+  overflow: hidden;
+}
+
+.scene3d-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.scene3d-labels {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+  padding: 0 4%;
+}
+
+.scene3d-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.scene3d-label-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--label-color);
+}
+
+.scene3d-label-sub {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* HUD panel */
+.scene3d-hud {
+  background: rgba(var(--panel-rgb), 0.8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-family: var(--font-mono);
+}
+
+.hud-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hud-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--cyan);
+}
+
+.hud-date {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.hud-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hud-panel-title {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hud-status-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hud-status-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text);
+}
+
+.hud-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  flex-shrink: 0;
+}
+
+.hud-status-dot.status-syncing {
+  background: var(--cyan);
+  animation: pulse-glow 1.4s ease-in-out infinite;
+}
+
+.hud-status-value {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.hud-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hud-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--pill-color);
+  border: 1px solid var(--pill-color);
+  background: transparent;
+  padding: 5px 10px;
+  border-radius: 20px;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.hud-pill:hover {
+  transform: translateY(-1px);
+}
+
+.hud-pill.active {
+  background: color-mix(in srgb, var(--pill-color) 18%, transparent);
+}
+
+.hud-selected {
+  border: 1px solid var(--pill-color);
+  border-radius: 6px;
+  padding: 10px;
+  background: color-mix(in srgb, var(--pill-color) 8%, transparent);
+}
+
+.hud-selected-title {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--pill-color);
+  margin-bottom: 8px;
+}
+
+.hud-selected-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hud-selected-meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.hud-selected-meta dt {
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hud-selected-meta dd {
+  font-size: 11px;
+  color: var(--text);
+  font-family: var(--font-ui);
+}
+
+.hud-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hud-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text2);
+  border: 1px solid var(--border2);
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: 4px;
+  text-align: left;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.hud-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+@media (max-width: 900px) {
+  .scene3d-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .scene3d-canvas-area {
+    aspect-ratio: 16 / 11;
+  }
+}
+
+@media (max-width: 480px) {
+  .scene3d-labels {
+    display: none;
+  }
+}

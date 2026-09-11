@@ -55,27 +55,8 @@
   margin-bottom: 72px;
 }
 
-.cs-visual-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 7;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: linear-gradient(160deg, rgba(var(--panel-rgb), 0.7), rgba(var(--cyan-rgb), 0.06));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.cs-visual-placeholder span {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
 .cs-summary {
+  margin-top: 20px;
   font-family: var(--font-ui);
   font-size: 16px;
   color: var(--text2);

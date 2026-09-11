@@ -1,5 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { getCaseStudy, CASE_STUDY_INDEX } from '../../data/caseStudies'
+import MedallionScene3D from '../../components/MedallionScene3D/MedallionScene3D'
 import './CaseStudyDetail.css'
 
 function BackIcon() {
@@ -42,9 +43,7 @@ export default function CaseStudyDetail() {
         </header>
 
         <div className="cs-hero-visual">
-          <div className="cs-visual-placeholder">
-            <span>Medallion Architecture — interactive visualization</span>
-          </div>
+          <MedallionScene3D layers={study.layers} />
           <p className="cs-summary">{study.summary}</p>
         </div>
 
