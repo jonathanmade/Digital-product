@@ -13,6 +13,12 @@ import TrustBar from './components/TrustBar/TrustBar'
 import Testimonials from './components/Testimonials/Testimonials'
 import Contact from './components/Contact/Contact'
 import { storm } from './utils/stormSystem'
+import { useScrollProgress } from './hooks/useScrollProgress'
+
+function ScrollProgressBar() {
+  const progress = useScrollProgress()
+  return <div className="scroll-progress-bar" style={{ width: `${progress}%` }} />
+}
 
 function Footer() {
   return (
@@ -33,6 +39,7 @@ export default function App() {
 
   return (
     <>
+      <ScrollProgressBar />
       <Navbar />
       <main>
         <Hero />
