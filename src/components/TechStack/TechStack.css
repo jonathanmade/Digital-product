@@ -1,5 +1,5 @@
 .techstack {
-  background: linear-gradient(180deg, var(--bg) 0%, rgba(10, 14, 26, 1) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
 }
 
 .category-grid {
@@ -45,7 +45,7 @@
   font-weight: 600;
   color: var(--text);
   border: 1px solid var(--border);
-  background: rgba(13, 19, 33, 0.7);
+  background: rgba(var(--panel-rgb), 0.7);
   padding: 8px 14px;
   border-radius: 6px;
   transition: border-color 0.2s, color 0.2s, transform 0.15s;
@@ -89,7 +89,7 @@
   border-radius: 20px;
   border: 1px solid var(--border2);
   color: var(--text);
-  background: rgba(13, 19, 33, 0.5);
+  background: rgba(var(--panel-rgb), 0.5);
   transition: border-color 0.2s, color 0.2s;
 }
 

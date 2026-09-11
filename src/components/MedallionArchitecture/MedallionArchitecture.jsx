@@ -32,9 +32,9 @@ function GoldIcon() {
 const LAYERS = [
   {
     id: 'bronze',
-    color: '#b87333',
-    glow: 'rgba(184,115,51,0.4)',
-    dim: 'rgba(184,115,51,0.08)',
+    color: 'var(--bronze)',
+    glow: 'rgba(var(--bronze-rgb), 0.4)',
+    dim: 'rgba(var(--bronze-rgb), 0.08)',
     label: 'BRONZE LAYER',
     icon: BronzeIcon,
     subtitle: 'Raw Ingestion',
@@ -44,9 +44,9 @@ const LAYERS = [
   },
   {
     id: 'silver',
-    color: '#C0C0C0',
-    glow: 'rgba(192,192,192,0.4)',
-    dim: 'rgba(192,192,192,0.06)',
+    color: 'var(--silver)',
+    glow: 'rgba(var(--silver-rgb), 0.4)',
+    dim: 'rgba(var(--silver-rgb), 0.06)',
     label: 'SILVER LAYER',
     icon: SilverIcon,
     subtitle: 'Cleanse & Validate',
@@ -56,9 +56,9 @@ const LAYERS = [
   },
   {
     id: 'gold',
-    color: '#FFB800',
-    glow: 'rgba(255,184,0,0.4)',
-    dim: 'rgba(255,184,0,0.08)',
+    color: 'var(--gold)',
+    glow: 'rgba(var(--gold-rgb), 0.4)',
+    dim: 'rgba(var(--gold-rgb), 0.08)',
     label: 'GOLD LAYER',
     icon: GoldIcon,
     subtitle: 'Business Ready',
@@ -66,11 +66,6 @@ const LAYERS = [
     nodes: ['Power BI Embedded', 'Direct Lake Mode', 'Semantic Models', 'KPI Dashboards'],
     tech: ['Microsoft Fabric', 'Power BI', 'DAX', 'Direct Lake'],
   },
-]
-
-const FLOW_PATHS = [
-  { id: 'flow-1', color: '#b87333' },
-  { id: 'flow-2', color: '#C0C0C0' },
 ]
 
 export default function MedallionArchitecture() {
@@ -106,10 +101,10 @@ export default function MedallionArchitecture() {
             <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
               <defs>
                 <marker id="arrow-bronze" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill="#b87333" />
+                  <path d="M0,0 L6,3 L0,6 Z" fill={LAYERS[0].color} />
                 </marker>
                 <marker id="arrow-silver" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill="#C0C0C0" />
+                  <path d="M0,0 L6,3 L0,6 Z" fill={LAYERS[1].color} />
                 </marker>
                 <filter id="glow-b">
                   <feGaussianBlur stdDeviation="1.5" result="blur" />
@@ -121,7 +116,7 @@ export default function MedallionArchitecture() {
               <path
                 key={`flow1-${animKey}`}
                 d="M 50 33 L 50 39"
-                stroke="#b87333"
+                stroke={LAYERS[0].color}
                 strokeWidth="0.6"
                 fill="none"
                 strokeDasharray="8 3"
@@ -133,7 +128,7 @@ export default function MedallionArchitecture() {
               <path
                 key={`flow2-${animKey}`}
                 d="M 50 65 L 50 71"
-                stroke="#C0C0C0"
+                stroke={LAYERS[1].color}
                 strokeWidth="0.6"
                 fill="none"
                 strokeDasharray="8 3"

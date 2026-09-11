@@ -1,6 +1,6 @@
 /* Excepción semántica Medallion — Bronze/Silver/Gold son colores de datos, no de UI */
 .medallion {
-  background: linear-gradient(180deg, var(--bg) 0%, #080c18 50%, var(--bg) 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 50%, var(--bg) 100%);
 }
 
 .medallion-header {
@@ -67,7 +67,7 @@
 .layer-card {
   position: relative;
   z-index: 1;
-  background: rgba(13, 19, 33, 0.75);
+  background: rgba(var(--panel-rgb), 0.75);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 0;
@@ -230,7 +230,7 @@
   font-size: 11px;
   padding: 4px 10px;
   border-radius: 4px;
-  background: rgba(13,19,33,0.8);
+  background: rgba(var(--panel-rgb), 0.8);
   border: 1px solid var(--border2);
   color: var(--text);
 }
@@ -253,7 +253,7 @@
 }
 
 .arch-stat {
-  background: rgba(13, 19, 33, 0.7);
+  background: rgba(var(--panel-rgb), 0.7);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px;

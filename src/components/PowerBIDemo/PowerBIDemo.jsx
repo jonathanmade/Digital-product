@@ -106,12 +106,12 @@ function LineChart({ active }) {
       <svg width="100%" height="100" viewBox="0 0 280 90" preserveAspectRatio="none" className="line-chart">
         <defs>
           <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#00F5FF" />
-            <stop offset="100%" stopColor="#7B2FFF" />
+            <stop offset="0%" stopColor="var(--cyan)" />
+            <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0.4" />
           </linearGradient>
           <linearGradient id="area-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#00F5FF" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0" />
           </linearGradient>
         </defs>
         <polygon
@@ -133,10 +133,10 @@ function LineChart({ active }) {
 }
 
 const DONUT_SEGMENTS = [
-  { label: 'SAP', pct: 42, color: '#FFB800' },
-  { label: 'Salesforce', pct: 28, color: '#00F5FF' },
-  { label: 'Odoo', pct: 18, color: '#7B2FFF' },
-  { label: 'Zinc', pct: 12, color: '#b87333' },
+  { label: 'SAP', pct: 42, color: 'var(--cyan)' },
+  { label: 'Salesforce', pct: 28, color: 'rgba(var(--cyan-rgb), 0.7)' },
+  { label: 'Odoo', pct: 18, color: 'rgba(var(--cyan-rgb), 0.45)' },
+  { label: 'Zinc', pct: 12, color: 'rgba(var(--cyan-rgb), 0.25)' },
 ]
 
 function DonutChart() {
@@ -166,7 +166,7 @@ function DonutChart() {
             offset += dashLen
             return seg
           })}
-          <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="white" fontFamily="'JetBrains Mono', monospace" fontWeight="700">
+          <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="var(--heading)" fontFamily="'JetBrains Mono', monospace" fontWeight="700">
             4 src
           </text>
         </svg>
@@ -185,10 +185,10 @@ function DonutChart() {
 }
 
 const KPIS = [
-  { icon: RevenueIcon, label: 'Revenue Processed', target: 4872340, prefix: '€', suffix: '', color: '#00F5FF', trend: '+12.4% MoM', trendUp: true },
-  { icon: PipelineIcon, label: 'Pipelines Active', target: 247, prefix: '', suffix: '', color: '#00F5FF', trend: '+8 this week', trendUp: true },
-  { icon: UsersIcon, label: 'Active Users', target: 532, prefix: '', suffix: '', color: '#00F5FF', trend: '+3.1% WoW', trendUp: true },
-  { icon: LatencyIcon, label: 'Avg Latency (ms)', target: 380, prefix: '', suffix: 'ms', color: '#00F5FF', trend: '-45ms', trendUp: false },
+  { icon: RevenueIcon, label: 'Revenue Processed', target: 4872340, prefix: '€', suffix: '', color: 'var(--cyan)', trend: '+12.4% MoM', trendUp: true },
+  { icon: PipelineIcon, label: 'Pipelines Active', target: 247, prefix: '', suffix: '', color: 'var(--cyan)', trend: '+8 this week', trendUp: true },
+  { icon: UsersIcon, label: 'Active Users', target: 532, prefix: '', suffix: '', color: 'var(--cyan)', trend: '+3.1% WoW', trendUp: true },
+  { icon: LatencyIcon, label: 'Avg Latency (ms)', target: 380, prefix: '', suffix: 'ms', color: 'var(--cyan)', trend: '-45ms', trendUp: false },
 ]
 
 export default function PowerBIDemo() {

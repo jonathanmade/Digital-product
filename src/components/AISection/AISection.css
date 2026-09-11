@@ -9,7 +9,7 @@
 }
 
 .ai-card {
-  background: rgba(13, 19, 33, 0.7);
+  background: rgba(var(--panel-rgb), 0.7);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
@@ -28,7 +28,7 @@
 }
 
 .ai-card:hover {
-  border-color: rgba(0, 245, 255, 0.3);
+  border-color: rgba(var(--cyan-rgb), 0.3);
   transform: translateY(-3px);
 }
 
@@ -41,7 +41,7 @@
   font-family: var(--font-ui);
   font-size: 15px;
   font-weight: 700;
-  color: #fff;
+  color: var(--heading);
   margin-bottom: 10px;
   line-height: 1.3;
 }

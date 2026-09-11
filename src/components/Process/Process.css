@@ -1,5 +1,5 @@
 .process {
-  background: linear-gradient(180deg, var(--bg) 0%, #080c18 100%);
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
 }
 
 .process-timeline {
@@ -60,7 +60,7 @@
   font-family: var(--font-ui);
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: var(--heading);
   margin-bottom: 8px;
 }
 

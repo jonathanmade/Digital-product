@@ -15,7 +15,7 @@ const CASE_STUDIES = [
       { label: 'Daily events', value: '50M+' },
       { label: 'Report latency', value: '<1s' },
     ],
-    gradient: 'linear-gradient(135deg, var(--cyan), rgba(0,245,255,0.3))',
+    gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',
   },
   {
@@ -30,7 +30,7 @@ const CASE_STUDIES = [
       { label: 'Report types', value: '28' },
       { label: 'Query p95', value: '0.4s' },
     ],
-    gradient: 'linear-gradient(135deg, var(--cyan), rgba(0,245,255,0.3))',
+    gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',
   },
   {
@@ -45,7 +45,7 @@ const CASE_STUDIES = [
       { label: 'Tables managed', value: '120+' },
       { label: 'Uptime SLA', value: '99.9%' },
     ],
-    gradient: 'linear-gradient(135deg, var(--cyan), rgba(0,245,255,0.3))',
+    gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',
   },
 ]

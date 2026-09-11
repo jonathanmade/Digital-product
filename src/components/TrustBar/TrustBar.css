@@ -42,5 +42,5 @@
   border: 1px solid var(--border2);
   padding: 6px 14px;
   border-radius: 20px;
-  background: rgba(13, 19, 33, 0.5);
+  background: rgba(var(--panel-rgb), 0.5);
 }

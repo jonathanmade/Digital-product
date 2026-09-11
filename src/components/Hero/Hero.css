@@ -80,7 +80,7 @@
   font-weight: 900;
   line-height: 1.1;
   letter-spacing: -0.5px;
-  color: #fff;
+  color: var(--heading);
   margin-bottom: 24px;
   animation: fadeInDown 0.7s ease 0.2s both;
 }

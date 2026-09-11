@@ -1,9 +1,9 @@
 .powerbi {
-  background: linear-gradient(180deg, var(--bg), #080c18);
+  background: linear-gradient(180deg, var(--bg), var(--bg-alt));
 }
 
 .pbi-shell {
-  background: rgba(13, 19, 33, 0.8);
+  background: rgba(var(--panel-rgb), 0.8);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
@@ -23,7 +23,7 @@
   align-items: center;
   gap: 16px;
   padding: 14px 20px;
-  background: rgba(5, 8, 16, 0.8);
+  background: rgba(var(--sunken-rgb), 0.8);
   border-bottom: 1px solid var(--border);
 }
 
@@ -57,7 +57,7 @@
   letter-spacing: 1px;
   color: var(--cyan);
   background: var(--cyan-dim);
-  border: 1px solid rgba(0,245,255,0.2);
+  border: 1px solid rgba(var(--cyan-rgb), 0.2);
   padding: 4px 12px;
   border-radius: 20px;
 }
@@ -97,7 +97,7 @@
 }
 
 .kpi-card:hover {
-  background: rgba(20, 28, 50, 0.95);
+  background: rgba(var(--panel-rgb), 0.95);
 }
 
 .kpi-icon {
@@ -133,15 +133,15 @@
 }
 
 .kpi-trend.up {
-  color: #4ade80;
-  background: rgba(74, 222, 128, 0.08);
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  color: var(--success);
+  background: rgba(var(--success-rgb), 0.08);
+  border: 1px solid rgba(var(--success-rgb), 0.2);
 }
 
 .kpi-trend.down {
   color: var(--cyan);
-  background: rgba(0, 245, 255, 0.06);
-  border: 1px solid rgba(0, 245, 255, 0.15);
+  background: rgba(var(--cyan-rgb), 0.06);
+  border: 1px solid rgba(var(--cyan-rgb), 0.15);
 }
 
 /* Charts */
@@ -190,7 +190,7 @@
 
 .bar-fill {
   width: 100%;
-  background: linear-gradient(180deg, var(--cyan), rgba(0,245,255,0.3));
+  background: linear-gradient(180deg, var(--cyan), rgba(var(--cyan-rgb), 0.3));
   border-radius: 2px 2px 0 0;
   height: 0;
   transition: height 0.3s;
@@ -277,7 +277,7 @@
   align-items: center;
   gap: 12px;
   padding: 10px 20px;
-  background: rgba(5, 8, 16, 0.6);
+  background: rgba(var(--sunken-rgb), 0.6);
   border-top: 1px solid var(--border);
   font-family: var(--font-mono);
   font-size: 10px;

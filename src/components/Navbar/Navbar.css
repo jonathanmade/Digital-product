@@ -9,7 +9,7 @@
 }
 
 .navbar.scrolled {
-  background: rgba(5, 8, 16, 0.85);
+  background: rgba(var(--sunken-rgb), 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -27,7 +27,7 @@
   font-family: var(--font-mono);
   font-size: 15px;
   font-weight: 700;
-  color: #fff;
+  color: var(--heading);
   letter-spacing: 1px;
   display: flex;
   align-items: center;
@@ -120,7 +120,7 @@
     left: 0;
     right: 0;
     flex-direction: column;
-    background: rgba(5, 8, 16, 0.97);
+    background: rgba(var(--sunken-rgb), 0.97);
     border-bottom: 1px solid var(--border);
     padding: 16px;
     gap: 0;
