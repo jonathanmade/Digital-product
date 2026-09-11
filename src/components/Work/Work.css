@@ -57,7 +57,7 @@
 
 .project-card.hovered .card-inner {
   background: rgba(13, 19, 33, 0.97);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px color-mix(in srgb, var(--project-color) 20%, transparent);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 245, 255, 0.12);
 }
 
 .card-header {
@@ -146,6 +146,23 @@
   background: rgba(13, 19, 33, 0.8);
   border: 1px solid var(--border2);
   color: var(--text);
+}
+
+/* AI placeholder card */
+.ai-placeholder-card .card-inner {
+  border: 1px dashed var(--border2);
+  background: rgba(13, 19, 33, 0.5);
+}
+
+.pending-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border2);
+  padding: 3px 10px;
+  border-radius: 20px;
 }
 
 @media (max-width: 680px) {

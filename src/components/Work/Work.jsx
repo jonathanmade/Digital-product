@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
-import './Projects.css'
+import './Work.css'
 
-const PROJECTS = [
+const CASE_STUDIES = [
   {
     id: 1,
     label: 'Case Study 01',
@@ -15,8 +15,8 @@ const PROJECTS = [
       { label: 'Daily events', value: '50M+' },
       { label: 'Report latency', value: '<1s' },
     ],
-    gradient: 'linear-gradient(135deg, #b87333, #7B2FFF)',
-    accentColor: '#b87333',
+    gradient: 'linear-gradient(135deg, var(--cyan), rgba(0,245,255,0.3))',
+    accentColor: 'var(--cyan)',
   },
   {
     id: 2,
@@ -30,8 +30,8 @@ const PROJECTS = [
       { label: 'Report types', value: '28' },
       { label: 'Query p95', value: '0.4s' },
     ],
-    gradient: 'linear-gradient(135deg, #FFB800, #00F5FF)',
-    accentColor: '#FFB800',
+    gradient: 'linear-gradient(135deg, var(--cyan), rgba(0,245,255,0.3))',
+    accentColor: 'var(--cyan)',
   },
   {
     id: 3,
@@ -45,12 +45,21 @@ const PROJECTS = [
       { label: 'Tables managed', value: '120+' },
       { label: 'Uptime SLA', value: '99.9%' },
     ],
-    gradient: 'linear-gradient(135deg, #00F5FF, #7B2FFF)',
-    accentColor: '#00F5FF',
+    gradient: 'linear-gradient(135deg, var(--cyan), rgba(0,245,255,0.3))',
+    accentColor: 'var(--cyan)',
   },
 ]
 
-function ProjectCard({ project, index, visible }) {
+const AI_PLACEHOLDER = {
+  id: 4,
+  label: 'Case Study 04',
+  title: 'AI Application — End-to-End Delivery',
+  description:
+    'A production AI application delivered end-to-end on top of a governed data platform. Real client, metrics, and architecture details to be added once the engagement is public.',
+  tags: ['RAG', 'Azure AI', 'Agents'],
+}
+
+function CaseStudyCard({ project, index, visible }) {
   const cardRef = useRef(null)
   const [tilt, setTilt] = useState({ x: 0, y: 0 })
   const [hovered, setHovered] = useState(false)
@@ -77,7 +86,6 @@ function ProjectCard({ project, index, visible }) {
       onMouseMove={onMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => { setHovered(false); setTilt({ x: 0, y: 0 }) }}
-      data-cursor-hover
     >
       <div className="card-gradient-border" />
       <div className="card-inner">
@@ -107,16 +115,39 @@ function ProjectCard({ project, index, visible }) {
   )
 }
 
-export default function Projects() {
+function AIPlaceholderCard({ project, index, visible }) {
+  return (
+    <div
+      className={`project-card ai-placeholder-card${visible ? ' visible' : ''}`}
+      style={{ animationDelay: `${index * 0.15}s` }}
+    >
+      <div className="card-inner">
+        <div className="card-header">
+          <span className="card-label">{project.label}</span>
+          <span className="pending-badge">Add real case study</span>
+        </div>
+        <h3 className="card-title">{project.title}</h3>
+        <p className="card-desc">{project.description}</p>
+        <div className="card-tags">
+          {project.tags.map(t => (
+            <span key={t} className="p-tag">{t}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function Work() {
   const { ref, visible } = useScrollReveal(0.1)
 
   return (
-    <section id="projects" className="projects">
+    <section id="work" className="projects">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">04 · Projects</p>
+          <p className="section-tag">Work</p>
           <h2 className="section-title">
-            Featured <span>Work</span>
+            Case <span>Studies</span>
           </h2>
           <p className="section-desc">
             Enterprise-scale data engineering projects driving real business impact.
@@ -125,9 +156,10 @@ export default function Projects() {
         </div>
 
         <div className="projects-grid">
-          {PROJECTS.map((p, i) => (
-            <ProjectCard key={p.id} project={p} index={i} visible={visible} />
+          {CASE_STUDIES.map((p, i) => (
+            <CaseStudyCard key={p.id} project={p} index={i} visible={visible} />
           ))}
+          <AIPlaceholderCard project={AI_PLACEHOLDER} index={CASE_STUDIES.length} visible={visible} />
         </div>
       </div>
     </section>
