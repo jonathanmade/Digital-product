@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
 import './Navbar.css'
 
@@ -43,22 +44,22 @@ export default function Navbar() {
   return (
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="nav-inner">
-        <a className="nav-logo" href="#hero">
+        <Link className="nav-logo" to="/">
           <span className="logo-bracket">[</span>JM<span className="logo-bracket">]</span>
           <span className="logo-sub"> data_engineer</span>
-        </a>
+        </Link>
 
         <div className="nav-right">
           <ul className={`nav-links${menuOpen ? ' open' : ''}`}>
             {links.map(l => (
               <li key={l.href}>
-                <a
-                  href={l.href}
+                <Link
+                  to={`/${l.href}`}
                   className={active === l.href.slice(1) ? 'active' : ''}
                   onClick={() => { setActive(l.href.slice(1)); setMenuOpen(false) }}
                 >
                   {l.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -71,7 +72,7 @@ export default function Navbar() {
             >
               {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
             </button>
-            <a href="#contact" className="btn-neon outline nav-cta">Book a Call</a>
+            <Link to="/#contact" className="btn-neon outline nav-cta">Book a Call</Link>
           </div>
 
           <button
