@@ -1,74 +1,30 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import './TechStack.css'
 
-const SKILLS = [
-  { name: 'Microsoft Fabric', level: 95, color: '#00F5FF', category: 'Platform' },
-  { name: 'Power BI', level: 93, color: '#FFB800', category: 'BI' },
-  { name: 'Databricks', level: 88, color: '#FF3621', category: 'Processing' },
-  { name: 'PySpark', level: 87, color: '#E25A1C', category: 'Processing' },
-  { name: 'Delta Lake', level: 90, color: '#00ADD8', category: 'Storage' },
-  { name: 'Azure Data Factory', level: 85, color: '#0089D6', category: 'Orchestration' },
-  { name: 'Python', level: 90, color: '#FFD43B', category: 'Language' },
-  { name: 'SQL / T-SQL', level: 92, color: '#7B2FFF', category: 'Language' },
-  { name: 'Azure', level: 83, color: '#008AD7', category: 'Cloud' },
+const CATEGORIES = [
+  { name: 'Platform', items: ['Microsoft Fabric'] },
+  { name: 'BI', items: ['Power BI', 'Power BI Embedded', 'DAX'] },
+  { name: 'Processing', items: ['Databricks', 'PySpark', 'Delta Live Tables'] },
+  { name: 'Storage', items: ['Delta Lake', 'ADLS Gen2'] },
+  { name: 'Orchestration', items: ['Azure Data Factory', 'Apache Kafka'] },
+  { name: 'Language', items: ['Python', 'SQL / T-SQL'] },
+  { name: 'Cloud', items: ['Azure', 'Azure AD B2C', 'Synapse Analytics'] },
 ]
 
-function ArcGauge({ level, size = 100 }) {
-  const color = '#00F5FF'
-  const r = 36
-  const cx = size / 2
-  const cy = size / 2
-  const circumference = 2 * Math.PI * r
-  const arcLen = circumference * 0.75
-  const fill = arcLen * (level / 100)
-  const rotation = 135
+const ALSO_KNOW = ['dbt', 'Power Automate', 'Git', 'Docker', 'M Query', 'Great Expectations']
 
-  return (
-    <svg width={size} height={size} className="arc-gauge">
-      {/* Track */}
-      <circle
-        cx={cx} cy={cy} r={r}
-        fill="none"
-        stroke="rgba(255,255,255,0.06)"
-        strokeWidth="5"
-        strokeDasharray={`${arcLen} ${circumference - arcLen}`}
-        strokeDashoffset={0}
-        strokeLinecap="round"
-        transform={`rotate(${rotation} ${cx} ${cy})`}
-      />
-      {/* Fill */}
-      <circle
-        cx={cx} cy={cy} r={r}
-        fill="none"
-        stroke={color}
-        strokeWidth="5"
-        strokeDasharray={`${fill} ${circumference - fill}`}
-        strokeDashoffset={0}
-        strokeLinecap="round"
-        transform={`rotate(${rotation} ${cx} ${cy})`}
-        className="arc-fill"
-        style={{ filter: `drop-shadow(0 0 4px ${color})` }}
-      />
-      {/* Label */}
-      <text x={cx} y={cy + 5} textAnchor="middle" fontSize="14" fontWeight="700" fill={color} fontFamily="'JetBrains Mono', monospace">
-        {level}
-      </text>
-    </svg>
-  )
-}
-
-function SkillCard({ skill, index, visible }) {
+function CategoryGroup({ category, index, visible }) {
   return (
     <div
-      className={`skill-card${visible ? ' visible' : ''}`}
-      style={{ animationDelay: `${index * 0.07}s` }}
-      data-cursor-hover
+      className={`category-group${visible ? ' visible' : ''}`}
+      style={{ animationDelay: `${index * 0.08}s` }}
     >
-      <div className="skill-top">
-        <ArcGauge level={skill.level} size={90} />
+      <span className="category-name">{category.name}</span>
+      <div className="category-chips">
+        {category.items.map(item => (
+          <span key={item} className="capability-chip">{item}</span>
+        ))}
       </div>
-      <div className="skill-name">{skill.name}</div>
-      <div className="skill-category">{skill.category}</div>
     </div>
   )
 }
@@ -80,24 +36,25 @@ export default function TechStack() {
     <section id="stack" className="techstack">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">03 · Tech Stack</p>
+          <p className="section-tag">Capabilities</p>
           <h2 className="section-title">
             Tools & <span>Technologies</span>
           </h2>
           <p className="section-desc">
-            Enterprise data engineering with battle-tested platforms. Each skill backed by production deployments at scale.
+            Production-proven platforms across the full data lifecycle — from ingestion to
+            Power BI Direct Lake, and increasingly AI applications layered on top.
           </p>
         </div>
 
-        <div className="skills-grid">
-          {SKILLS.map((skill, i) => (
-            <SkillCard key={skill.name} skill={skill} index={i} visible={visible} />
+        <div className="category-grid">
+          {CATEGORIES.map((category, i) => (
+            <CategoryGroup key={category.name} category={category} index={i} visible={visible} />
           ))}
         </div>
 
         <div className={`also-know${visible ? ' visible' : ''}`}>
           <span className="also-label">Also proficient in:</span>
-          {['dbt', 'Apache Kafka', 'Synapse Analytics', 'Power Automate', 'Git', 'Docker', 'DAX', 'M Query'].map(t => (
+          {ALSO_KNOW.map(t => (
             <span key={t} className="also-tag">{t}</span>
           ))}
         </div>
