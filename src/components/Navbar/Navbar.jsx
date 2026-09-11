@@ -3,10 +3,10 @@ import './Navbar.css'
 
 const links = [
   { href: '#hero', label: 'Home' },
-  { href: '#architecture', label: 'Architecture' },
-  { href: '#stack', label: 'Stack' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#powerbi', label: 'Power BI' },
+  { href: '#services', label: 'Services' },
+  { href: '#process', label: 'Process' },
+  { href: '#work', label: 'Work' },
+  { href: '#ai', label: 'AI' },
   { href: '#contact', label: 'Contact' },
 ]
 

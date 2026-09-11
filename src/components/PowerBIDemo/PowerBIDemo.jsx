@@ -198,7 +198,7 @@ export default function PowerBIDemo() {
     <section id="powerbi" className="powerbi">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">05 · Power BI Demo</p>
+          <p className="section-tag">Power BI Demo</p>
           <h2 className="section-title">
             Live Data <span>Dashboard</span>
           </h2>

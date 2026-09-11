@@ -89,7 +89,7 @@ export default function MedallionArchitecture() {
     <section id="architecture" className="medallion">
       <div className="section-inner" ref={ref}>
         <div className={`medallion-header reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">02 · Architecture</p>
+          <p className="section-tag">Architecture</p>
           <h2 className="section-title">
             Medallion <span>Architecture</span>
           </h2>
