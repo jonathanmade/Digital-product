@@ -9,6 +9,7 @@ export class StormSystem {
     this.scrollTimeout = null
     this._onScroll = this._onScroll.bind(this)
     this._onResize = this._onResize.bind(this)
+    this._onVisibility = this._onVisibility.bind(this)
     this._loop = this._loop.bind(this)
   }
 
@@ -22,15 +23,28 @@ export class StormSystem {
 
     window.addEventListener('scroll', this._onScroll, { passive: true })
     window.addEventListener('resize', this._onResize)
-    this.rafId = requestAnimationFrame(this._loop)
+    document.addEventListener('visibilitychange', this._onVisibility)
+    if (!document.hidden) {
+      this.rafId = requestAnimationFrame(this._loop)
+    }
   }
 
   destroy() {
     cancelAnimationFrame(this.rafId)
     window.removeEventListener('scroll', this._onScroll)
     window.removeEventListener('resize', this._onResize)
+    document.removeEventListener('visibilitychange', this._onVisibility)
     if (this.canvas && this.canvas.parentNode) {
       this.canvas.parentNode.removeChild(this.canvas)
+    }
+  }
+
+  _onVisibility() {
+    if (document.hidden) {
+      cancelAnimationFrame(this.rafId)
+      this.rafId = null
+    } else if (!this.rafId) {
+      this.rafId = requestAnimationFrame(this._loop)
     }
   }
 
@@ -56,19 +70,19 @@ export class StormSystem {
     let count = 0
 
     if (v < 2) {
-      count = Math.random() < 0.15 ? 1 : 0
+      count = Math.random() < 0.06 ? 1 : 0
     } else if (v < 15) {
-      count = Math.floor(2 + (v / 15) * 3)
+      count = Math.floor(1 + (v / 15) * 1.5)
     } else {
-      count = Math.floor(8 + Math.min(v / 5, 7))
+      count = Math.floor(3 + Math.min(v / 8, 3))
     }
 
     for (let i = 0; i < count; i++) {
-      if (this.particles.length >= 80) {
+      if (this.particles.length >= 40) {
         this.particles.splice(0, 1)
       }
 
-      if (v > 8 && Math.random() < 0.4) {
+      if (v > 12 && Math.random() < 0.3) {
         // Type B — lightning bolt
         const segs = Math.floor(3 + Math.random() * 3)
         const pts = [{ x: Math.random() * W, y: Math.random() < 0.7 ? 0 : Math.random() * H }]
@@ -84,8 +98,8 @@ export class StormSystem {
         this.particles.push({
           type: 'bolt',
           pts,
-          alpha: 0.4 + Math.random() * 0.5,
-          width: 1 + Math.random(),
+          alpha: 0.15 + Math.random() * 0.2,
+          width: 1 + Math.random() * 0.5,
           born: performance.now(),
           life: 150 + Math.random() * 250,
         })
@@ -95,10 +109,10 @@ export class StormSystem {
           type: 'dot',
           x: Math.random() * W,
           y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: -(0.4 + Math.random() * 1.2),
-          r: 1 + Math.random() * 2,
-          alpha: 0.15 + Math.random() * 0.5,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: -(0.3 + Math.random() * 0.9),
+          r: 1 + Math.random() * 1.5,
+          alpha: 0.08 + Math.random() * 0.22,
           born: performance.now(),
           life: 400 + Math.random() * 400,
         })
