@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import './PowerBIDemo.css'
 
@@ -148,7 +148,7 @@ function DonutChart() {
       <div className="chart-label">Source Distribution</div>
       <div className="donut-wrap">
         <svg width="100" height="100" viewBox="0 0 100 100">
-          {DONUT_SEGMENTS.map((s, i) => {
+          {DONUT_SEGMENTS.map((s) => {
             const dashLen = circ * (s.pct / 100)
             const seg = (
               <circle
