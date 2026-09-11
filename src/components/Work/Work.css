@@ -148,6 +148,28 @@
   color: var(--text);
 }
 
+.view-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--cyan);
+  margin-top: 20px;
+  transition: gap 0.2s;
+}
+
+.view-more-link:hover {
+  gap: 10px;
+}
+
+.view-more-link.disabled {
+  color: var(--muted);
+  cursor: default;
+}
+
 /* AI placeholder card */
 .ai-placeholder-card .card-inner {
   border: 1px dashed var(--border2);

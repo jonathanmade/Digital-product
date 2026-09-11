@@ -1,10 +1,12 @@
 import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import './Work.css'
 
 const CASE_STUDIES = [
   {
     id: 1,
+    slug: 'uriach-medallion-fabric',
     label: 'Case Study 01',
     title: 'Medallion Architecture · Uriach Group',
     description:
@@ -110,6 +112,14 @@ function CaseStudyCard({ project, index, visible }) {
             <span key={t} className="p-tag">{t}</span>
           ))}
         </div>
+
+        {project.slug ? (
+          <Link to={`/case-studies/${project.slug}`} className="view-more-link">
+            View More →
+          </Link>
+        ) : (
+          <span className="view-more-link disabled">Coming soon</span>
+        )}
       </div>
     </div>
   )
