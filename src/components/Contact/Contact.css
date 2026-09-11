@@ -1,5 +1,5 @@
 .contact {
-  background: linear-gradient(180deg, #080c18 0%, var(--bg) 100%);
+  background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg) 100%);
   text-align: center;
 }
 

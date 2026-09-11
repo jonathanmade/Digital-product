@@ -115,6 +115,10 @@
   text-shadow: 0 0 20px var(--kpi-color);
 }
 
+:root[data-theme="light"] .kpi-value {
+  text-shadow: none;
+}
+
 .kpi-label {
   font-family: var(--font-mono);
   font-size: 11px;

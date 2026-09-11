@@ -45,6 +45,12 @@
   letter-spacing: 2px;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .nav-links {
   display: flex;
   list-style: none;
@@ -80,6 +86,35 @@
   border-radius: 50%;
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+
+.nav-cta {
+  padding: 8px 20px;
+  font-size: 11px;
+}
+
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -111,6 +146,14 @@
 @media (max-width: 768px) {
   .nav-hamburger {
     display: flex;
+  }
+
+  .nav-right {
+    gap: 10px;
+  }
+
+  .nav-cta {
+    display: none;
   }
 
   .nav-links {
