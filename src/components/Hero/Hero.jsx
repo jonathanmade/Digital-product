@@ -146,9 +146,7 @@ export default function Hero() {
           <span>Available for projects</span>
         </div>
         <h1 className="hero-name">
-          <span className="glitch" data-text="JONATAN">JONATAN</span>
-          {' '}
-          <span className="glitch hero-surname" data-text="MARÍN">MARÍN</span>
+          JONATAN <span className="hero-surname">MARÍN</span>
         </h1>
         <p className="hero-role">
           <Typewriter />

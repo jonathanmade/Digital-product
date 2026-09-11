@@ -70,48 +70,6 @@
   color: var(--cyan);
 }
 
-/* Glitch effect */
-.glitch {
-  position: relative;
-}
-
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-}
-
-.glitch:hover::before {
-  animation: glitch-1 0.3s steps(2) forwards;
-  color: var(--cyan);
-  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-}
-
-.glitch:hover::after {
-  animation: glitch-2 0.3s steps(2) 0.05s forwards;
-  color: rgba(0,245,255,0.5);
-  clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-}
-
-@keyframes glitch-1 {
-  0% { transform: translate(-2px, 0); opacity: 0.8; }
-  25% { transform: translate(2px, 0); }
-  50% { transform: translate(-1px, 0); }
-  100% { transform: translate(0); opacity: 0; }
-}
-
-@keyframes glitch-2 {
-  0% { transform: translate(2px, 0); opacity: 0.8; }
-  25% { transform: translate(-2px, 0); }
-  50% { transform: translate(1px, 0); }
-  100% { transform: translate(0); opacity: 0; }
-}
-
 .hero-role {
   font-family: var(--font-mono);
   font-size: clamp(14px, 2vw, 18px);
