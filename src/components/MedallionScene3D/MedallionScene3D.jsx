@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
+import fabricIconUrl from '../../assets/icons/microsoft-fabric.svg'
 import './MedallionScene3D.css'
 
 const PLATFORM_X = [-6.75, -2.25, 2.25, 6.75]
@@ -10,6 +11,11 @@ const SPEED_STEPS = [
   { label: 'Fast', value: 2 },
 ]
 const PARTICLES_PER_CONNECTION = 14
+const ICON_BASE_EMISSIVE = 0.45
+const ICON_SELECTED_EMISSIVE = 1.1
+// Tilts the flat Fabric-logo plane toward the fixed, elevated camera so it
+// doesn't read edge-on (camera sits ~24° above the platforms, looking down).
+const FABRIC_BADGE_TILT = -0.42
 
 const SERVICE_STATUS = [
   { name: 'Data Factory', status: 'Active' },
@@ -59,6 +65,35 @@ function makeTextSprite(text, colorHex) {
   return { sprite, texture, material }
 }
 
+// Same "database" silhouette on every platform: a short cylinder body with a
+// couple of thin torus rings standing for the classic stacked-disk DB icon.
+// Geometry is shared across layers (passed in); only the material — tinted
+// with the layer's own emissive color — is created per platform.
+function createDatabaseIcon(colorInt, bodyGeo, ringGeo) {
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x0d1321,
+    emissive: colorInt,
+    emissiveIntensity: ICON_BASE_EMISSIVE,
+    metalness: 0.25,
+    roughness: 0.4,
+    transparent: true,
+    opacity: 0.92,
+  })
+
+  const group = new THREE.Group()
+  const body = new THREE.Mesh(bodyGeo, material)
+  group.add(body)
+
+  ;[0.22, 0, -0.22].forEach(y => {
+    const ring = new THREE.Mesh(ringGeo, material)
+    ring.rotation.x = Math.PI / 2
+    ring.position.y = y
+    group.add(ring)
+  })
+
+  return { group, material }
+}
+
 export default function MedallionScene3D({ layers }) {
   const containerRef = useRef(null)
   const canvasRef = useRef(null)
@@ -101,6 +136,23 @@ export default function MedallionScene3D({ layers }) {
     group.add(grid)
     disposables.push(() => grid.geometry.dispose(), () => grid.material.dispose())
 
+    // Shared geometry for the per-layer database icon (see createDatabaseIcon)
+    // and the Fabric badge plane — one instance reused across all platforms.
+    const dbBodyGeo = new THREE.CylinderGeometry(0.32, 0.32, 0.5, 24)
+    const dbRingGeo = new THREE.TorusGeometry(0.325, 0.03, 8, 28)
+    disposables.push(() => dbBodyGeo.dispose(), () => dbRingGeo.dispose())
+
+    const fabricGeo = new THREE.PlaneGeometry(0.6, 0.6)
+    // The official icon's teal/white gradient washes out against a light-theme
+    // background, so it sits on a small dark chip for legibility in both themes.
+    const fabricBackingGeo = new THREE.CircleGeometry(0.42, 24)
+    const fabricTexture = new THREE.TextureLoader().load(fabricIconUrl)
+    disposables.push(
+      () => fabricGeo.dispose(),
+      () => fabricBackingGeo.dispose(),
+      () => fabricTexture.dispose()
+    )
+
     const platforms = layers.map((layer, i) => {
       const colorHex = resolveCssColor(layer.color, '#00F5FF')
       const colorInt = new THREE.Color(colorHex)
@@ -132,11 +184,60 @@ export default function MedallionScene3D({ layers }) {
       group.add(glowLight)
 
       const { sprite, texture, material: spriteMat } = makeTextSprite(layer.subtitle.toUpperCase(), colorHex)
-      sprite.position.set(PLATFORM_X[i], 1.6, 0)
+      sprite.position.set(PLATFORM_X[i], 1.95, 0)
       group.add(sprite)
       disposables.push(() => texture.dispose(), () => spriteMat.dispose())
 
-      return { id: layer.id, mesh, material: mat, glowLight, baseEmissive: 0.35, targetEmissive: 0.35, targetScale: 1 }
+      // Icon group: database cylinder (always) + Fabric badge (OneLake layers
+      // only), wrapped together so selection scales/highlights both as one unit.
+      const iconGroup = new THREE.Group()
+      iconGroup.position.set(PLATFORM_X[i], 0, 0)
+      group.add(iconGroup)
+
+      const { group: dbGroup, material: dbMaterial } = createDatabaseIcon(colorInt, dbBodyGeo, dbRingGeo)
+      dbGroup.position.y = 0.85
+      iconGroup.add(dbGroup)
+      disposables.push(() => dbMaterial.dispose())
+
+      const isFabricLayer = /OneLake/i.test(layer.storage ?? '')
+      let fabricMaterial = null
+      if (isFabricLayer) {
+        const fabricGroup = new THREE.Group()
+        fabricGroup.position.set(0.45, 0.85, 0)
+        fabricGroup.rotation.x = FABRIC_BADGE_TILT
+        iconGroup.add(fabricGroup)
+
+        const backingMat = new THREE.MeshBasicMaterial({ color: 0x0d1321, transparent: true, opacity: 0.6 })
+        const backing = new THREE.Mesh(fabricBackingGeo, backingMat)
+        backing.position.z = -0.02
+        fabricGroup.add(backing)
+        disposables.push(() => backingMat.dispose())
+
+        fabricMaterial = new THREE.MeshBasicMaterial({
+          map: fabricTexture,
+          transparent: true,
+          depthWrite: false,
+          opacity: 0.85,
+        })
+        const fabricMesh = new THREE.Mesh(fabricGeo, fabricMaterial)
+        fabricGroup.add(fabricMesh)
+        disposables.push(() => fabricMaterial.dispose())
+      }
+
+      return {
+        id: layer.id,
+        mesh,
+        material: mat,
+        glowLight,
+        baseEmissive: 0.35,
+        targetEmissive: 0.35,
+        targetScale: 1,
+        iconGroup,
+        dbGroup,
+        dbMaterial,
+        fabricMaterial,
+        bobPhase: i * 0.8,
+      }
     })
 
     const connections = []
@@ -204,11 +305,26 @@ export default function MedallionScene3D({ layers }) {
 
       const currentSelected = sceneApiRef.current.selectedId
       platforms.forEach(p => {
-        p.targetEmissive = p.id === currentSelected ? 0.9 : p.baseEmissive
-        p.targetScale = p.id === currentSelected ? 1.08 : 1
+        const isSelected = p.id === currentSelected
+        p.targetEmissive = isSelected ? 0.9 : p.baseEmissive
+        p.targetScale = isSelected ? 1.08 : 1
         p.material.emissiveIntensity += (p.targetEmissive - p.material.emissiveIntensity) * 0.12
         const s = p.mesh.scale.x + (p.targetScale - p.mesh.scale.x) * 0.15
         p.mesh.scale.set(s, s, s)
+
+        // Icon group (DB cylinder + Fabric badge, if present) highlights and
+        // scales together as a single unit, and the DB icon floats/spins idly.
+        const iconTargetEmissive = isSelected ? ICON_SELECTED_EMISSIVE : ICON_BASE_EMISSIVE
+        p.dbMaterial.emissiveIntensity += (iconTargetEmissive - p.dbMaterial.emissiveIntensity) * 0.12
+        const iconScale = p.iconGroup.scale.x + (p.targetScale - p.iconGroup.scale.x) * 0.15
+        p.iconGroup.scale.set(iconScale, iconScale, iconScale)
+        if (p.fabricMaterial) {
+          const fabricTargetOpacity = isSelected ? 1 : 0.85
+          p.fabricMaterial.opacity += (fabricTargetOpacity - p.fabricMaterial.opacity) * 0.12
+        }
+
+        p.dbGroup.position.y = 0.85 + Math.sin(idlePhase * 1.3 + p.bobPhase) * 0.06
+        p.dbGroup.rotation.y += dt * 0.5
       })
 
       renderer.render(scene, camera)
