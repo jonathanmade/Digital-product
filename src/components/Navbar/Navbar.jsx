@@ -1,16 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
+import { useLanguage } from '../../context/LanguageContext'
 import './Navbar.css'
-
-const links = [
-  { href: '#hero', label: 'Home' },
-  { href: '#services', label: 'Services' },
-  { href: '#process', label: 'Process' },
-  { href: '#work', label: 'Work' },
-  { href: '#ai', label: 'AI' },
-  { href: '#contact', label: 'Contact' },
-]
 
 function SunIcon() {
   return (
@@ -34,6 +26,16 @@ export default function Navbar() {
   const [active, setActive] = useState('hero')
   const [menuOpen, setMenuOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const { lang, toggleLanguage, t } = useLanguage()
+
+  const links = [
+    { href: '#hero', label: t.nav.links.home },
+    { href: '#services', label: t.nav.links.services },
+    { href: '#process', label: t.nav.links.process },
+    { href: '#work', label: t.nav.links.work },
+    { href: '#ai', label: t.nav.links.ai },
+    { href: '#contact', label: t.nav.links.contact },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -65,20 +67,34 @@ export default function Navbar() {
           </ul>
 
           <div className="nav-actions">
+            <div className="lang-toggle" role="group" aria-label={t.nav.langToggleLabel}>
+              <button
+                className={lang === 'en' ? 'active' : ''}
+                onClick={() => lang !== 'en' && toggleLanguage()}
+              >
+                EN
+              </button>
+              <button
+                className={lang === 'es' ? 'active' : ''}
+                onClick={() => lang !== 'es' && toggleLanguage()}
+              >
+                ES
+              </button>
+            </div>
             <button
               className="theme-toggle"
               onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              aria-label={theme === 'dark' ? t.nav.themeToggleToLight : t.nav.themeToggleToDark}
             >
               {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
             </button>
-            <Link to="/#contact" className="btn-neon outline nav-cta">Book a Call</Link>
+            <Link to="/#contact" className="btn-neon outline nav-cta">{t.nav.bookCall}</Link>
           </div>
 
           <button
             className={`nav-hamburger${menuOpen ? ' open' : ''}`}
             onClick={() => setMenuOpen(v => !v)}
-            aria-label="Toggle menu"
+            aria-label={t.nav.toggleMenu}
           >
             <span /><span /><span />
           </button>

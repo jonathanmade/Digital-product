@@ -7,6 +7,7 @@ import Home from './pages/Home/Home'
 import CaseStudyDetail from './pages/CaseStudyDetail/CaseStudyDetail'
 import { storm } from './utils/stormSystem'
 import { useScrollProgress } from './hooks/useScrollProgress'
+import { LanguageProvider } from './context/LanguageContext'
 
 function ScrollProgressBar() {
   const progress = useScrollProgress()
@@ -42,13 +43,15 @@ export default function App() {
   useEffect(() => { storm.init(); return () => storm.destroy() }, [])
 
   return (
-    <BrowserRouter>
-      <ScrollProgressBar />
-      <Navbar />
-      <main>
-        <AnimatedRoutes />
-      </main>
-      <Footer />
-    </BrowserRouter>
+    <LanguageProvider>
+      <BrowserRouter>
+        <ScrollProgressBar />
+        <Navbar />
+        <main>
+          <AnimatedRoutes />
+        </main>
+        <Footer />
+      </BrowserRouter>
+    </LanguageProvider>
   )
 }
