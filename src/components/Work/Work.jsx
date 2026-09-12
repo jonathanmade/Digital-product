@@ -1,65 +1,31 @@
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
 import './Work.css'
 
-const CASE_STUDIES = [
+// Non-translatable per-card data (tech names, slugs, colors) kept local,
+// matched by index with the translated copy in the language dictionaries.
+const CARD_META = [
   {
-    id: 1,
     slug: 'uriach-medallion-fabric',
-    label: 'Case Study 01',
-    title: 'Medallion Architecture · Uriach Group',
-    description:
-      'End-to-end Medallion pipeline for a multinational pharma company. SAP data ingested via ADF into Bronze, PySpark transforms through Silver, Power BI Direct Lake reports for 200+ users.',
     tags: ['Microsoft Fabric', 'SAP', 'PySpark', 'Power BI', 'Delta Lake', 'Azure'],
-    metrics: [
-      { label: 'Data sources', value: '4' },
-      { label: 'Daily events', value: '50M+' },
-      { label: 'Report latency', value: '<1s' },
-    ],
     gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',
   },
   {
-    id: 2,
-    label: 'Case Study 02',
-    title: 'Power BI Embedded Dashboard Suite',
-    description:
-      'Row-level security embedded analytics platform serving 500+ concurrent users. Custom visual components, paginated reports, and multi-tenant architecture with Direct Lake mode.',
     tags: ['Power BI Embedded', 'Direct Lake', 'RLS', 'DAX', 'Azure AD B2C'],
-    metrics: [
-      { label: 'Concurrent users', value: '500+' },
-      { label: 'Report types', value: '28' },
-      { label: 'Query p95', value: '0.4s' },
-    ],
     gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',
   },
   {
-    id: 3,
-    label: 'Case Study 03',
-    title: 'Real-time Pipeline · Databricks',
-    description:
-      'Streaming data pipeline processing Salesforce and Odoo events in near real-time. Delta Live Tables with schema evolution, automated data quality assertions, and SLA monitoring.',
     tags: ['Databricks', 'Delta Live Tables', 'Salesforce', 'Odoo', 'Kafka', 'PySpark'],
-    metrics: [
-      { label: 'Event latency', value: '<5s' },
-      { label: 'Tables managed', value: '120+' },
-      { label: 'Uptime SLA', value: '99.9%' },
-    ],
     gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',
   },
 ]
 
-const AI_PLACEHOLDER = {
-  id: 4,
-  label: 'Case Study 04',
-  title: 'AI Application — End-to-End Delivery',
-  description:
-    'A production AI application delivered end-to-end on top of a governed data platform. Real client, metrics, and architecture details to be added once the engagement is public.',
-  tags: ['RAG', 'Azure AI', 'Agents'],
-}
+const AI_PLACEHOLDER_TAGS = ['RAG', 'Azure AI', 'Agents']
 
 function CaseStudyCard({ project, index, visible }) {
   const cardRef = useRef(null)
@@ -115,10 +81,10 @@ function CaseStudyCard({ project, index, visible }) {
 
         {project.slug ? (
           <Link to={`/case-studies/${project.slug}`} className="view-more-link">
-            View More →
+            {project.viewMore}
           </Link>
         ) : (
-          <span className="view-more-link disabled">Coming soon</span>
+          <span className="view-more-link disabled">{project.comingSoon}</span>
         )}
       </div>
     </div>
@@ -134,7 +100,7 @@ function AIPlaceholderCard({ project, index, visible }) {
       <div className="card-inner">
         <div className="card-header">
           <span className="card-label">{project.label}</span>
-          <span className="pending-badge">Add real case study</span>
+          <span className="pending-badge">{project.badge}</span>
         </div>
         <h3 className="card-title">{project.title}</h3>
         <p className="card-desc">{project.description}</p>
@@ -150,26 +116,40 @@ function AIPlaceholderCard({ project, index, visible }) {
 
 export default function Work() {
   const { ref, visible } = useScrollReveal(0.1)
+  const { t } = useLanguage()
+
+  const caseStudies = t.work.cards.map((card, i) => ({
+    ...card,
+    ...CARD_META[i],
+    label: t.work.caseStudyLabel(String(i + 1).padStart(2, '0')),
+    viewMore: t.work.viewMore,
+    comingSoon: t.work.comingSoon,
+  }))
+
+  const aiPlaceholder = {
+    ...t.work.aiPlaceholder,
+    label: t.work.caseStudyLabel(String(caseStudies.length + 1).padStart(2, '0')),
+    tags: AI_PLACEHOLDER_TAGS,
+  }
 
   return (
     <section id="work" className="projects">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">Work</p>
+          <p className="section-tag">{t.work.eyebrow}</p>
           <h2 className="section-title">
-            Case <span>Studies</span>
+            {t.work.titlePre}<span>{t.work.titleHighlight}</span>{t.work.titlePost}
           </h2>
           <p className="section-desc">
-            Enterprise-scale data engineering projects driving real business impact.
-            Hover each card to explore.
+            {t.work.desc}
           </p>
         </div>
 
         <div className="projects-grid">
-          {CASE_STUDIES.map((p, i) => (
-            <CaseStudyCard key={p.id} project={p} index={i} visible={visible} />
+          {caseStudies.map((p, i) => (
+            <CaseStudyCard key={p.slug ?? p.title} project={p} index={i} visible={visible} />
           ))}
-          <AIPlaceholderCard project={AI_PLACEHOLDER} index={CASE_STUDIES.length} visible={visible} />
+          <AIPlaceholderCard project={aiPlaceholder} index={caseStudies.length} visible={visible} />
         </div>
       </div>
     </section>

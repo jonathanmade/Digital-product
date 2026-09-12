@@ -1,4 +1,5 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
 import './Contact.css'
 
 const CALENDLY_URL = '[CALENDLY_URL]'
@@ -28,18 +29,18 @@ function MailIcon() {
 
 export default function Contact() {
   const { ref, visible } = useScrollReveal(0.1)
+  const { t } = useLanguage()
 
   return (
     <section id="contact" className="contact">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">Contact</p>
+          <p className="section-tag">{t.contact.eyebrow}</p>
           <h2 className="section-title">
-            Let's talk about your <span>data & AI</span> roadmap
+            {t.contact.titlePre}<span>{t.contact.titleHighlight}</span>{t.contact.titlePost}
           </h2>
           <p className="section-desc">
-            30 minutes to walk through your current stack, where it's costing you time or money,
-            and whether a Data Engineering, BI, or AI engagement makes sense.
+            {t.contact.desc}
           </p>
         </div>
 
@@ -51,7 +52,7 @@ export default function Contact() {
             className="btn-neon primary contact-cta"
           >
             <CalendarIcon />
-            Book a Strategy Call
+            {t.contact.ctaPrimary}
           </a>
           <a href={`mailto:${CONTACT_EMAIL}`} className="btn-neon outline contact-cta">
             <MailIcon />
@@ -59,7 +60,7 @@ export default function Contact() {
           </a>
         </div>
         <p className="calendly-note">
-          Calendly link pending — placeholder <code>{CALENDLY_URL}</code>
+          {t.contact.calendlyNote} <code>{CALENDLY_URL}</code>
         </p>
 
         <div className="social-links">

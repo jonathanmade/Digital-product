@@ -4,15 +4,16 @@ import dataFactoryIconUrl from '../../assets/icons/service-data-factory.svg'
 import notebookIconUrl from '../../assets/icons/service-notebook.svg'
 import pipelineIconUrl from '../../assets/icons/service-pipeline.svg'
 import powerBiIconUrl from '../../assets/icons/service-power-bi.svg'
+import { useLanguage } from '../../context/LanguageContext'
 import './MedallionScene3D.css'
 
 // 5 nodes: the 4 real Medallion layers (from `layers`) plus a final,
 // decorative Dashboard node. Same 4.5-unit spacing as before, just one more.
 const NODE_X = [-9, -4.5, 0, 4.5, 9]
 const SPEED_STEPS = [
-  { label: 'Slow', value: 0.5 },
-  { label: 'Normal', value: 1 },
-  { label: 'Fast', value: 2 },
+  { key: 'slow', value: 0.5 },
+  { key: 'normal', value: 1 },
+  { key: 'fast', value: 2 },
 ]
 const PARTICLES_PER_CONNECTION = 14
 const ICON_BASE_EMISSIVE = 0.45
@@ -20,13 +21,6 @@ const ICON_SELECTED_EMISSIVE = 1.1
 // Tilts flat badge/panel planes toward the fixed, elevated camera so they
 // read face-on instead of edge-on (camera sits ~24° above the scene).
 const CAMERA_FACING_TILT = -0.42
-
-const SERVICE_STATUS = [
-  { name: 'Data Factory', status: 'Active' },
-  { name: 'Synapse', status: 'Active' },
-  { name: 'OneLake', status: 'Syncing' },
-  { name: 'Power BI', status: 'Connected' },
-]
 
 // Landing is ingested via ADF; Bronze/Silver/Gold are all PySpark/notebook
 // transforms, so they share the same Notebook icon.
@@ -133,10 +127,11 @@ export default function MedallionScene3D({ layers }) {
   const [selectedId, setSelectedId] = useState(null)
   const [paused, setPaused] = useState(false)
   const [speedIndex, setSpeedIndex] = useState(1)
+  const { lang, t } = useLanguage()
 
   const dateLabel = useMemo(
-    () => new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }),
-    []
+    () => new Date().toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+    [lang]
   )
 
   useEffect(() => {
@@ -428,16 +423,16 @@ export default function MedallionScene3D({ layers }) {
 
       <aside className="scene3d-hud">
         <div className="hud-header">
-          <span className="hud-title">MEDALLION ARCHITECTURE · V1.0</span>
+          <span className="hud-title">{t.medallionHud.title}</span>
           <span className="hud-date">{dateLabel}</span>
         </div>
 
         <div className="hud-panel">
-          <span className="hud-panel-title">Service Status</span>
+          <span className="hud-panel-title">{t.medallionHud.serviceStatus}</span>
           <ul className="hud-status-list">
-            {SERVICE_STATUS.map(s => (
+            {t.medallionHud.serviceStatusItems.map(s => (
               <li key={s.name}>
-                <span className={`hud-status-dot status-${s.status.toLowerCase()}`} />
+                <span className={`hud-status-dot status-${s.statusKey}`} />
                 {s.name}
                 <span className="hud-status-value">{s.status}</span>
               </li>
@@ -446,7 +441,7 @@ export default function MedallionScene3D({ layers }) {
         </div>
 
         <div className="hud-panel">
-          <span className="hud-panel-title">Layer Metadata</span>
+          <span className="hud-panel-title">{t.medallionHud.layerMetadata}</span>
           <div className="hud-pills">
             {layers.map(l => (
               <button
@@ -462,26 +457,26 @@ export default function MedallionScene3D({ layers }) {
 
           {selectedLayer && (
             <div className="hud-selected" style={{ '--pill-color': selectedLayer.color }}>
-              <span className="hud-selected-title">Selected: {selectedLayer.label} LAYER</span>
+              <span className="hud-selected-title">{t.medallionHud.selected(selectedLayer.label)}</span>
               <dl className="hud-selected-meta">
-                <div><dt>Data Format</dt><dd>{selectedLayer.dataFormat}</dd></div>
-                <div><dt>Storage</dt><dd>{selectedLayer.storage}</dd></div>
-                <div><dt>Transform</dt><dd>{selectedLayer.transform}</dd></div>
-                <div><dt>Status</dt><dd>{selectedLayer.status}</dd></div>
+                <div><dt>{t.medallionHud.dataFormat}</dt><dd>{selectedLayer.dataFormat}</dd></div>
+                <div><dt>{t.medallionHud.storage}</dt><dd>{selectedLayer.storage}</dd></div>
+                <div><dt>{t.medallionHud.transform}</dt><dd>{selectedLayer.transform}</dd></div>
+                <div><dt>{t.medallionHud.status}</dt><dd>{selectedLayer.status}</dd></div>
               </dl>
             </div>
           )}
         </div>
 
         <div className="hud-panel">
-          <span className="hud-panel-title">Controls</span>
+          <span className="hud-panel-title">{t.medallionHud.controls}</span>
           <div className="hud-controls">
-            <button className="hud-btn" onClick={handleReset}>Reset View</button>
+            <button className="hud-btn" onClick={handleReset}>{t.medallionHud.resetView}</button>
             <button className="hud-btn" onClick={() => setPaused(p => !p)}>
-              {paused ? 'Resume Flow' : 'Pause Flow'}
+              {t.medallionHud.toggleFlow(paused)}
             </button>
             <button className="hud-btn" onClick={() => setSpeedIndex(i => (i + 1) % SPEED_STEPS.length)}>
-              Speed: {SPEED_STEPS[speedIndex].label}
+              {t.medallionHud.speed(t.medallionHud.speedLabels[SPEED_STEPS[speedIndex].key])}
             </button>
           </div>
         </div>

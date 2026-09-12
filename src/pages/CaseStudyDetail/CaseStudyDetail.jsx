@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { getCaseStudy, CASE_STUDY_INDEX } from '../../data/caseStudies'
 import MedallionScene3D from '../../components/MedallionScene3D/MedallionScene3D'
+import { useLanguage } from '../../context/LanguageContext'
 import './CaseStudyDetail.css'
 
 function BackIcon() {
@@ -12,12 +13,13 @@ function BackIcon() {
 }
 
 function NotFound() {
+  const { t } = useLanguage()
   return (
     <section className="case-study-detail not-found">
       <div className="section-inner">
-        <Link to="/#work" className="back-link"><BackIcon /> Back to case studies</Link>
-        <h1 className="section-title">Case study not found</h1>
-        <p className="section-desc">This case study doesn't have a page yet.</p>
+        <Link to="/#work" className="back-link"><BackIcon /> {t.caseStudyDetail.backLink}</Link>
+        <h1 className="section-title">{t.caseStudyDetail.notFoundTitle}</h1>
+        <p className="section-desc">{t.caseStudyDetail.notFoundDesc}</p>
       </div>
     </section>
   )
@@ -25,6 +27,7 @@ function NotFound() {
 
 export default function CaseStudyDetail() {
   const { slug } = useParams()
+  const { lang, t } = useLanguage()
   const study = getCaseStudy(slug)
 
   if (!study) return <NotFound />
@@ -32,38 +35,38 @@ export default function CaseStudyDetail() {
   return (
     <section className="case-study-detail">
       <div className="section-inner">
-        <Link to="/#work" className="back-link"><BackIcon /> Back to case studies</Link>
+        <Link to="/#work" className="back-link"><BackIcon /> {t.caseStudyDetail.backLink}</Link>
 
         <header className="cs-header">
           <h1 className="section-title">{study.title}</h1>
           <p className="cs-client">{study.client}</p>
           <div className="cs-tags">
-            {study.tags.map(t => <span key={t} className="p-tag">{t}</span>)}
+            {study.tags.map(tag => <span key={tag} className="p-tag">{tag}</span>)}
           </div>
         </header>
 
         <div className="cs-hero-visual">
           <MedallionScene3D layers={study.layers} />
-          <p className="cs-summary">{study.summary}</p>
+          <p className="cs-summary">{study.summary[lang]}</p>
         </div>
 
         <div className="cs-section">
-          <h2 className="cs-h2">The Challenge</h2>
-          <p className="cs-body">{study.challenge}</p>
+          <h2 className="cs-h2">{t.caseStudyDetail.challengeTitle}</h2>
+          <p className="cs-body">{study.challenge[lang]}</p>
         </div>
 
         <div className="cs-section">
-          <h2 className="cs-h2">The Architecture</h2>
+          <h2 className="cs-h2">{t.caseStudyDetail.architectureTitle}</h2>
           <div className="cs-layers-grid">
             {study.layers.map(layer => (
               <div key={layer.id} className="cs-layer-card" style={{ '--layer-color': layer.color }}>
                 <span className="cs-layer-label">{layer.label}</span>
                 <span className="cs-layer-subtitle">{layer.subtitle}</span>
                 <dl className="cs-layer-meta">
-                  <div><dt>Data Format</dt><dd>{layer.dataFormat}</dd></div>
-                  <div><dt>Storage</dt><dd>{layer.storage}</dd></div>
-                  <div><dt>Transform</dt><dd>{layer.transform}</dd></div>
-                  <div><dt>Status</dt><dd>{layer.status}</dd></div>
+                  <div><dt>{t.caseStudyDetail.layerMeta.dataFormat}</dt><dd>{layer.dataFormat}</dd></div>
+                  <div><dt>{t.caseStudyDetail.layerMeta.storage}</dt><dd>{layer.storage}</dd></div>
+                  <div><dt>{t.caseStudyDetail.layerMeta.transform}</dt><dd>{layer.transform}</dd></div>
+                  <div><dt>{t.caseStudyDetail.layerMeta.status}</dt><dd>{layer.status}</dd></div>
                 </dl>
               </div>
             ))}
@@ -71,32 +74,32 @@ export default function CaseStudyDetail() {
         </div>
 
         <div className="cs-section">
-          <h2 className="cs-h2">Tech Stack</h2>
+          <h2 className="cs-h2">{t.caseStudyDetail.techStackTitle}</h2>
           <div className="cs-tags">
-            {study.techStack.map(t => <span key={t} className="p-tag">{t}</span>)}
+            {study.techStack.map(tech => <span key={tech} className="p-tag">{tech}</span>)}
           </div>
         </div>
 
         <div className="cs-section">
-          <h2 className="cs-h2">Results</h2>
+          <h2 className="cs-h2">{t.caseStudyDetail.resultsTitle}</h2>
           <div className="cs-results-grid">
             {study.results.map(r => (
-              <div key={r.label} className="cs-result-card">
+              <div key={r.label[lang]} className="cs-result-card">
                 <div className="cs-result-value">{r.value}</div>
-                <div className="cs-result-label">{r.label}</div>
+                <div className="cs-result-label">{r.label[lang]}</div>
               </div>
             ))}
           </div>
         </div>
 
         <div className="cs-cta-section">
-          <h2 className="cs-h2">Interested in something similar?</h2>
+          <h2 className="cs-h2">{t.caseStudyDetail.ctaTitle}</h2>
           <div className="cs-cta-row">
-            <Link to="/#contact" className="btn-neon primary">Book a Call</Link>
+            <Link to="/#contact" className="btn-neon primary">{t.caseStudyDetail.ctaButton}</Link>
           </div>
 
           <div className="cs-other-studies">
-            <span className="cs-other-label">Other case studies</span>
+            <span className="cs-other-label">{t.caseStudyDetail.otherStudiesLabel}</span>
             <div className="cs-other-list">
               {CASE_STUDY_INDEX.filter(cs => cs.slug !== slug).map(cs => (
                 cs.slug ? (
@@ -105,7 +108,7 @@ export default function CaseStudyDetail() {
                   </Link>
                 ) : (
                   <span key={cs.title} className="cs-other-item disabled">
-                    {cs.title} <span className="pending-badge">Coming soon</span>
+                    {cs.title} <span className="pending-badge">{t.caseStudyDetail.comingSoon}</span>
                   </span>
                 )
               ))}

@@ -1,17 +1,35 @@
+// Narrative page-level copy (summary, challenge, result labels) is bilingual
+// inline ({ en, es }). Everything else — title, client, tags, techStack, and
+// the `layers` array that feeds MedallionScene3D — is shared across
+// languages on purpose: technology/brand names and the architecture-diagram
+// terminology in `layers` don't change between English and Spanish.
 export const CASE_STUDIES = {
   'uriach-medallion-fabric': {
     slug: 'uriach-medallion-fabric',
     title: 'Medallion Architecture · Microsoft Fabric',
     client: 'Uriach Group · Pharmaceutical / Multinational',
     tags: ['Microsoft Fabric', 'SAP', 'PySpark', 'Power BI', 'Delta Lake', 'Azure'],
-    summary:
-      'End-to-end Medallion pipeline ingesting SAP into Bronze, transforming through Silver with PySpark, serving Power BI Direct Lake reports to 200+ users.',
-    challenge:
-      'Uriach Group runs on four enterprise systems — SAP ERP, Salesforce CRM, Odoo ERP, and ' +
-      'Zinc WMS — each with its own schema, refresh cadence, and data-quality profile. Business ' +
-      'teams needed governed, near real-time reporting without waiting on manual exports or ' +
-      'fragile point-to-point integrations, and IT needed a single source of truth that could ' +
-      'scale as new systems were added, without re-architecting the pipeline each time.',
+    summary: {
+      en:
+        'End-to-end Medallion pipeline ingesting SAP into Bronze, transforming through Silver with PySpark, serving Power BI Direct Lake reports to 200+ users.',
+      es:
+        'Pipeline Medallion end-to-end que ingiere SAP en Bronze, transforma a través de Silver con PySpark, y sirve informes de Power BI Direct Lake a más de 200 usuarios.',
+    },
+    challenge: {
+      en:
+        'Uriach Group runs on four enterprise systems — SAP ERP, Salesforce CRM, Odoo ERP, and ' +
+        'Zinc WMS — each with its own schema, refresh cadence, and data-quality profile. Business ' +
+        'teams needed governed, near real-time reporting without waiting on manual exports or ' +
+        'fragile point-to-point integrations, and IT needed a single source of truth that could ' +
+        'scale as new systems were added, without re-architecting the pipeline each time.',
+      es:
+        'Uriach Group opera sobre cuatro sistemas empresariales — SAP ERP, Salesforce CRM, Odoo ' +
+        'ERP y Zinc WMS — cada uno con su propio esquema, cadencia de actualización y nivel de ' +
+        'calidad de datos. Los equipos de negocio necesitaban informes gobernados y casi en ' +
+        'tiempo real sin depender de exportaciones manuales ni integraciones punto a punto ' +
+        'frágiles, y IT necesitaba una única fuente de verdad capaz de escalar a medida que se ' +
+        'añadían nuevos sistemas, sin rediseñar el pipeline cada vez.',
+    },
     layers: [
       {
         id: 'landing',
@@ -67,9 +85,9 @@ export const CASE_STUDIES = {
       'Direct Lake',
     ],
     results: [
-      { value: '4', label: 'Data Sources' },
-      { value: '50M+', label: 'Daily Events' },
-      { value: '<1s', label: 'Report Latency' },
+      { value: '4', label: { en: 'Data Sources', es: 'Fuentes de Datos' } },
+      { value: '50M+', label: { en: 'Daily Events', es: 'Eventos Diarios' } },
+      { value: '<1s', label: { en: 'Report Latency', es: 'Latencia de Informes' } },
     ],
   },
 }
@@ -81,6 +99,7 @@ export function getCaseStudy(slug) {
 // Lightweight index of every case study shown on the homepage, used by the
 // detail page's "other case studies" section. Slugs present here have a
 // full page (see CASE_STUDIES above); the rest render as "Coming soon".
+// Titles are project/client names, shared across languages (see note above).
 export const CASE_STUDY_INDEX = [
   { slug: 'uriach-medallion-fabric', title: 'Medallion Architecture · Uriach Group' },
   { slug: null, title: 'Power BI Embedded Dashboard Suite' },

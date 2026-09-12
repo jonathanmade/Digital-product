@@ -1,4 +1,5 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
 import './TrustBar.css'
 
 const STACK = [
@@ -15,14 +16,15 @@ const STACK = [
 
 export default function TrustBar() {
   const { ref, visible } = useScrollReveal(0.1)
+  const { t } = useLanguage()
 
   return (
     <section id="trust" className="trust-bar">
       <div className={`section-inner trust-inner${visible ? ' visible' : ''}`} ref={ref}>
-        <span className="trust-label">Built with</span>
+        <span className="trust-label">{t.trustBar.label}</span>
         <div className="trust-chips">
-          {STACK.map(t => (
-            <span key={t} className="trust-chip">{t}</span>
+          {STACK.map(item => (
+            <span key={item} className="trust-chip">{item}</span>
           ))}
         </div>
       </div>

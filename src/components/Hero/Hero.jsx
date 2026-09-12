@@ -1,20 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
+import { useLanguage } from '../../context/LanguageContext'
 import './Hero.css'
-
-const TYPEWRITER_STRINGS = [
-  'Data Engineering · Microsoft Fabric',
-  'BI & Power BI Embedded · Direct Lake',
-  'Medallion Architecture · Databricks',
-  'AI Applications · Azure',
-]
-
-const CREDIBILITY = [
-  { value: '10+', label: 'Yrs Experience' },
-  { value: '4', label: 'Enterprise Sources' },
-  { value: '50M+', label: 'Events / Day' },
-  { value: 'Pharma / Health', label: 'Sector Focus' },
-]
 
 function ParticleCanvas() {
   const canvasRef = useRef(null)
@@ -114,13 +101,13 @@ function ParticleCanvas() {
   return <canvas ref={canvasRef} className="hero-canvas" />
 }
 
-function Typewriter() {
+function Typewriter({ strings }) {
   const [idx, setIdx] = useState(0)
   const [text, setText] = useState('')
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
-    const full = TYPEWRITER_STRINGS[idx]
+    const full = strings[idx % strings.length]
     let timeout
     if (!deleting && text.length < full.length) {
       timeout = setTimeout(() => setText(full.slice(0, text.length + 1)), 60)
@@ -130,10 +117,10 @@ function Typewriter() {
       timeout = setTimeout(() => setText(text.slice(0, -1)), 30)
     } else if (deleting && text.length === 0) {
       setDeleting(false)
-      setIdx(i => (i + 1) % TYPEWRITER_STRINGS.length)
+      setIdx(i => (i + 1) % strings.length)
     }
     return () => clearTimeout(timeout)
-  }, [text, deleting, idx])
+  }, [text, deleting, idx, strings])
 
   return (
     <span className="typewriter">
@@ -144,35 +131,35 @@ function Typewriter() {
 }
 
 export default function Hero() {
+  const { lang, t } = useLanguage()
+
   return (
     <section className="hero" id="hero">
       <ParticleCanvas />
       <div className="hero-content">
         <div className="hero-tag">
           <span className="tag-dot" />
-          <span>Available for new engagements</span>
+          <span>{t.hero.tag}</span>
         </div>
         <p className="hero-role">
-          <Typewriter />
+          <Typewriter key={lang} strings={t.hero.typewriter} />
         </p>
         <h1 className="hero-headline">
-          I build data platforms your <span className="hero-surname">BI and AI</span> can trust
+          {t.hero.headlinePre}<span className="hero-surname">{t.hero.headlineHighlight}</span>{t.hero.headlinePost}
         </h1>
         <p className="hero-subheadline">
-          Jonatan Marín — 10+ years in Data Engineering, BI, and Architecture, now extending
-          into end-to-end AI applications built on governed, production-grade data.
-          Based in Barcelona, working with enterprise teams across Europe.
+          {t.hero.subheadline}
         </p>
         <div className="hero-ctas">
           <a href="#contact" className="btn-neon primary">
-            Book a Strategy Call
+            {t.hero.ctaPrimary}
           </a>
           <a href="#work" className="btn-neon outline">
-            See Case Studies
+            {t.hero.ctaSecondary}
           </a>
         </div>
         <div className="hero-credibility">
-          {CREDIBILITY.map(c => (
+          {t.hero.credibility.map(c => (
             <div key={c.label} className="cred-item">
               <span className="cred-value">{c.value}</span>
               <span className="cred-label">{c.label}</span>
@@ -182,7 +169,7 @@ export default function Hero() {
       </div>
 
       <div className="scroll-indicator">
-        <span className="scroll-text">scroll</span>
+        <span className="scroll-text">{t.hero.scroll}</span>
         <div className="scroll-bar">
           <div className="scroll-bar-fill" />
         </div>
