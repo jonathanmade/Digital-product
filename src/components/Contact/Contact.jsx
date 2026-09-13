@@ -1,9 +1,8 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useLanguage } from '../../context/LanguageContext'
-import { openCalendlyPopup } from '../../utils/calendly'
+import { openCalendlyPopup, CALENDLY_URL } from '../../utils/calendly'
 import './Contact.css'
 
-const CALENDLY_URL = 'https://calendly.com/jonatanmarin/meeting'
 const CONTACT_EMAIL = 'contact@jonatanmarin.dev'
 
 function CalendarIcon() {

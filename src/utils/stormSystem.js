@@ -41,9 +41,26 @@ export class StormSystem {
 
   _onVisibility() {
     if (document.hidden) {
+      this.pause()
+    } else {
+      this.resume()
+    }
+  }
+
+  // Pause/resume the RAF loop without tearing down the canvas — used to
+  // free up the main thread while a heavier overlay (e.g. the Calendly
+  // popup) is open and animating on top of the page, since a continuously
+  // repainting fixed canvas underneath competes with its event handlers
+  // and shows up as slow interactions (INP) on the overlay's own controls.
+  pause() {
+    if (this.rafId) {
       cancelAnimationFrame(this.rafId)
       this.rafId = null
-    } else if (!this.rafId) {
+    }
+  }
+
+  resume() {
+    if (!this.rafId && !document.hidden) {
       this.rafId = requestAnimationFrame(this._loop)
     }
   }

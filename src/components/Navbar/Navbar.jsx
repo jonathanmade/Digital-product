@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../context/LanguageContext'
+import { openCalendlyPopup, CALENDLY_URL } from '../../utils/calendly'
 import './Navbar.css'
 
 function SunIcon() {
@@ -42,6 +43,12 @@ export default function Navbar() {
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  const handleBookCall = (e) => {
+    // Opens Calendly as an in-page popup; falls back to the real href
+    // (new tab) if the widget script hasn't loaded for any reason.
+    if (openCalendlyPopup(CALENDLY_URL)) e.preventDefault()
+  }
 
   return (
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
@@ -88,7 +95,15 @@ export default function Navbar() {
             >
               {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
             </button>
-            <Link to="/#contact" className="btn-neon outline nav-cta">{t.nav.bookCall}</Link>
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-neon outline nav-cta"
+              onClick={handleBookCall}
+            >
+              {t.nav.bookCall}
+            </a>
           </div>
 
           <button

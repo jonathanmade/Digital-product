@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer'
 import Home from './pages/Home/Home'
 import CaseStudyDetail from './pages/CaseStudyDetail/CaseStudyDetail'
 import { storm } from './utils/stormSystem'
+import { watchCalendlyOverlay } from './utils/calendly'
 import { useScrollProgress } from './hooks/useScrollProgress'
 import { LanguageProvider } from './context/LanguageContext'
 
@@ -53,7 +54,17 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
-  useEffect(() => { storm.init(); return () => storm.destroy() }, [])
+  useEffect(() => {
+    storm.init()
+    // Free up the main thread while the Calendly popup is open — the
+    // storm canvas repaints every frame, and that was competing with the
+    // popup's own event handlers (reported as a slow "close" click / INP).
+    const stopWatching = watchCalendlyOverlay({
+      onOpen: () => storm.pause(),
+      onClose: () => storm.resume(),
+    })
+    return () => { storm.destroy(); stopWatching() }
+  }, [])
 
   return (
     <LanguageProvider>
