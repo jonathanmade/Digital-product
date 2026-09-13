@@ -7,50 +7,384 @@
 
 .scene3d-canvas-area {
   position: relative;
-  aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: radial-gradient(ellipse at 50% 30%, rgba(var(--cyan-rgb), 0.08), rgba(var(--panel-rgb), 0.9) 70%);
   overflow: hidden;
-}
-
-.scene3d-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.scene3d-labels {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 16px;
+  padding: 54px 18px 30px;
+  min-height: 300px;
   display: flex;
-  justify-content: space-around;
-  pointer-events: none;
-  padding: 0 4%;
+  align-items: stretch;
 }
 
-.scene3d-label {
+/* ── Flow diagram — flat, matches the approved design-canvas mockup exactly
+     (no WebGL): a static Three.js re-interpretation kept drifting from the
+     approved look, so this renders the same markup/composition directly. ── */
+.flow-diagram {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.pipeline-badge {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px 5px 7px;
+  border-radius: 20px;
+  background: rgba(var(--panel-rgb), 0.9);
+  border: 1px solid var(--success);
+  box-shadow: 0 0 14px rgba(var(--success-rgb), 0.3);
+  white-space: nowrap;
+  animation: icon-float 3.2s ease-in-out infinite;
+}
+
+.pipeline-badge img { width: 15px; height: 15px; display: block; }
+
+.pipeline-badge span {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--success);
+  font-weight: 700;
+}
+
+.fabric-mark {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 36px;
+  z-index: 5;
+  filter: drop-shadow(0 0 14px rgba(var(--fabric-rgb), 0.45));
+  animation: icon-float 3.6s ease-in-out infinite 0.4s;
+}
+
+.fabric-mark img { width: 100%; height: 100%; display: block; }
+
+.fabric-caption {
+  position: absolute;
+  top: 46px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--fabric);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fabric-governance {
+  position: absolute;
+  top: 59px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 7px;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@keyframes icon-float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-4px); }
+}
+
+/* ── Node row ─────────────────────────────────────────────────── */
+.node-row {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  padding-top: 96px;
+}
+
+.flow-node {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+  width: 104px;
+  flex-shrink: 0;
 }
 
-.scene3d-label-title {
+.flow-connector {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 22px;
+  align-self: flex-end;
+  margin-bottom: 33px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--c-from), var(--c-to));
+  box-shadow: 0 0 10px rgba(var(--cyan-rgb), 0.4);
+}
+
+.flow-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border-radius: 50%;
+  background: var(--c-to);
+  box-shadow: 0 0 6px 2px var(--c-to);
+  animation: flow-move var(--flow-duration, 1.3s) linear infinite;
+  animation-play-state: var(--flow-play, running);
+}
+
+@keyframes flow-move {
+  0% { left: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.flow-format {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 6.5px;
+  letter-spacing: 0.4px;
+  color: var(--muted);
+  white-space: nowrap;
   font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--label-color);
 }
 
-.scene3d-label-sub {
-  font-family: var(--font-ui);
-  font-size: 10px;
+/* Icon-badge nodes (Source / a compute-service role) */
+.flow-icon-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--panel-rgb), 0.85);
+  border: 1px solid var(--node-color);
+  box-shadow: 0 0 14px var(--node-glow);
+  margin-bottom: 10px;
+}
+
+.flow-icon-badge img { width: 18px; height: 18px; display: block; }
+
+/* Database-cylinder nodes (Landing/Bronze/Silver/Gold) — the standard
+   architecture-diagram glyph for a storage tier: banded 3D stack rather
+   than a generic sphere, so each layer reads unambiguously as "storage". */
+.flow-cyl-wrap {
+  position: relative;
+  width: 68px;
+  height: 62px;
+  margin-bottom: 10px;
+  transition: transform 0.25s ease;
+}
+
+.flow-node.is-selected .flow-cyl-wrap,
+.flow-node.is-selected .flow-icon-badge,
+.flow-node.is-selected .flow-screen {
+  transform: scale(1.08);
+}
+
+.flow-cyl {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 58px;
+}
+
+.flow-cyl-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 52px;
+  height: 16px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--node-color) 32%, #050810);
+  z-index: 1;
+}
+
+.flow-cyl-body {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 52px;
+  height: 42px;
+  z-index: 2;
+  background: linear-gradient(90deg,
+    color-mix(in srgb, var(--node-color) 55%, #050810) 0%, var(--node-color) 24%,
+    var(--node-color) 76%, color-mix(in srgb, var(--node-color) 55%, #050810) 100%);
+  box-shadow: 0 0 20px var(--node-glow);
+  transition: box-shadow 0.25s ease;
+}
+
+.flow-node.is-selected .flow-cyl-body { box-shadow: 0 0 30px var(--node-glow), 0 0 50px var(--node-glow); }
+
+.flow-cyl-ridge {
+  position: absolute;
+  left: 0;
+  width: 52px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  z-index: 3;
+}
+
+.flow-cyl-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 52px;
+  height: 16px;
+  border-radius: 50%;
+  z-index: 4;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.5), var(--node-color) 55%);
+}
+
+/* Server-rack badge — physical storage substrate under Landing */
+.flow-rack {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--panel-rgb), 0.7);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  margin-top: 8px;
+}
+
+.flow-rack svg { width: 11px; height: 11px; }
+
+.flow-substorage {
+  margin-top: 3px;
+  font-size: 6.5px;
+  letter-spacing: 0.4px;
   color: var(--muted);
 }
+
+/* Notebook badge — PySpark transform, under Bronze/Silver/Gold */
+.flow-notebook {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--panel-rgb), 0.7);
+  border: 1px solid var(--border2);
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.flow-notebook img { width: 15px; height: 15px; }
+
+/* Screen node (Dashboard / a consumption role) — different silhouette from
+   the storage cylinders on purpose: it is a consumption endpoint, not a tier. */
+.flow-screen-wrap {
+  position: relative;
+  width: 64px;
+  height: 46px;
+  margin-bottom: 16px;
+  transition: transform 0.25s ease;
+}
+
+.flow-screen {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 44px;
+  border-radius: 5px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.08), transparent 50%), #10151f;
+  border: 2px solid var(--node-color);
+  box-shadow: 0 8px 18px -6px rgba(0, 0, 0, 0.6), 0 0 22px var(--node-glow);
+}
+
+.flow-screen::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 6px;
+  border-radius: 0 0 3px 3px;
+  background: #10151f;
+  border: 2px solid var(--node-color);
+  border-top: none;
+}
+
+.flow-screen-inner {
+  position: absolute;
+  inset: 6px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, rgba(var(--cyan-rgb), 0.1), rgba(var(--cyan-rgb), 0.02));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flow-screen-inner img { width: 20px; height: 20px; filter: drop-shadow(0 0 5px var(--node-glow)); }
+
+.flow-node-label { text-align: center; }
+
+.flow-node-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+  color: var(--node-color);
+}
+
+.flow-node-sub {
+  font-family: var(--font-ui);
+  font-size: 8.5px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+/* ── Vendor + medallion legend, under the diagram ────────────────── */
+.flow-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.flow-legend-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+.flow-legend-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.flow-legend-swatch.round { border-radius: 50%; }
 
 /* HUD panel */
 .scene3d-hud {
@@ -254,14 +588,50 @@
   .scene3d-wrap {
     grid-template-columns: 1fr;
   }
-
-  .scene3d-canvas-area {
-    aspect-ratio: 16 / 11;
-  }
 }
 
-@media (max-width: 480px) {
-  .scene3d-labels {
-    display: none;
+/* Below 640px, 6 nodes in a row get too cramped — flow vertically instead. */
+@media (max-width: 640px) {
+  .scene3d-canvas-area {
+    padding: 62px 16px 24px;
+  }
+
+  .node-row {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    gap: 6px;
+    padding-top: 0;
+  }
+
+  .flow-connector {
+    width: 3px;
+    height: 26px;
+    min-width: 0;
+    align-self: center;
+    margin-bottom: 0;
+    background: linear-gradient(180deg, var(--c-from), var(--c-to));
+  }
+
+  .flow-dot {
+    left: 50%;
+    top: 0;
+    margin-top: 0;
+    margin-left: -2.5px;
+    animation-name: flow-move-vertical;
+  }
+
+  @keyframes flow-move-vertical {
+    0% { top: 0%; opacity: 0; }
+    8% { opacity: 1; }
+    92% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  .flow-format {
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    margin-left: 8px;
   }
 }
