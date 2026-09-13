@@ -24,6 +24,14 @@
   --heading: #ffffff;
   --success: #4ade80;
   --success-rgb: 74, 222, 128;
+  /* Vendor identity — semantic-only, scoped to that provider's own icon/badge
+     (Azure Data Factory, Microsoft Fabric, Power BI). Never use in general UI. */
+  --azure: #0078D4;
+  --azure-rgb: 0, 120, 212;
+  --fabric: #0EA5A0;
+  --fabric-rgb: 14, 165, 160;
+  --pbi: #F2C811;
+  --pbi-rgb: 242, 200, 17;
   /* Glass-panel base RGB triplets — used as rgba(var(--panel-rgb), alpha) */
   --panel-rgb: 13, 19, 33;
   --sunken-rgb: 5, 8, 16;
@@ -59,6 +67,12 @@
   --heading: #0b1220;
   --success: #15803d;
   --success-rgb: 21, 128, 61;
+  --azure: #005A9E;
+  --azure-rgb: 0, 90, 158;
+  --fabric: #0B7A73;
+  --fabric-rgb: 11, 122, 115;
+  --pbi: #8a6d00;
+  --pbi-rgb: 138, 109, 0;
   --panel-rgb: 255, 255, 255;
   --sunken-rgb: 225, 231, 240;
 }

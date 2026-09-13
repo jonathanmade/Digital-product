@@ -137,6 +137,34 @@
   gap: 6px;
 }
 
+.hud-vendor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hud-vendor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text2);
+  border: 1px solid var(--vendor-color);
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.hud-vendor-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--vendor-color);
+  flex-shrink: 0;
+}
+
 .hud-pill {
   font-family: var(--font-mono);
   font-size: 10px;

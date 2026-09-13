@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
-import dataFactoryIconUrl from '../../assets/icons/service-data-factory.svg'
-import notebookIconUrl from '../../assets/icons/service-notebook.svg'
-import pipelineIconUrl from '../../assets/icons/service-pipeline.svg'
-import powerBiIconUrl from '../../assets/icons/service-power-bi.svg'
+import fabricIconUrl from '../../assets/icons/fabric/fabric_48_color.svg'
+import dataFactoryIconUrl from '../../assets/icons/fabric/data_factory_48_color.svg'
+import notebookIconUrl from '../../assets/icons/fabric/notebook_48_item.svg'
+import pipelineIconUrl from '../../assets/icons/fabric/pipeline_48_item.svg'
+import powerBiIconUrl from '../../assets/icons/fabric/power_bi_48_color.svg'
 import { useLanguage } from '../../context/LanguageContext'
 import './MedallionScene3D.css'
 
-// 5 nodes: the 4 real Medallion layers (from `layers`) plus a final,
-// decorative Dashboard node. Same 4.5-unit spacing as before, just one more.
-const NODE_X = [-9, -4.5, 0, 4.5, 9]
+// 6 nodes, evenly spaced: Source (ADF entry point) → Landing (raw ADLS Gen2
+// storage, synthetic) → the real Medallion layers (from `layers`) → Dashboard
+// (decorative Power BI node).
+const NODE_SPACING = 4.5
 const SPEED_STEPS = [
   { key: 'slow', value: 0.5 },
   { key: 'normal', value: 1 },
@@ -18,18 +20,10 @@ const SPEED_STEPS = [
 const PARTICLES_PER_CONNECTION = 14
 const ICON_BASE_EMISSIVE = 0.45
 const ICON_SELECTED_EMISSIVE = 1.1
-// Tilts flat badge/panel planes toward the fixed, elevated camera so they
-// read face-on instead of edge-on (camera sits ~24° above the scene).
+// Tilts flat endpoint panels toward the fixed, elevated camera so they read
+// face-on instead of edge-on (camera sits ~24° above the scene). Icon sprites
+// don't need this — sprites always billboard toward the camera already.
 const CAMERA_FACING_TILT = -0.42
-
-// Landing is ingested via ADF; Bronze/Silver/Gold are all PySpark/notebook
-// transforms, so they share the same Notebook icon.
-const SERVICE_ICON_BY_LAYER_ID = {
-  landing: 'dataFactory',
-  bronze: 'notebook',
-  silver: 'notebook',
-  gold: 'notebook',
-}
 
 function resolveCssColor(value, fallback) {
   const match = /var\((--[\w-]+)\)/.exec(value ?? '')
@@ -38,7 +32,12 @@ function resolveCssColor(value, fallback) {
   return resolved || fallback
 }
 
-function makeTextSprite(text, colorHex) {
+function resolveCssRgbTriplet(varName, fallback) {
+  const resolved = getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
+  return resolved || fallback
+}
+
+function makeTextSprite(text, colorHex, scale = 0.015) {
   const lines = text.split(', ')
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
@@ -67,8 +66,55 @@ function makeTextSprite(text, colorHex) {
   texture.needsUpdate = true
   const material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false })
   const sprite = new THREE.Sprite(material)
-  const scale = 0.015
   sprite.scale.set(canvas.width * scale, canvas.height * scale, 1)
+  return { sprite, texture, material }
+}
+
+// Vector icon SVGs are cheap to keep loaded for the lifetime of the module —
+// caching the Image avoids re-fetching/re-decoding the same icon each time it
+// is reused across nodes (e.g. the Notebook icon on Bronze/Silver/Gold).
+const iconImageCache = new Map()
+function loadCachedIconImage(url) {
+  if (!iconImageCache.has(url)) {
+    const img = new Image()
+    img.src = url
+    iconImageCache.set(url, img)
+  }
+  return iconImageCache.get(url)
+}
+
+// Vector service/product logo as a billboard sprite (always faces the fixed
+// camera, unlike a tilted plane mesh) — drawn into an offscreen canvas well
+// above the SVG's own intrinsic size so it stays crisp at any scale, on a
+// dark backing chip so the logo reads on either theme.
+function makeIconSprite(svgUrl, worldSize = 0.6, canvasSize = 256) {
+  const canvas = document.createElement('canvas')
+  canvas.width = canvasSize
+  canvas.height = canvasSize
+  const ctx = canvas.getContext('2d')
+
+  const panelRgb = resolveCssRgbTriplet('--panel-rgb', '13, 19, 33')
+  ctx.beginPath()
+  ctx.arc(canvasSize / 2, canvasSize / 2, canvasSize * 0.47, 0, Math.PI * 2)
+  ctx.fillStyle = `rgba(${panelRgb}, 0.6)`
+  ctx.fill()
+
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.needsUpdate = true
+  const material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false })
+  const sprite = new THREE.Sprite(material)
+  sprite.scale.set(worldSize, worldSize, 1)
+
+  const drawIcon = () => {
+    const pad = canvasSize * 0.15
+    ctx.drawImage(img, pad, pad, canvasSize - pad * 2, canvasSize - pad * 2)
+    texture.needsUpdate = true
+  }
+
+  const img = loadCachedIconImage(svgUrl)
+  if (img.complete && img.naturalWidth) drawIcon()
+  else img.addEventListener('load', drawIcon, { once: true })
+
   return { sprite, texture, material }
 }
 
@@ -101,23 +147,42 @@ function createDatabaseIcon(colorInt, bodyGeo, ringGeo) {
   return { group, material }
 }
 
-// Small texture-plane badge (a service logo) on a dark backing chip — the
-// chip keeps the logo legible regardless of theme, since several of the
-// official icons wash out against a light background on their own.
-function createIconBadge(texture, planeSize, backingRadius) {
-  const geo = new THREE.PlaneGeometry(planeSize, planeSize)
-  const backingGeo = new THREE.CircleGeometry(backingRadius, 24)
-  const backingMat = new THREE.MeshBasicMaterial({ color: 0x0d1321, transparent: true, opacity: 0.6 })
-  const backing = new THREE.Mesh(backingGeo, backingMat)
-  backing.position.z = -0.02
-
-  const planeMat = new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false, opacity: 0.92 })
-  const plane = new THREE.Mesh(geo, planeMat)
+// Three thin stacked plates under the Landing node — a schematic server rack,
+// standing in for the physical ADLS Gen2 storage behind the raw drop zone.
+function createServerRack(colorInt) {
+  const geometry = new THREE.BoxGeometry(0.62, 0.08, 0.4)
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x0d1321,
+    emissive: colorInt,
+    emissiveIntensity: 0.35,
+    metalness: 0.6,
+    roughness: 0.3,
+  })
 
   const group = new THREE.Group()
-  group.add(backing, plane)
+  ;[0.11, 0, -0.11].forEach(y => {
+    const plate = new THREE.Mesh(geometry, material)
+    plate.position.y = y
+    group.add(plate)
+  })
 
-  return { group, planeMat, backingMat, geometries: [geo, backingGeo] }
+  return { group, material, geometry }
+}
+
+// Flat "screen" panel used for the two non-Medallion bookend nodes (Source /
+// Dashboard) — a dark chip tilted to face the camera, tinted per node.
+function createEndpointPanel(colorInt) {
+  const geometry = new THREE.BoxGeometry(1.6, 1, 0.08)
+  const material = new THREE.MeshStandardMaterial({
+    color: 0x0d1321,
+    emissive: colorInt,
+    emissiveIntensity: 0.12,
+    metalness: 0.4,
+    roughness: 0.35,
+  })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.rotation.x = CAMERA_FACING_TILT
+  return { mesh, material, geometry }
 }
 
 export default function MedallionScene3D({ layers }) {
@@ -144,9 +209,9 @@ export default function MedallionScene3D({ layers }) {
     renderer.setSize(container.clientWidth, container.clientHeight)
 
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100)
-    camera.position.set(0, 7.5, 17.5)
-    camera.lookAt(0, 1, 0)
+    const camera = new THREE.PerspectiveCamera(46, container.clientWidth / container.clientHeight, 0.1, 100)
+    camera.position.set(0, 8.5, 20)
+    camera.lookAt(0, 1.2, 0)
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.5))
     const dirLight = new THREE.DirectionalLight(0xffffff, 0.6)
@@ -161,25 +226,35 @@ export default function MedallionScene3D({ layers }) {
     const dbRingGeo = new THREE.TorusGeometry(0.425, 0.035, 8, 28)
     disposables.push(() => dbBodyGeo.dispose(), () => dbRingGeo.dispose())
 
-    const textureLoader = new THREE.TextureLoader()
-    const dataFactoryTexture = textureLoader.load(dataFactoryIconUrl)
-    const notebookTexture = textureLoader.load(notebookIconUrl)
-    const pipelineTexture = textureLoader.load(pipelineIconUrl)
-    const powerBiTexture = textureLoader.load(powerBiIconUrl)
-    disposables.push(
-      () => dataFactoryTexture.dispose(),
-      () => notebookTexture.dispose(),
-      () => pipelineTexture.dispose(),
-      () => powerBiTexture.dispose()
-    )
-    const serviceTextureByKey = { dataFactory: dataFactoryTexture, notebook: notebookTexture }
+    // Source + <real layers, incl. Landing> + Dashboard, evenly spaced and centered.
+    const totalNodes = layers.length + 2
+    const NODE_X = Array.from({ length: totalNodes }, (_, i) => (i - (totalNodes - 1) / 2) * NODE_SPACING)
+    const sourceX = NODE_X[0]
+    const dashboardX = NODE_X[totalNodes - 1]
 
-    const nodes = layers.map((layer, i) => {
-      const colorHex = resolveCssColor(layer.color, '#00F5FF')
+    const azureColorHex = resolveCssColor('var(--azure)', '#0078D4')
+    const azureColorInt = new THREE.Color(azureColorHex)
+    const pbiColorHex = resolveCssColor('var(--pbi)', '#F2C811')
+    const pbiColorInt = new THREE.Color(pbiColorHex)
+
+    // `layers` is Landing/Bronze/Silver/Gold (in that order) for this case
+    // study. Landing gets the server-rack mesh (physical ADLS Gen2 storage);
+    // the rest get the Notebook badge (PySpark transforms).
+    const dbSpecs = layers.map(l => ({
+      id: l.id,
+      color: l.color,
+      label: l.subtitle.toUpperCase(),
+      hasRack: l.id === 'landing',
+      serviceIcon: l.id === 'landing' ? null : 'notebook',
+    }))
+
+    const nodes = dbSpecs.map((spec, i) => {
+      const colorHex = resolveCssColor(spec.color, '#00F5FF')
       const colorInt = new THREE.Color(colorHex)
+      const x = NODE_X[i + 1]
 
       const nodeGroup = new THREE.Group()
-      nodeGroup.position.set(NODE_X[i], 0, 0)
+      nodeGroup.position.set(x, 0, 0)
       group.add(nodeGroup)
 
       // iconGroup holds everything that highlights/scales together when this
@@ -196,78 +271,91 @@ export default function MedallionScene3D({ layers }) {
       glowLight.position.set(0, 0.6, 0)
       nodeGroup.add(glowLight)
 
-      const serviceKey = SERVICE_ICON_BY_LAYER_ID[layer.id]
-      const serviceTexture = serviceKey && serviceTextureByKey[serviceKey]
-      if (serviceTexture) {
-        const { group: badgeGroup, planeMat, backingMat, geometries } = createIconBadge(serviceTexture, 0.55, 0.38)
-        badgeGroup.position.set(0, 0.95, 0)
-        badgeGroup.rotation.x = CAMERA_FACING_TILT
-        iconGroup.add(badgeGroup)
-        disposables.push(() => planeMat.dispose(), () => backingMat.dispose(), ...geometries.map(g => () => g.dispose()))
+      if (spec.hasRack) {
+        const { group: rackGroup, material: rackMaterial, geometry: rackGeo } = createServerRack(colorInt)
+        rackGroup.position.y = -0.35
+        nodeGroup.add(rackGroup)
+        disposables.push(() => rackMaterial.dispose(), () => rackGeo.dispose())
       }
 
-      const { sprite, texture, material: spriteMat } = makeTextSprite(layer.subtitle.toUpperCase(), colorHex)
+      if (spec.serviceIcon === 'notebook') {
+        const { sprite, texture, material } = makeIconSprite(notebookIconUrl, 0.5)
+        sprite.position.set(0, 0.95, 0)
+        iconGroup.add(sprite)
+        disposables.push(() => texture.dispose(), () => material.dispose())
+      }
+
+      const { sprite, texture, material: spriteMat } = makeTextSprite(spec.label, colorHex)
       sprite.position.set(0, 1.85, 0)
       nodeGroup.add(sprite)
       disposables.push(() => texture.dispose(), () => spriteMat.dispose())
 
-      return { id: layer.id, iconGroup, dbGroup, dbMaterial, bobPhase: i * 0.8 }
+      return { id: spec.id, iconGroup, dbGroup, dbMaterial, bobPhase: i * 0.8 }
     })
 
-    // Overarching Pipeline badge, centered above the 4 real layers (not the
-    // dashboard) — represents orchestration of the whole ETL flow.
-    const pipelineX = NODE_X.slice(0, layers.length).reduce((a, b) => a + b, 0) / layers.length
-    const {
-      group: pipelineGroup,
-      planeMat: pipelinePlaneMat,
-      backingMat: pipelineBackingMat,
-      geometries: pipelineGeos,
-    } = createIconBadge(pipelineTexture, 0.95, 0.62)
-    pipelineGroup.position.set(pipelineX, 3.1, 0)
-    pipelineGroup.rotation.x = CAMERA_FACING_TILT
-    group.add(pipelineGroup)
-    disposables.push(
-      () => pipelinePlaneMat.dispose(),
-      () => pipelineBackingMat.dispose(),
-      ...pipelineGeos.map(g => () => g.dispose())
-    )
+    // Overarching Microsoft Fabric badge, centered above the whole scene —
+    // the platform all 4 storage/compute nodes run on.
+    const { sprite: fabricSprite, texture: fabricTex, material: fabricMat } = makeIconSprite(fabricIconUrl, 0.95)
+    fabricSprite.position.set(0, 2.55, 0)
+    group.add(fabricSprite)
+    disposables.push(() => fabricTex.dispose(), () => fabricMat.dispose())
 
-    // Final decorative node: a dark "powered-off screen" panel with a
-    // Power BI badge above it. Not part of `layers` — no HUD pill.
+    // Pipeline badge sits above the Fabric badge — the orchestrator
+    // coordinating Landing → Bronze → Silver → Gold — with a short label.
+    const { sprite: pipelineSprite, texture: pipelineTex, material: pipelineMat } = makeIconSprite(pipelineIconUrl, 0.85)
+    pipelineSprite.position.set(-0.85, 3.55, 0)
+    group.add(pipelineSprite)
+    disposables.push(() => pipelineTex.dispose(), () => pipelineMat.dispose())
+
+    // Small text-sprite scale (vs. the 0.015 default used for layer labels) —
+    // "PIPELINE" only needs to sit compactly beside its icon, not span a node.
+    const { sprite: pipelineLabel, texture: pipelineLabelTex, material: pipelineLabelMat } = makeTextSprite('PIPELINE', resolveCssColor('var(--cyan)', '#00F5FF'), 0.009)
+    pipelineLabel.position.set(0.95, 3.55, 0)
+    group.add(pipelineLabel)
+    disposables.push(() => pipelineLabelTex.dispose(), () => pipelineLabelMat.dispose())
+
+    // Source node: Azure Data Factory ingesting from the enterprise systems,
+    // the entry point before Landing. Decorative — not part of `layers`.
+    const sourceGroup = new THREE.Group()
+    sourceGroup.position.set(sourceX, 0, 0)
+    group.add(sourceGroup)
+
+    const { mesh: sourcePanelMesh, material: sourcePanelMat, geometry: sourcePanelGeo } = createEndpointPanel(azureColorInt)
+    sourcePanelMesh.position.y = 0.55
+    sourceGroup.add(sourcePanelMesh)
+    disposables.push(() => sourcePanelMat.dispose(), () => sourcePanelGeo.dispose())
+
+    const { sprite: adfSprite, texture: adfTex, material: adfMat } = makeIconSprite(dataFactoryIconUrl, 0.55)
+    adfSprite.position.set(0, 1.35, 0)
+    sourceGroup.add(adfSprite)
+    disposables.push(() => adfTex.dispose(), () => adfMat.dispose())
+
+    const sourceGlow = new THREE.PointLight(azureColorInt, 1, 6)
+    sourceGlow.position.set(0, 0.6, 0)
+    sourceGroup.add(sourceGlow)
+
+    // Final decorative node: a dark panel with a Power BI badge above it.
+    // Not part of `layers` — no HUD pill.
     const dashboardGroup = new THREE.Group()
-    dashboardGroup.position.set(NODE_X[4], 0, 0)
+    dashboardGroup.position.set(dashboardX, 0, 0)
     group.add(dashboardGroup)
 
-    const screenGeo = new THREE.BoxGeometry(1.6, 1, 0.08)
-    const screenMat = new THREE.MeshStandardMaterial({
-      color: 0x0d1321,
-      emissive: new THREE.Color(0x00f5ff),
-      emissiveIntensity: 0.08,
-      metalness: 0.4,
-      roughness: 0.35,
-    })
-    const screenMesh = new THREE.Mesh(screenGeo, screenMat)
-    screenMesh.position.y = 0.55
-    screenMesh.rotation.x = CAMERA_FACING_TILT
-    dashboardGroup.add(screenMesh)
-    disposables.push(() => screenGeo.dispose(), () => screenMat.dispose())
+    const { mesh: dashboardPanelMesh, material: dashboardPanelMat, geometry: dashboardPanelGeo } = createEndpointPanel(pbiColorInt)
+    dashboardPanelMesh.position.y = 0.55
+    dashboardGroup.add(dashboardPanelMesh)
+    disposables.push(() => dashboardPanelMat.dispose(), () => dashboardPanelGeo.dispose())
 
-    const {
-      group: powerBiGroup,
-      planeMat: powerBiPlaneMat,
-      backingMat: powerBiBackingMat,
-      geometries: powerBiGeos,
-    } = createIconBadge(powerBiTexture, 0.55, 0.38)
-    powerBiGroup.position.set(0, 1.35, 0)
-    powerBiGroup.rotation.x = CAMERA_FACING_TILT
-    dashboardGroup.add(powerBiGroup)
-    disposables.push(
-      () => powerBiPlaneMat.dispose(),
-      () => powerBiBackingMat.dispose(),
-      ...powerBiGeos.map(g => () => g.dispose())
-    )
+    const { sprite: powerBiSprite, texture: powerBiTex, material: powerBiMat } = makeIconSprite(powerBiIconUrl, 0.55)
+    powerBiSprite.position.set(0, 1.35, 0)
+    dashboardGroup.add(powerBiSprite)
+    disposables.push(() => powerBiTex.dispose(), () => powerBiMat.dispose())
 
-    // 4 connections across the 5 nodes: landing-bronze-silver-gold-dashboard.
+    const dashboardGlow = new THREE.PointLight(pbiColorInt, 1, 6)
+    dashboardGlow.position.set(0, 0.6, 0)
+    dashboardGroup.add(dashboardGlow)
+
+    // Connections across every adjacent pair, source through dashboard — the
+    // "nodes/network" particle flow already reads well as a data pipeline.
     const connections = []
     for (let i = 0; i < NODE_X.length - 1; i++) {
       const start = new THREE.Vector3(NODE_X[i], 0.3, 0)
@@ -313,8 +401,11 @@ export default function MedallionScene3D({ layers }) {
 
       idlePhase += dt
       group.rotation.y = Math.sin(idlePhase * 0.2) * 0.06
-      pipelineGroup.position.y = 3.1 + Math.sin(idlePhase * 0.9) * 0.08
-      powerBiGroup.position.y = 1.35 + Math.sin(idlePhase * 0.9 + 1.5) * 0.06
+      fabricSprite.position.y = 2.55 + Math.sin(idlePhase * 0.9) * 0.07
+      pipelineSprite.position.y = 3.55 + Math.sin(idlePhase * 0.9 + 1.1) * 0.08
+      pipelineLabel.position.y = 3.55 + Math.sin(idlePhase * 0.9 + 1.1) * 0.08
+      adfSprite.position.y = 1.35 + Math.sin(idlePhase * 0.9 + 0.6) * 0.06
+      powerBiSprite.position.y = 1.35 + Math.sin(idlePhase * 0.9 + 1.5) * 0.06
 
       const speed = sceneApiRef.current.speed ?? 1
       const isPaused = sceneApiRef.current.paused ?? false
@@ -408,13 +499,17 @@ export default function MedallionScene3D({ layers }) {
       <div className="scene3d-canvas-area" ref={containerRef}>
         <canvas ref={canvasRef} className="scene3d-canvas" />
         <div className="scene3d-labels">
+          <div className="scene3d-label" style={{ '--label-color': 'var(--azure)' }}>
+            <span className="scene3d-label-title">SOURCE</span>
+            <span className="scene3d-label-sub">SAP · Salesforce · Odoo · Zinc</span>
+          </div>
           {layers.map(l => (
             <div key={l.id} className="scene3d-label" style={{ '--label-color': l.color }}>
               <span className="scene3d-label-title">{l.label}</span>
               <span className="scene3d-label-sub">{l.subtitle}</span>
             </div>
           ))}
-          <div className="scene3d-label" style={{ '--label-color': 'var(--cyan)' }}>
+          <div className="scene3d-label" style={{ '--label-color': 'var(--pbi)' }}>
             <span className="scene3d-label-title">DASHBOARD</span>
             <span className="scene3d-label-sub">Power BI Reports</span>
           </div>
@@ -438,6 +533,15 @@ export default function MedallionScene3D({ layers }) {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="hud-panel">
+          <span className="hud-panel-title">{t.medallionHud.vendor}</span>
+          <div className="hud-vendor-chips">
+            <span className="hud-vendor-chip" style={{ '--vendor-color': 'var(--azure)' }}>Azure</span>
+            <span className="hud-vendor-chip" style={{ '--vendor-color': 'var(--fabric)' }}>Fabric</span>
+            <span className="hud-vendor-chip" style={{ '--vendor-color': 'var(--pbi)' }}>Power BI</span>
+          </div>
         </div>
 
         <div className="hud-panel">

@@ -334,6 +334,7 @@ export default {
   medallionHud: {
     title: 'MEDALLION ARCHITECTURE · V1.0',
     serviceStatus: 'Estado del Servicio',
+    vendor: 'Proveedores',
     layerMetadata: 'Metadatos de la Capa',
     controls: 'Controles',
     resetView: 'Restablecer Vista',
