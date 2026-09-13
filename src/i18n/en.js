@@ -304,7 +304,7 @@ export default {
       '30 minutes to walk through your current stack, where it\'s costing you time or money, ' +
       'and whether a Data Engineering, BI, or AI engagement makes sense.',
     ctaPrimary: 'Book a Strategy Call',
-    calendlyNote: 'Calendly link pending — placeholder',
+    calendlyNote: 'Opens instantly in this page — no redirects, no forms.',
   },
 
   footer: {

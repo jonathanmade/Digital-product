@@ -1,8 +1,9 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useLanguage } from '../../context/LanguageContext'
+import { openCalendlyPopup } from '../../utils/calendly'
 import './Contact.css'
 
-const CALENDLY_URL = '[CALENDLY_URL]'
+const CALENDLY_URL = 'https://calendly.com/jonatanmarin/meeting'
 const CONTACT_EMAIL = 'contact@jonatanmarin.dev'
 
 function CalendarIcon() {
@@ -31,6 +32,12 @@ export default function Contact() {
   const { ref, visible } = useScrollReveal(0.1)
   const { t } = useLanguage()
 
+  const handleBookCall = (e) => {
+    // Opens Calendly as an in-page popup; falls back to the real href
+    // (new tab) if the widget script hasn't loaded for any reason.
+    if (openCalendlyPopup(CALENDLY_URL)) e.preventDefault()
+  }
+
   return (
     <section id="contact" className="contact">
       <div className="section-inner" ref={ref}>
@@ -50,6 +57,7 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             className="btn-neon primary contact-cta"
+            onClick={handleBookCall}
           >
             <CalendarIcon />
             {t.contact.ctaPrimary}
@@ -60,7 +68,7 @@ export default function Contact() {
           </a>
         </div>
         <p className="calendly-note">
-          {t.contact.calendlyNote} <code>{CALENDLY_URL}</code>
+          {t.contact.calendlyNote}
         </p>
 
         <div className="social-links">

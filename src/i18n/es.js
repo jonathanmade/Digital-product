@@ -304,7 +304,7 @@ export default {
       '30 minutos para repasar tu stack actual, dónde te está costando tiempo o dinero, ' +
       'y si un proyecto de Ingeniería de Datos, BI o IA tiene sentido.',
     ctaPrimary: 'Reservar una Llamada Estratégica',
-    calendlyNote: 'Enlace de Calendly pendiente — placeholder',
+    calendlyNote: 'Se abre al instante en esta misma página — sin redirecciones ni formularios.',
   },
 
   footer: {
