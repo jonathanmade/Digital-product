@@ -340,6 +340,16 @@
 
 .flow-screen-inner img { width: 20px; height: 20px; filter: drop-shadow(0 0 5px var(--node-glow)); }
 
+/* Fixed-height footer (label + optional badge) shared by every node kind —
+   guarantees the icon/cylinder/screen above it lands at the same height
+   across the row, regardless of whether that node has a badge beneath it. */
+.flow-node-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 64px;
+}
+
 .flow-node-label { text-align: center; }
 
 .flow-node-title {

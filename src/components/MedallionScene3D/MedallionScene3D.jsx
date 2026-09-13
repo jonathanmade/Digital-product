@@ -143,22 +143,27 @@ export default function MedallionScene3D({ layers }) {
                     </div>
                   )}
 
-                  <div className="flow-node-label">
-                    <div className="flow-node-title">{n.title}</div>
-                    <div className="flow-node-sub">{n.sub}</div>
-                  </div>
-
-                  {n.hasRack && (
-                    <>
-                      <div className="flow-rack" title="ADLS Gen2 landing containers"><RackIcon /></div>
-                      <div className="flow-substorage">ADLS Gen2</div>
-                    </>
-                  )}
-                  {n.hasNotebook && (
-                    <div className="flow-notebook">
-                      <img src={notebookIconUrl} alt="" />
+                  <div className="flow-node-footer">
+                    <div className="flow-node-label">
+                      <div className="flow-node-title">{n.title}</div>
+                      <div className="flow-node-sub">{n.sub}</div>
                     </div>
-                  )}
+
+                    {n.hasRack && (
+                      <>
+                        <div className="flow-rack" title="ADLS Gen2 landing containers"><RackIcon /></div>
+                        <div className="flow-substorage">ADLS Gen2</div>
+                      </>
+                    )}
+                    {n.hasNotebook && (
+                      <>
+                        <div className="flow-notebook">
+                          <img src={notebookIconUrl} alt="" />
+                        </div>
+                        <div className="flow-substorage">OneLake</div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
