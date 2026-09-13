@@ -14,6 +14,19 @@ function ScrollProgressBar() {
   return <div className="scroll-progress-bar" style={{ width: `${progress}%` }} />
 }
 
+// React Router (in a plain BrowserRouter, without a data router) does not
+// reset scroll position on navigation — so following a link from partway
+// down Home (e.g. "View More" in Work) landed on the new page at that same
+// scroll offset, often past its hero and into the Footer. Reset on every
+// route change instead.
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [pathname])
+  return null
+}
+
 function PageTransition({ children }) {
   return (
     <motion.div
@@ -45,6 +58,7 @@ export default function App() {
   return (
     <LanguageProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <ScrollProgressBar />
         <Navbar />
         <main>
