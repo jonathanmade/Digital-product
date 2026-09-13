@@ -53,6 +53,23 @@ export default function CaseStudyDetail() {
         <div className="cs-section">
           <h2 className="cs-h2">{t.caseStudyDetail.challengeTitle}</h2>
           <p className="cs-body">{study.challenge[lang]}</p>
+
+          {study.process && (
+            <div className="cs-process">
+              <h3 className="cs-process-title">{t.caseStudyDetail.processTitle}</h3>
+              <ol className="cs-process-steps">
+                {study.process.map((step, i) => (
+                  <li key={step.title.en} className="cs-process-step">
+                    <span className="cs-process-marker">{String(i + 1).padStart(2, '0')}</span>
+                    <div className="cs-process-content">
+                      <h4 className="cs-process-step-title">{step.title[lang]}</h4>
+                      <p className="cs-process-step-desc">{step.description[lang]}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
         </div>
 
         <div className="cs-section">

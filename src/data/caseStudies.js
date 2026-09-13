@@ -4,10 +4,10 @@
 // languages on purpose: technology/brand names and the architecture-diagram
 // terminology in `layers` don't change between English and Spanish.
 export const CASE_STUDIES = {
-  'uriach-medallion-fabric': {
-    slug: 'uriach-medallion-fabric',
+  'pharma-medallion-fabric': {
+    slug: 'pharma-medallion-fabric',
     title: 'Medallion Architecture · Microsoft Fabric',
-    client: 'Uriach Group · Pharmaceutical / Multinational',
+    client: 'Pharmaceutical Group · Multinational',
     tags: ['Microsoft Fabric', 'SAP', 'PySpark', 'Power BI', 'Delta Lake', 'Azure'],
     summary: {
       en:
@@ -17,19 +17,72 @@ export const CASE_STUDIES = {
     },
     challenge: {
       en:
-        'Uriach Group runs on four enterprise systems — SAP ERP, Salesforce CRM, Odoo ERP, and ' +
-        'Zinc WMS — each with its own schema, refresh cadence, and data-quality profile. Business ' +
-        'teams needed governed, near real-time reporting without waiting on manual exports or ' +
-        'fragile point-to-point integrations, and IT needed a single source of truth that could ' +
-        'scale as new systems were added, without re-architecting the pipeline each time.',
+        'The client — a multinational pharmaceutical group — runs on four enterprise systems: ' +
+        'SAP ERP, Salesforce CRM, Odoo ERP, and Zinc WMS, each with its own schema, refresh ' +
+        'cadence, and data-quality profile. Business teams needed governed, near real-time ' +
+        'reporting without waiting on manual exports or fragile point-to-point integrations, ' +
+        'and IT needed a single source of truth that could scale as new systems were added, ' +
+        'without re-architecting the pipeline each time.',
       es:
-        'Uriach Group opera sobre cuatro sistemas empresariales — SAP ERP, Salesforce CRM, Odoo ' +
-        'ERP y Zinc WMS — cada uno con su propio esquema, cadencia de actualización y nivel de ' +
-        'calidad de datos. Los equipos de negocio necesitaban informes gobernados y casi en ' +
-        'tiempo real sin depender de exportaciones manuales ni integraciones punto a punto ' +
-        'frágiles, y IT necesitaba una única fuente de verdad capaz de escalar a medida que se ' +
-        'añadían nuevos sistemas, sin rediseñar el pipeline cada vez.',
+        'El cliente — un grupo farmacéutico multinacional — opera sobre cuatro sistemas ' +
+        'empresariales: SAP ERP, Salesforce CRM, Odoo ERP y Zinc WMS, cada uno con su propio ' +
+        'esquema, cadencia de actualización y nivel de calidad de datos. Los equipos de negocio ' +
+        'necesitaban informes gobernados y casi en tiempo real sin depender de exportaciones ' +
+        'manuales ni integraciones punto a punto frágiles, y IT necesitaba una única fuente de ' +
+        'verdad capaz de escalar a medida que se añadían nuevos sistemas, sin rediseñar el ' +
+        'pipeline cada vez.',
     },
+    process: [
+      {
+        title: { en: 'Requirement Intake', es: 'Recepción del Requerimiento' },
+        description: {
+          en: 'Kickoff with business stakeholders to capture the reporting need, priority KPIs, and delivery constraints.',
+          es: 'Kickoff con los stakeholders de negocio para capturar la necesidad de reporting, los KPIs prioritarios y las restricciones de entrega.',
+        },
+      },
+      {
+        title: { en: 'Data Source & Connections Diagnostic', es: 'Diagnóstico de Fuentes de Datos y Conexiones' },
+        description: {
+          en: 'Map every source system (SAP, Salesforce, Odoo, Zinc WMS), its schema, refresh cadence, and access method before touching the pipeline.',
+          es: 'Mapeo de cada sistema fuente (SAP, Salesforce, Odoo, Zinc WMS), su esquema, cadencia de actualización y método de acceso, antes de tocar el pipeline.',
+        },
+      },
+      {
+        title: { en: 'Requirement Analysis', es: 'Análisis del Requerimiento' },
+        description: {
+          en: 'Translate the business ask into a technical spec: target Medallion layer, transformations needed, and semantic model design.',
+          es: 'Traducción de la necesidad de negocio a una especificación técnica: capa Medallion objetivo, transformaciones necesarias y diseño del modelo semántico.',
+        },
+      },
+      {
+        title: { en: 'Development', es: 'Desarrollo' },
+        description: {
+          en: 'Build the pipeline layer by layer — ingestion, PySpark transforms, Delta tables, and the Power BI semantic model — in short, reviewable increments.',
+          es: 'Construcción del pipeline capa por capa — ingesta, transformaciones en PySpark, tablas Delta y modelo semántico de Power BI — en incrementos cortos y revisables.',
+        },
+      },
+      {
+        title: { en: 'UAT', es: 'UAT' },
+        description: {
+          en: 'Business users validate the reports and underlying data against real scenarios before anything reaches production.',
+          es: 'Los usuarios de negocio validan los informes y los datos subyacentes contra escenarios reales antes de llegar a producción.',
+        },
+      },
+      {
+        title: { en: 'Business Adjustments', es: 'Ajustes de Negocio' },
+        description: {
+          en: 'Incorporate UAT feedback — metric definitions, formatting, access/RLS rules — without breaking what has already been validated.',
+          es: 'Se incorporan los ajustes surgidos del UAT — definiciones de métricas, formato, reglas de acceso/RLS — sin romper lo ya validado.',
+        },
+      },
+      {
+        title: { en: 'Deployment (Azure DevOps)', es: 'Despliegue (Azure DevOps)' },
+        description: {
+          en: 'Versioned release through Azure DevOps pipelines — CI/CD, work-item tracking, and a rollback path for every environment promotion.',
+          es: 'Despliegue versionado a través de pipelines de Azure DevOps — CI/CD, seguimiento de work items y posibilidad de rollback en cada promoción de entorno.',
+        },
+      },
+    ],
     layers: [
       {
         id: 'landing',
@@ -101,7 +154,7 @@ export function getCaseStudy(slug) {
 // full page (see CASE_STUDIES above); the rest render as "Coming soon".
 // Titles are project/client names, shared across languages (see note above).
 export const CASE_STUDY_INDEX = [
-  { slug: 'uriach-medallion-fabric', title: 'Medallion Architecture · Uriach Group' },
+  { slug: 'pharma-medallion-fabric', title: 'Medallion Architecture · Pharma Group' },
   { slug: null, title: 'Power BI Embedded Dashboard Suite' },
   { slug: null, title: 'Real-time Pipeline · Databricks' },
   { slug: null, title: 'AI Application — End-to-End Delivery' },

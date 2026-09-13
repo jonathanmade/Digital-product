@@ -189,7 +189,7 @@ export default {
     caseStudyLabel: (n) => `Case Study ${n}`,
     cards: [
       {
-        title: 'Medallion Architecture · Uriach Group',
+        title: 'Medallion Architecture · Pharma Group',
         description:
           'End-to-end Medallion pipeline for a multinational pharma company. SAP data ingested via ADF into Bronze, PySpark transforms through Silver, Power BI Direct Lake reports for 200+ users.',
         metrics: [
@@ -316,6 +316,7 @@ export default {
     notFoundTitle: 'Case study not found',
     notFoundDesc: "This case study doesn't have a page yet.",
     challengeTitle: 'The Challenge',
+    processTitle: 'Delivery Process',
     architectureTitle: 'The Architecture',
     techStackTitle: 'Tech Stack',
     resultsTitle: 'Results',

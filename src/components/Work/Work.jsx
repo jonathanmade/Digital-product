@@ -8,7 +8,7 @@ import './Work.css'
 // matched by index with the translated copy in the language dictionaries.
 const CARD_META = [
   {
-    slug: 'uriach-medallion-fabric',
+    slug: 'pharma-medallion-fabric',
     tags: ['Microsoft Fabric', 'SAP', 'PySpark', 'Power BI', 'Delta Lake', 'Azure'],
     gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',

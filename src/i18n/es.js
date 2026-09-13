@@ -189,7 +189,7 @@ export default {
     caseStudyLabel: (n) => `Caso de Estudio ${n}`,
     cards: [
       {
-        title: 'Medallion Architecture · Uriach Group',
+        title: 'Medallion Architecture · Grupo Farmacéutico',
         description:
           'Pipeline Medallion end-to-end para una farmacéutica multinacional. Datos de SAP ingeridos vía ADF a Bronze, transformaciones con PySpark a través de Silver, informes de Power BI Direct Lake para más de 200 usuarios.',
         metrics: [
@@ -316,6 +316,7 @@ export default {
     notFoundTitle: 'Caso de estudio no encontrado',
     notFoundDesc: 'Este caso de estudio todavía no tiene página propia.',
     challengeTitle: 'El Reto',
+    processTitle: 'Proceso de Entrega',
     architectureTitle: 'La Arquitectura',
     techStackTitle: 'Stack Tecnológico',
     resultsTitle: 'Resultados',
