@@ -3,8 +3,6 @@ import { useLanguage } from '../../context/LanguageContext'
 import { openCalendlyPopup, CALENDLY_URL } from '../../utils/calendly'
 import './Contact.css'
 
-const CONTACT_EMAIL = 'contact@jonatanmarin.dev'
-
 function CalendarIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -14,15 +12,6 @@ function CalendarIcon() {
       <circle cx="8.5" cy="14.5" r="1" fill="currentColor" stroke="none" />
       <circle cx="12" cy="14.5" r="1" fill="currentColor" stroke="none" />
       <circle cx="15.5" cy="14.5" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-function MailIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="M3 7l9 6 9-6" />
     </svg>
   )
 }
@@ -60,10 +49,6 @@ export default function Contact() {
           >
             <CalendarIcon />
             {t.contact.ctaPrimary}
-          </a>
-          <a href={`mailto:${CONTACT_EMAIL}`} className="btn-neon outline contact-cta">
-            <MailIcon />
-            {CONTACT_EMAIL}
           </a>
         </div>
         <p className="calendly-note">
