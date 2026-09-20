@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-20T00:00:00.000Z",
+  "title": "Design System: Jonatan Marín — Data & AI Engineering",
+  "extensions": {
+    "colorMeta": {
+      "electric-signal-cyan": { "role": "primary", "displayName": "Electric Signal Cyan", "canonical": "#00F5FF", "tonalRamp": ["oklch(15% 0.06 195)", "oklch(28% 0.09 195)", "oklch(40% 0.12 195)", "oklch(52% 0.15 195)", "oklch(64% 0.15 195)", "oklch(75% 0.15 195)", "oklch(85% 0.15 195)", "oklch(95% 0.06 195)"] },
+      "terminal-void": { "role": "neutral", "displayName": "Terminal Void", "canonical": "#050810", "tonalRamp": ["oklch(15% 0.02 250)", "oklch(28% 0.02 250)", "oklch(40% 0.02 250)", "oklch(52% 0.02 250)", "oklch(64% 0.02 250)", "oklch(75% 0.02 250)", "oklch(85% 0.02 250)", "oklch(95% 0.01 250)"] },
+      "deep-void-alt": { "role": "neutral", "displayName": "Deep Void Alt", "canonical": "#080c18", "tonalRamp": ["oklch(15% 0.025 250)", "oklch(28% 0.025 250)", "oklch(40% 0.025 250)", "oklch(52% 0.025 250)", "oklch(64% 0.025 250)", "oklch(75% 0.025 250)", "oklch(85% 0.02 250)", "oklch(95% 0.01 250)"] },
+      "glass-panel": { "role": "neutral", "displayName": "Glass Panel", "canonical": "#0d1321", "tonalRamp": ["oklch(15% 0.03 250)", "oklch(28% 0.03 250)", "oklch(40% 0.03 250)", "oklch(52% 0.03 250)", "oklch(64% 0.03 250)", "oklch(75% 0.025 250)", "oklch(85% 0.02 250)", "oklch(95% 0.01 250)"] },
+      "panel-raised": { "role": "neutral", "displayName": "Panel Raised", "canonical": "#111827", "tonalRamp": ["oklch(15% 0.03 250)", "oklch(28% 0.03 250)", "oklch(40% 0.03 250)", "oklch(52% 0.03 250)", "oklch(64% 0.03 250)", "oklch(75% 0.025 250)", "oklch(85% 0.02 250)", "oklch(95% 0.01 250)"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#1a2540", "tonalRamp": ["oklch(15% 0.05 245)", "oklch(28% 0.05 245)", "oklch(40% 0.05 245)", "oklch(52% 0.05 245)", "oklch(64% 0.05 245)", "oklch(75% 0.04 245)", "oklch(85% 0.03 245)", "oklch(95% 0.015 245)"] },
+      "hairline-strong": { "role": "neutral", "displayName": "Hairline Strong", "canonical": "#243050", "tonalRamp": ["oklch(15% 0.06 245)", "oklch(28% 0.06 245)", "oklch(40% 0.06 245)", "oklch(52% 0.06 245)", "oklch(64% 0.06 245)", "oklch(75% 0.05 245)", "oklch(85% 0.03 245)", "oklch(95% 0.015 245)"] },
+      "signal-text": { "role": "neutral", "displayName": "Signal Text", "canonical": "#c8d6f0", "tonalRamp": ["oklch(15% 0.04 230)", "oklch(28% 0.04 230)", "oklch(40% 0.04 230)", "oklch(52% 0.04 230)", "oklch(64% 0.04 230)", "oklch(75% 0.04 230)", "oklch(85% 0.03 230)", "oklch(95% 0.015 230)"] },
+      "muted-signal": { "role": "neutral", "displayName": "Muted Signal", "canonical": "#8a9ab8", "tonalRamp": ["oklch(15% 0.06 230)", "oklch(28% 0.06 230)", "oklch(40% 0.06 230)", "oklch(52% 0.06 230)", "oklch(64% 0.06 230)", "oklch(75% 0.05 230)", "oklch(85% 0.03 230)", "oklch(95% 0.015 230)"] },
+      "dim-readout": { "role": "neutral", "displayName": "Dim Readout", "canonical": "#5a6a8a", "tonalRamp": ["oklch(15% 0.06 230)", "oklch(28% 0.06 230)", "oklch(40% 0.06 230)", "oklch(52% 0.06 230)", "oklch(64% 0.06 230)", "oklch(75% 0.05 230)", "oklch(85% 0.03 230)", "oklch(95% 0.015 230)"] },
+      "terminal-white": { "role": "neutral", "displayName": "Terminal White", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(28% 0 0)", "oklch(40% 0 0)", "oklch(52% 0 0)", "oklch(64% 0 0)", "oklch(75% 0 0)", "oklch(85% 0 0)", "oklch(95% 0 0)"] },
+      "status-active": { "role": "status", "displayName": "Status Active", "canonical": "#4ade80", "tonalRamp": ["oklch(15% 0.08 145)", "oklch(28% 0.11 145)", "oklch(40% 0.14 145)", "oklch(52% 0.17 145)", "oklch(64% 0.17 145)", "oklch(75% 0.15 145)", "oklch(85% 0.1 145)", "oklch(95% 0.05 145)"] },
+      "bronze-tier": { "role": "semantic-data", "displayName": "Bronze Tier", "canonical": "#b87333", "tonalRamp": ["oklch(15% 0.05 55)", "oklch(28% 0.08 55)", "oklch(40% 0.1 55)", "oklch(52% 0.12 55)", "oklch(64% 0.12 55)", "oklch(75% 0.1 55)", "oklch(85% 0.07 55)", "oklch(95% 0.03 55)"] },
+      "silver-tier": { "role": "semantic-data", "displayName": "Silver Tier", "canonical": "#C0C0C0", "tonalRamp": ["oklch(15% 0.01 0)", "oklch(28% 0.01 0)", "oklch(40% 0.01 0)", "oklch(52% 0.01 0)", "oklch(64% 0.01 0)", "oklch(75% 0.01 0)", "oklch(85% 0.01 0)", "oklch(95% 0.005 0)"] },
+      "gold-tier": { "role": "semantic-data", "displayName": "Gold Tier", "canonical": "#FFB800", "tonalRamp": ["oklch(15% 0.06 80)", "oklch(28% 0.1 80)", "oklch(40% 0.13 80)", "oklch(52% 0.16 80)", "oklch(64% 0.16 80)", "oklch(75% 0.14 80)", "oklch(85% 0.1 80)", "oklch(95% 0.04 80)"] },
+      "azure-vendor": { "role": "semantic-vendor", "displayName": "Azure Vendor", "canonical": "#0078D4", "tonalRamp": ["oklch(15% 0.06 250)", "oklch(28% 0.09 250)", "oklch(40% 0.12 250)", "oklch(52% 0.15 250)", "oklch(64% 0.15 250)", "oklch(75% 0.13 250)", "oklch(85% 0.08 250)", "oklch(95% 0.04 250)"] },
+      "fabric-vendor": { "role": "semantic-vendor", "displayName": "Fabric Vendor", "canonical": "#0EA5A0", "tonalRamp": ["oklch(15% 0.045 190)", "oklch(28% 0.07 190)", "oklch(40% 0.09 190)", "oklch(52% 0.11 190)", "oklch(64% 0.11 190)", "oklch(75% 0.09 190)", "oklch(85% 0.06 190)", "oklch(95% 0.03 190)"] },
+      "power-bi-vendor": { "role": "semantic-vendor", "displayName": "Power BI Vendor", "canonical": "#F2C811", "tonalRamp": ["oklch(15% 0.06 95)", "oklch(28% 0.09 95)", "oklch(40% 0.12 95)", "oklch(52% 0.15 95)", "oklch(64% 0.15 95)", "oklch(75% 0.13 95)", "oklch(85% 0.09 95)", "oklch(95% 0.04 95)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only — the loudest, rarest treatment on the site." },
+      "headline": { "displayName": "Headline", "purpose": "Every section title, same font stack as Display at lower weight/size." },
+      "title": { "displayName": "Title", "purpose": "Card and service titles." },
+      "body": { "displayName": "Body", "purpose": "Sitewide default reading font (set on <body>); Hero subheadline is the one Rajdhani exception." },
+      "tag": { "displayName": "Tag", "purpose": "Sentence-case capability chips (technology names) — distinct from the uppercase mono Label voice." },
+      "label": { "displayName": "Label", "purpose": "Nav links, eyebrows, buttons, pills, badges, HUD text — the single most-used treatment on the site." }
+    },
+    "shadows": [
+      { "name": "glow-primary-hover", "value": "0 0 32px rgba(0, 245, 255, 0.35)", "purpose": "Hover glow for the primary filled button." },
+      { "name": "glow-outline-hover", "value": "0 0 24px rgba(0, 245, 255, 0.35)", "purpose": "Hover glow for outline buttons and cyan-bordered accents." },
+      { "name": "glow-card-service-hover", "value": "0 0 32px rgba(0, 245, 255, 0.08)", "purpose": "Subtle hover glow on service cards." },
+      { "name": "shadow-card-project-hover", "value": "0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 245, 255, 0.35)", "purpose": "The one true drop-shadow exception, always paired with the cyan glow, on Work project-card hover." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default transition easing across buttons, cards, and toggles." },
+      { "name": "duration-reveal", "value": "0.6s", "purpose": "Scroll-reveal fade/translate-in duration for sections and cards." },
+      { "name": "duration-micro", "value": "0.2s", "purpose": "Micro-interaction duration for color/border hover shifts." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" },
+      { "name": "sm", "value": "680px" },
+      { "name": "xs", "value": "420px" },
+      { "name": "medallion", "value": "900px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid cyan CTA button — the site's single primary action treatment.",
+      "html": "<button class=\"ds-btn-primary\">BOOK A CALL</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; font-weight: 700; text-transform: uppercase; background: var(--cyan); color: #000; border: none; cursor: pointer; transition: box-shadow 0.3s, transform 0.3s; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { box-shadow: 0 0 32px rgba(var(--cyan-rgb), 0.35); transform: translateY(-2px); } .ds-btn-primary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Transparent cyan-bordered CTA button — the site's single secondary action treatment.",
+      "html": "<button class=\"ds-btn-outline\">VIEW CASE STUDIES</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; border-radius: 4px; font-family: var(--font-mono); font-size: 13px; letter-spacing: 1px; font-weight: 700; text-transform: uppercase; background: transparent; color: var(--cyan); border: 1px solid var(--cyan); cursor: pointer; transition: background 0.3s, box-shadow 0.3s, transform 0.3s; } .ds-btn-outline:hover, .ds-btn-outline:focus-visible { background: rgba(var(--cyan-rgb), 0.1); box-shadow: 0 0 24px rgba(var(--cyan-rgb), 0.35); transform: translateY(-2px); }"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": "tag-pill",
+      "description": "Mono uppercase status/metadata pill, colored per its own accent (layer color, vendor color, etc).",
+      "html": "<span class=\"ds-tag-pill\">GOLD</span>",
+      "css": ".ds-tag-pill { font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold); background: transparent; padding: 5px 10px; border-radius: 20px; transition: background 0.2s, transform 0.15s; } .ds-tag-pill:hover { transform: translateY(-1px); }"
+    },
+    {
+      "name": "Capability Chip",
+      "kind": "chip",
+      "refersTo": "capability-chip",
+      "description": "Sentence-case technology-name chip used in the TechStack section.",
+      "html": "<span class=\"ds-capability-chip\">PySpark</span>",
+      "css": ".ds-capability-chip { font-family: var(--font-ui); font-size: 13px; font-weight: 600; color: var(--text); border: 1px solid var(--border); background: rgba(var(--panel-rgb), 0.7); padding: 8px 14px; border-radius: 6px; transition: border-color 0.2s, color 0.2s, transform 0.15s; } .ds-capability-chip:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }"
+    },
+    {
+      "name": "Service Card",
+      "kind": "card",
+      "refersTo": "card-service",
+      "description": "Glass-panel card used for the three Services entries.",
+      "html": "<div class=\"ds-card-service\"><div class=\"ds-card-service-title\">Data Engineering &amp; Architecture</div><p class=\"ds-card-service-desc\">Enterprise-scale pipelines built on Medallion Architecture.</p></div>",
+      "css": ".ds-card-service { background: rgba(var(--panel-rgb), 0.7); border: 1px solid var(--border); border-radius: 8px; padding: 32px 28px; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; } .ds-card-service:hover { border-color: rgba(var(--cyan-rgb), 0.3); box-shadow: 0 0 32px rgba(var(--cyan-rgb), 0.08); transform: translateY(-4px); } .ds-card-service-title { font-family: var(--font-ui); font-size: 19px; font-weight: 700; color: var(--heading); margin-bottom: 12px; } .ds-card-service-desc { font-size: 13px; color: var(--muted); line-height: 1.8; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card-project",
+      "description": "Case-study card used in the Work grid — the one component with a true drop-shadow on hover.",
+      "html": "<div class=\"ds-card-project\"><div class=\"ds-card-project-header\"><span class=\"ds-card-project-label\">Case Study 01</span><span class=\"ds-card-project-dot\"></span></div><div class=\"ds-card-project-title\">Medallion Architecture · Microsoft Fabric</div></div>",
+      "css": ".ds-card-project { background: rgba(var(--panel-rgb), 0.9); border-radius: 10px; padding: 28px; border: 1px solid var(--border); transition: background 0.3s, box-shadow 0.3s; } .ds-card-project:hover { background: rgba(var(--panel-rgb), 0.97); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(var(--cyan-rgb), 0.35); } .ds-card-project-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; } .ds-card-project-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); } .ds-card-project-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px var(--cyan); } .ds-card-project-title { font-family: var(--font-ui); font-size: 20px; font-weight: 700; color: var(--heading); line-height: 1.3; }"
+    },
+    {
+      "name": "Ops-Console HUD Panel",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The signature component: the Medallion scene's HUD sidebar — title/date header, status list with pulsing dots, right-aligned values.",
+      "html": "<div class=\"ds-hud-panel\"><div class=\"ds-hud-header\"><span class=\"ds-hud-title\">MEDALLION ARCHITECTURE · V1.0</span><span class=\"ds-hud-date\">Sep 20, 2026</span></div><ul class=\"ds-hud-status-list\"><li><span class=\"ds-hud-dot ds-hud-dot-active\"></span>Data Factory<span class=\"ds-hud-value\">Active</span></li><li><span class=\"ds-hud-dot ds-hud-dot-syncing\"></span>OneLake<span class=\"ds-hud-value\">Syncing</span></li></ul></div>",
+      "css": ".ds-hud-panel { background: rgba(var(--panel-rgb), 0.8); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: var(--font-mono); display: flex; flex-direction: column; gap: 12px; } .ds-hud-header { display: flex; flex-direction: column; gap: 2px; padding-bottom: 12px; border-bottom: 1px solid var(--border); } .ds-hud-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--cyan); } .ds-hud-date { font-size: 10px; color: var(--muted); } .ds-hud-status-list { list-style: none; display: flex; flex-direction: column; gap: 8px; } .ds-hud-status-list li { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text); } .ds-hud-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); flex-shrink: 0; } .ds-hud-dot-syncing { background: var(--cyan); animation: ds-pulse 1.4s ease-in-out infinite; } .ds-hud-value { margin-left: auto; color: var(--muted); font-size: 10px; } @keyframes ds-pulse { 0%, 100% { box-shadow: 0 0 8px rgba(var(--cyan-rgb), 0.35); } 50% { box-shadow: 0 0 24px rgba(var(--cyan-rgb), 0.35), 0 0 48px rgba(var(--cyan-rgb), 0.2); } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Mission Control / The Ops Console",
+    "overview": "The site reads as a single, precise instrument panel rather than a marketing page: an almost-black canvas, one electric-cyan signal color, and UI chrome — status dots, uppercase mono labels, letter-spaced eyebrows — that behaves like telemetry rather than decoration. The clearest expression of the North Star is the HUD sidebar next to the Medallion architecture diagram: a title-plus-timestamp header, a service-status list with pulsing dots, colored metadata pills, and rectangular mono control buttons — every other surface on the site borrows that same instrumented vocabulary at a lower intensity.\n\nThe voice is restrained technical precision, not cinematic spectacle. Earlier iterations of this system leaned further into a dark neon/gaming aesthetic (glitch text on the name, a custom cursor with a particle halo, a terminal easter egg); all of it was deliberately removed to read as a senior consultant's services page rather than a portfolio chasing attention. What survived — the dark canvas, the single accent, the sci-fi-adjacent HUD panels — stayed because it doubles as genuine product evidence (it looks like the kind of data-operations tooling the underlying services actually build), not because it looks impressive on its own.",
+    "keyCharacteristics": [
+      "One interactive accent color (electric cyan) carries every call-to-action, active state, and glow — never diluted with a second general-UI accent.",
+      "Reading and chrome text defaults to a monospace voice; a second, more humanist face (Rajdhani) appears only for the hero's subheadline and component/card titles.",
+      "Flat, glass-panel surfaces at rest; elevation is communicated by a cyan glow plus a small upward shift on hover/selection, not by drop shadows.",
+      "Bronze/Silver/Gold and the Azure/Fabric/Power BI vendor hues are semantic and quarantined — they exist only inside the Medallion diagram and its vendor badges, never as general UI color."
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Cyan is the entire accent vocabulary; a second general-purpose accent is never introduced.", "section": "colors" },
+      { "name": "The Diagram-Only Rule", "body": "Bronze/silver/gold appear exclusively inside the Medallion architecture visualization and its own legend — never as a button, link, badge, or any other general UI color.", "section": "colors" },
+      { "name": "The Vendor Badge Rule", "body": "Each vendor color is scoped to that specific provider's own icon, badge, or labeled node — never applied to unrelated UI, and never used interchangeably with cyan.", "section": "colors" },
+      { "name": "The Mono Voice Rule", "body": "JetBrains Mono is the default for both body copy and UI chrome; Rajdhani is the exception, reserved for the Hero subheadline and component/card titles only — it never becomes the base body font.", "section": "typography" },
+      { "name": "The Glow-Is-Elevation Rule", "body": "Depth is communicated by a cyan glow plus a small position shift, not by dark drop-shadows — the one exception (Work cards) adds shadow only on top of, never instead of, the glow.", "section": "elevation" },
+      { "name": "The Rectangular-Core, Round-Chrome Rule", "body": "If it holds content, keep it near-square (≤10px radius). If it describes something — a tag, a status, a toggle — make it a stadium or a circle.", "section": "elevation" },
+      { "name": "The Two-Variant Rule", "body": "Never introduce a third button treatment (e.g., a filled neutral or a ghost/ghost-outline button) — every CTA is either filled-cyan or outline-cyan.", "section": "colors" }
+    ],
+    "dos": [
+      "Do keep Electric Signal Cyan as the only general-UI interactive accent — buttons, links, focus states, glows, and progress indicators all route through it.",
+      "Do default reading and chrome text to JetBrains Mono; reserve Rajdhani for the Hero subheadline and component/card titles only.",
+      "Do keep every new surface flat-at-rest and communicate elevation with a cyan glow + small lift on hover/selection, matching the Glow-Is-Elevation Rule.",
+      "Do theme any new hardcoded color through the existing RGB-triplet CSS-variable pattern (rgba(var(--x-rgb), alpha)) so the light/dark theme toggle keeps working — never hardcode rgba(13,19,33,*), rgba(5,8,16,*), #080c18, #fff as a heading color, or a literal rgba(0,245,255,*).",
+      "Do keep Bronze/Silver/Gold inside the Medallion diagram and Azure/Fabric/Power BI inside their own vendor badges, per the Diagram-Only and Vendor Badge Rules."
+    ],
+    "donts": [
+      "Don't add a second general-purpose accent color, or a third button variant beyond filled-cyan/outline-cyan.",
+      "Don't use violet/gold/bronze/silver anywhere outside the Medallion diagram, its legend, or (violet specifically) a background radial gradient under 0.05 opacity.",
+      "Don't reach for a drop-shadow as a default elevation cue — glow is the system's depth language; the Work-card drop-shadow is a named exception, not a precedent.",
+      "Don't round a structural container (card, panel, button) past ~10px, and don't leave a metadata/status element (tag, pill, toggle) with a small squared-off radius — corner shape signals content vs. chrome."
+    ]
+  }
+}

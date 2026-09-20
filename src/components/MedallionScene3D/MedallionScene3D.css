@@ -1,6 +1,7 @@
 .scene3d-wrap {
   display: grid;
   grid-template-columns: 1fr 280px;
+  align-items: start;
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -254,6 +255,7 @@
 
 /* Server-rack badge — physical storage substrate under Landing */
 .flow-rack {
+  align-self: center;
   width: 20px;
   height: 20px;
   border-radius: 5px;
@@ -273,10 +275,12 @@
   font-size: 6.5px;
   letter-spacing: 0.4px;
   color: var(--muted);
+  text-align: center;
 }
 
 /* Notebook badge — PySpark transform, under Bronze/Silver/Gold */
 .flow-notebook {
+  align-self: center;
   width: 20px;
   height: 20px;
   border-radius: 5px;
@@ -346,11 +350,25 @@
 .flow-node-footer {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* stretch (not center): a column flex container's align-items also governs
+     each child's own width, and .flow-node-sub is long enough on the Source
+     node ("SAP · Salesforce · Odoo · Zinc") that shrink-to-fit let it overflow
+     past the 104px column into the next connector's label. text-align on the
+     children keeps everything visually centered once they're full-width. */
+  align-items: stretch;
+  width: 100%;
   min-height: 64px;
 }
 
-.flow-node-label { text-align: center; }
+/* Inset from the column's own 104px edges: connector format labels (e.g.
+   "Direct Lake") are centered over their much narrower (28px) connector line
+   and can overhang it by up to ~14px on each side, so node text needs a
+   buffer or its longest lines (e.g. "SAP · Salesforce · Odoo · Zinc") collide
+   with the neighboring connector's label. */
+.flow-node-label {
+  text-align: center;
+  padding: 0 16px;
+}
 
 .flow-node-title {
   font-family: var(--font-mono);
@@ -611,7 +629,10 @@
     align-items: center;
     height: auto;
     gap: 6px;
-    padding-top: 0;
+    /* Same clearance as desktop: the Pipeline/Fabric badge stack above is
+       still absolutely positioned near the top of .flow-diagram at every
+       breakpoint, so the row needs the same headroom to avoid overlapping it. */
+    padding-top: 96px;
   }
 
   .flow-connector {

@@ -16,7 +16,7 @@ const SPEED_STEPS = [
 
 // Data-format / transform captions shown on each connector, source → dashboard.
 // These are fixed technical vocabulary (same rule as `layers`), not translated.
-const CONNECTOR_FORMATS = ['Batch / CDC', 'Delta init', 'PySpark clean', 'Agg · DAX', 'Direct Lake']
+const CONNECTOR_FORMATS = ['Batch / CDC', 'Delta init', 'PySpark', 'Agg · DAX', 'Direct Lake']
 
 function RackIcon() {
   return (
@@ -79,7 +79,7 @@ export default function MedallionScene3D({ layers }) {
 
   // Source + <real layers, incl. Landing> + Dashboard, in display order.
   const nodes = [
-    { id: 'source', kind: 'icon', color: 'var(--azure)', icon: dataFactoryIconUrl, title: 'AZURE DATA FACTORY', sub: 'SAP · Salesforce · Odoo · Zinc' },
+    { id: 'source', kind: 'icon', color: 'var(--azure)', icon: dataFactoryIconUrl, title: 'DATA FACTORY', sub: 'SAP · Salesforce · Odoo · Zinc' },
     ...layers.map(l => ({
       id: l.id,
       kind: 'db',

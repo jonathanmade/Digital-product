@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Impeccable design skill — local/session state only; design.json (the
+# DESIGN.md sidecar) stays tracked. The skill itself (incl. its platform
+# binary) installs per-machine via `npx impeccable install`, not via git.
+.claude/
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
