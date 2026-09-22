@@ -14,7 +14,8 @@ const CARD_META = [
     accentColor: 'var(--cyan)',
   },
   {
-    tags: ['Power BI Embedded', 'Direct Lake', 'RLS', 'DAX', 'Azure AD B2C'],
+    slug: 'powerbi-embedded-pharmacy',
+    tags: ['Power BI Embedded', 'RLS', 'Node.js', 'Entra ID', 'DAX'],
     gradient: 'linear-gradient(135deg, var(--cyan), rgba(var(--cyan-rgb), 0.3))',
     accentColor: 'var(--cyan)',
   },

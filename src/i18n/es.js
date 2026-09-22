@@ -23,20 +23,20 @@ export default {
       'Arquitectura Medallion · Databricks',
       'Aplicaciones de IA · Azure',
     ],
-    headlinePre: 'Construyo plataformas de datos en las que tu ',
-    headlineHighlight: 'BI y tu IA',
-    headlinePost: ' pueden confiar',
+    headlinePre: 'Convierte datos fragmentados de SAP, Salesforce u Odoo en ',
+    headlineHighlight: 'BI e IA en los que puedes confiar',
+    headlinePost: '',
     subheadline:
       'Jonatan Marín — más de 10 años en Ingeniería de Datos, BI y Arquitectura, ahora ' +
       'ampliando hacia aplicaciones de IA end-to-end construidas sobre datos gobernados y ' +
       'de nivel productivo. Con base en Barcelona, trabajando con equipos empresariales en toda Europa.',
     ctaPrimary: 'Reservar una Llamada Estratégica',
-    ctaSecondary: 'Ver Casos de Éxito',
+    ctaSecondary: 'Ver Casos de Estudio',
     credibility: [
       { value: '10+', label: 'Años de Experiencia' },
       { value: '4', label: 'Fuentes Empresariales' },
       { value: '50M+', label: 'Eventos / Día' },
-      { value: 'Farma / Salud', label: 'Sector de Enfoque' },
+      { value: '<1s', label: 'Latencia de Consulta' },
     ],
     scroll: 'desplázate',
   },
@@ -46,41 +46,55 @@ export default {
     titlePre: 'Dónde aporto ',
     titleHighlight: 'valor',
     titlePost: '',
-    desc: 'Tres formas de colaborar — desde pipelines empresariales hasta la capa de IA construida sobre ellos.',
+    desc:
+      'Los datos dispersos entre SAP, Salesforce, Odoo y sistemas de almacén rara vez se ' +
+      'convierten en decisiones por sí solos. Tres formas de cerrar esa brecha — pipelines ' +
+      'gobernados, BI que escala y la capa de IA construida encima — como un único proyecto ' +
+      'conectado, no como piezas sueltas de distintos proveedores.',
     cards: [
       {
         title: 'Ingeniería de Datos y Arquitectura',
         description:
-          'Pipelines a escala empresarial construidos sobre Arquitectura Medallion — desde la ingesta bruta de tus sistemas de origen hasta datos gobernados y listos para el negocio.',
+          'Cuando los datos viven en SAP, Salesforce, Odoo y Zinc —sistemas que no se ' +
+          'comunican entre sí—, cada informe empieza con una reconciliación manual. Construyo ' +
+          'pipelines gobernados sobre Arquitectura Medallion (Bronze → Silver → Gold) que ' +
+          'convierten esas fuentes fragmentadas en un único conjunto de datos fiable y listo ' +
+          'para el negocio.',
         bullets: [
-          'Diseño de pipelines Bronze/Silver/Gold (Databricks, PySpark, Delta Lake)',
+          'Diseño de pipelines Bronze/Silver/Gold — datos en bruto preservados y cada transformación trazable (con Databricks, PySpark, Delta Lake)',
           'Integración de fuentes empresariales — SAP, Salesforce, Odoo, Zinc',
           'Calidad de datos, gobernanza y pipelines respaldados por SLA',
-          'Arquitectura nativa de Azure (ADF, ADLS Gen2, Event Hubs)',
+          'Se ejecuta de forma nativa dentro de tu entorno Azure existente — sin infraestructura nueva que aprobar ni contratar (ADF, ADLS Gen2, Event Hubs)',
         ],
         engagement: 'Duración: 6–12 semanas · alcance fijo o embebido',
       },
       {
         title: 'BI y Arquitectura de Datos',
         description:
-          'Soluciones de Power BI Embedded y Direct Lake que escalan a cientos de usuarios concurrentes sin sacrificar el rendimiento de las consultas.',
+          'Los dashboards que funcionan bien en una demo suelen volverse lentos en cuanto se ' +
+          'conectan cientos de usuarios reales. Construyo soluciones de Power BI Embedded y ' +
+          'Direct Lake que mantienen consultas en menos de un segundo a esa escala — no solo ' +
+          'con un puñado de usuarios de prueba.',
         bullets: [
-          'Power BI Embedded con seguridad a nivel de fila',
+          'Power BI Embedded con seguridad a nivel de fila — cada usuario o cliente ve únicamente sus propios datos',
           'Modelos semánticos Direct Lake para consultas en menos de un segundo',
-          'Modelado DAX e informes paginados',
-          'Arquitectura de analítica multi-tenant',
+          'Métricas y cálculos avanzados (DAX), además de informes paginados listos para exportar o imprimir',
+          'Arquitectura multi-tenant — una sola plataforma que sirve a varios clientes o unidades de negocio con datos aislados entre sí',
         ],
         engagement: 'Duración: 4–8 semanas · suite de dashboards o plataforma',
       },
       {
         title: 'Aplicaciones Impulsadas por IA',
         description:
-          'Aplicaciones de IA end-to-end construidas sobre bases de datos sólidas — sistemas en producción que se integran con tu estado de datos actual, no prototipos.',
+          'La mayoría de los pilotos de IA impresionan en la demo y luego mueren porque nunca ' +
+          'se conectaron a datos reales y gobernados. Construyo aplicaciones de IA end-to-end ' +
+          'que se integran directamente con tu estado de datos existente — sistemas en ' +
+          'producción, no prototipos.',
         bullets: [
-          'Retrieval sobre tus propios datos gobernados (RAG sobre la capa Gold)',
+          'IA que responde a partir de tus propios datos gobernados, no de internet en general (RAG sobre la capa Gold)',
           'Agentes internos para flujos de trabajo operativos',
-          'Entrega end-to-end: datos, backend y UI',
-          'Integración nativa con los servicios de IA de Azure',
+          'Un único equipo, un único sistema — pipeline de datos, backend y UI entregados de forma conjunta, no ensamblados a partir de proveedores distintos',
+          'Se despliega dentro de tu entorno Azure existente — sin infraestructura nueva ni revisión de seguridad adicional (servicios de IA de Azure)',
         ],
         engagement: 'Duración: piloto acotado → despliegue en producción',
       },
@@ -93,8 +107,9 @@ export default {
     titleHighlight: 'proyecto',
     titlePost: '',
     desc:
-      'Una secuencia fija y predecible — sin importar si el alcance es un pipeline, una ' +
-      'suite de dashboards o una aplicación de IA.',
+      'Una secuencia fija y predecible, con un entregable claro en cada etapa — sin importar ' +
+      'si el alcance es un pipeline, una suite de dashboards o una aplicación de IA. Sin caja ' +
+      'negra, sin adivinar qué viene después.',
     steps: [
       {
         n: '01',
@@ -104,7 +119,7 @@ export default {
       {
         n: '02',
         title: 'Arquitectura y Diseño',
-        description: 'Diseñamos la arquitectura Medallion objetivo, el modelo semántico o la aplicación de IA — ajustados a tus sistemas y restricciones.',
+        description: 'Diseño de la arquitectura Medallion objetivo, el modelo semántico o la aplicación de IA — ajustado a tus sistemas y restricciones, y documentado para que tu propio equipo de IT pueda revisarlo y aprobarlo antes de escribir una sola línea de código.',
       },
       {
         n: '03',
@@ -114,7 +129,7 @@ export default {
       {
         n: '04',
         title: 'Traspaso y Soporte',
-        description: 'Documentación, transferencia de conocimiento a tu equipo, y una ventana de soporte opcional tras el lanzamiento.',
+        description: 'Documentación completa y transferencia de conocimiento práctica, para que tu equipo pueda operar y ampliar el sistema sin depender de mí — más una ventana de soporte opcional tras el lanzamiento.',
       },
     ],
   },
@@ -125,8 +140,10 @@ export default {
     titleHighlight: 'Medallion',
     titlePost: '',
     desc:
-      'Pipeline de datos a escala empresarial que procesa millones de eventos al día. ' +
-      'Bronze → Silver → Gold — desde la ingesta bruta hasta Power BI Direct Lake.',
+      'Una arquitectura de pipeline gobernada — no solo un diagrama. Bronze → Silver → Gold ' +
+      'convierte millones de eventos diarios de tus sistemas de origen en cifras en las que ' +
+      'tus equipos pueden confiar y actuar, hasta llegar a informes de Power BI Direct Lake en ' +
+      'menos de un segundo.',
     sourcesOutputs: 'Fuentes / Salidas',
     technologies: 'Tecnologías',
     layers: [
@@ -134,13 +151,13 @@ export default {
         id: 'bronze',
         label: 'CAPA BRONZE',
         subtitle: 'Ingesta Bruta',
-        description: 'Datos sin procesar, tal cual llegan de los sistemas empresariales. Schema-on-read, con todo el histórico preservado, sin transformaciones aplicadas.',
+        description: 'Datos sin procesar, tal cual llegan de los sistemas empresariales, con todo el histórico preservado — nada se pierde ni se sobrescribe, así que cualquier informe puede rastrearse hasta su origen. Schema-on-read, sin transformaciones aplicadas.',
       },
       {
         id: 'silver',
         label: 'CAPA SILVER',
         subtitle: 'Limpieza y Validación',
-        description: 'Datos limpios, deduplicados y estandarizados. Reglas de negocio aplicadas, schema-on-write, integridad referencial validada.',
+        description: 'Datos limpios, deduplicados y estandarizados — la capa donde las cifras de distintos sistemas por fin coinciden entre sí. Reglas de negocio aplicadas, schema-on-write, integridad referencial validada.',
       },
       {
         id: 'gold',
@@ -181,7 +198,7 @@ export default {
   work: {
     eyebrow: 'Proyectos',
     titlePre: 'Casos de ',
-    titleHighlight: 'Éxito',
+    titleHighlight: 'Estudio',
     titlePost: '',
     desc: 'Proyectos de ingeniería de datos a escala empresarial que generan impacto real en el negocio. Pasa el cursor por cada tarjeta para explorar.',
     viewMore: 'Ver Más →',
@@ -191,7 +208,11 @@ export default {
       {
         title: 'Medallion Architecture · Grupo Farmacéutico',
         description:
-          'Pipeline Medallion end-to-end para una farmacéutica multinacional. Datos de SAP ingeridos vía ADF a Bronze, transformaciones con PySpark a través de Silver, informes de Power BI Direct Lake para más de 200 usuarios.',
+          'Un grupo farmacéutico multinacional necesitaba reporting gobernado y casi en tiempo ' +
+          'real sobre cuatro sistemas desconectados, sin exportaciones manuales que frenaran ' +
+          'al negocio. Construimos un pipeline Medallion end-to-end: datos de SAP ingeridos ' +
+          'vía ADF a Bronze, transformaciones con PySpark a través de Silver, e informes de ' +
+          'Power BI Direct Lake que hoy sirven a más de 200 usuarios.',
         metrics: [
           { label: 'Fuentes de datos', value: '4' },
           { label: 'Eventos diarios', value: '50M+' },
@@ -199,19 +220,22 @@ export default {
         ],
       },
       {
-        title: 'Power BI Embedded Dashboard Suite',
+        title: 'Power BI Embedded Dashboard Suite · Pharmacy Network',
         description:
-          'Plataforma de analítica embebida con seguridad a nivel de fila que sirve a más de 500 usuarios concurrentes. Componentes visuales personalizados, informes paginados y arquitectura multi-tenant con modo Direct Lake.',
+          'Un único informe de Power BI embebido en el portal de farmacias. Una API de tokens en Node.js y seguridad a nivel de fila sobre el ID de farmacia dan a cada farmacia su propio sell-out (unidades, valor, por producto, YTD y YoY) sin licencia de Power BI por usuario.',
         metrics: [
-          { label: 'Usuarios concurrentes', value: '500+' },
-          { label: 'Tipos de informe', value: '28' },
-          { label: 'Consulta p95', value: '0.4s' },
+          { label: 'Informe, todas las farmacias', value: '1' },
+          { label: 'Licencias por usuario', value: '0' },
+          { label: 'Aislamiento', value: 'RLS' },
         ],
       },
       {
         title: 'Real-time Pipeline · Databricks',
         description:
-          'Pipeline de datos en streaming que procesa eventos de Salesforce y Odoo casi en tiempo real. Delta Live Tables con evolución de esquema, validaciones automáticas de calidad de datos y monitorización de SLA.',
+          'Datos de Salesforce y Odoo disponibles en el momento en que ocurren, no horas ' +
+          'después. Un pipeline en streaming construido sobre Delta Live Tables, con evolución ' +
+          'de esquema, validaciones automáticas de calidad de datos y monitorización de SLA ' +
+          'que lo mantienen fiable a escala de producción, no solo rápido.',
         metrics: [
           { label: 'Latencia de eventos', value: '<5s' },
           { label: 'Tablas gestionadas', value: '120+' },
@@ -220,9 +244,12 @@ export default {
       },
     ],
     aiPlaceholder: {
-      title: 'AI Application — End-to-End Delivery',
+      title: 'Aplicación de IA — Entrega End-to-End',
       description:
-        'Una aplicación de IA en producción entregada de forma end-to-end sobre una plataforma de datos gobernada. Cliente real, métricas y detalles de arquitectura se añadirán en cuanto el proyecto pueda hacerse público.',
+        'Aquí irá el próximo caso de estudio de IA — una aplicación en producción construida ' +
+        'end-to-end sobre una plataforma de datos gobernada, siguiendo la misma cadena Datos → ' +
+        'BI → IA que el trabajo de arriba. Cliente, métricas y arquitectura se añadirán en ' +
+        'cuanto el proyecto pueda hacerse público.',
       badge: 'Añadir caso de estudio real',
     },
   },
@@ -290,7 +317,7 @@ export default {
     titlePre: 'Lo que dicen los ',
     titleHighlight: 'clientes',
     titlePost: '',
-    quotePending: '[Testimonio pendiente]',
+    quotePending: 'Testimonio pendiente — este espacio permanece vacío hasta que un cliente lo firme con su nombre. Aquí no se inventan citas.',
     namePending: '[Nombre pendiente]',
     rolePending: '[Cargo / empresa pendiente]',
   },
@@ -320,16 +347,31 @@ export default {
     architectureTitle: 'La Arquitectura',
     techStackTitle: 'Stack Tecnológico',
     resultsTitle: 'Resultados',
-    ctaTitle: '¿Interesado en algo similar?',
+    ctaTitle: '¿Quieres resultados así para tu propio stack de datos?',
     ctaButton: 'Reservar una Llamada',
     otherStudiesLabel: 'Otros casos de estudio',
     comingSoon: 'Próximamente',
+    implementationTitle: 'Implementación',
+    pendingLabel: 'Pendiente',
+    resultsPendingNote: 'Resultados de diseño. Las métricas medidas (farmacias activas, tiempos de carga, horas ahorradas) se añadirán cuando estén confirmadas.',
     layerMeta: {
       dataFormat: 'Formato de Datos',
       storage: 'Almacenamiento',
       transform: 'Transformación',
       status: 'Estado',
     },
+  },
+
+  embedFlow: {
+    title: 'FLUJO DE EMBEBIDO · APP OWNS DATA',
+    status: 'RLS activo',
+    steps: [
+      { from: 1, to: 2, text: 'El usuario abre el dashboard; la sesión del portal se envía a la API de tokens' },
+      { from: 2, to: 3, text: 'La API resuelve el ID de farmacia en servidor y pide un token del service principal' },
+      { from: 2, to: 4, text: 'GenerateToken con identidad efectiva { username: pharmacyId, roles: [Pharmacy] }' },
+      { from: 2, to: 1, text: 'Token de embebido de corta duración y solo lectura devuelto al navegador' },
+      { from: 1, to: 4, text: 'powerbi-client pinta el informe; el RLS filtra cada visual a esa farmacia' },
+    ],
   },
 
   medallionHud: {

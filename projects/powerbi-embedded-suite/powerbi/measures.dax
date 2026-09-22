@@ -1,0 +1,55 @@
+// ─────────────────────────────────────────────────────────────────────────
+// Sell-out measures — table _Measures
+// Model: FactSellOut[DateKey, PharmacyId, ProductId, Units, NetValue]
+//        DimDate (marked as date table), DimProduct, DimPharmacy
+// ─────────────────────────────────────────────────────────────────────────
+
+Sell-out Units =
+SUM ( FactSellOut[Units] )
+
+Sell-out Value =
+SUM ( FactSellOut[NetValue] )
+
+Avg Price =
+DIVIDE ( [Sell-out Value], [Sell-out Units] )
+
+// ── Year to date ─────────────────────────────────────────────────────────
+Units YTD =
+TOTALYTD ( [Sell-out Units], DimDate[Date] )
+
+Value YTD =
+TOTALYTD ( [Sell-out Value], DimDate[Date] )
+
+// ── Prior year (same period) ─────────────────────────────────────────────
+Units PY =
+CALCULATE ( [Sell-out Units], SAMEPERIODLASTYEAR ( DimDate[Date] ) )
+
+Value PY =
+CALCULATE ( [Sell-out Value], SAMEPERIODLASTYEAR ( DimDate[Date] ) )
+
+Units PY YTD =
+CALCULATE ( [Units YTD], SAMEPERIODLASTYEAR ( DimDate[Date] ) )
+
+Value PY YTD =
+CALCULATE ( [Value YTD], SAMEPERIODLASTYEAR ( DimDate[Date] ) )
+
+// ── Year over year ───────────────────────────────────────────────────────
+Units YoY % =
+DIVIDE ( [Sell-out Units] - [Units PY], [Units PY] )
+
+Value YoY % =
+DIVIDE ( [Sell-out Value] - [Value PY], [Value PY] )
+
+Value YTD YoY % =
+DIVIDE ( [Value YTD] - [Value PY YTD], [Value PY YTD] )
+
+// ── Product ranking (for "Top products" visual) ──────────────────────────
+Product Rank by Value =
+IF (
+    ISINSCOPE ( DimProduct[Product] ),
+    RANKX ( ALLSELECTED ( DimProduct[Product] ), [Sell-out Value], , DESC, DENSE )
+)
+
+// ── Conditional formatting helper for YoY (theme good / bad colours) ─────
+YoY Colour =
+SWITCH ( TRUE (), [Value YoY %] >= 0, "#4ADE80", "#FF6B6B" )

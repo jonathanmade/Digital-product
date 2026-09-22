@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { getCaseStudy, CASE_STUDY_INDEX } from '../../data/caseStudies'
 import MedallionScene3D from '../../components/MedallionScene3D/MedallionScene3D'
+import EmbedFlowDiagram from '../../components/EmbedFlowDiagram/EmbedFlowDiagram'
 import { useLanguage } from '../../context/LanguageContext'
 import './CaseStudyDetail.css'
 
@@ -46,7 +47,9 @@ export default function CaseStudyDetail() {
         </header>
 
         <div className="cs-hero-visual">
-          <MedallionScene3D layers={study.layers} />
+          {study.heroVisual === 'embed-flow'
+            ? <EmbedFlowDiagram />
+            : <MedallionScene3D layers={study.layers} />}
           <p className="cs-summary">{study.summary[lang]}</p>
         </div>
 
@@ -80,15 +83,40 @@ export default function CaseStudyDetail() {
                 <span className="cs-layer-label">{layer.label}</span>
                 <span className="cs-layer-subtitle">{layer.subtitle}</span>
                 <dl className="cs-layer-meta">
-                  <div><dt>{t.caseStudyDetail.layerMeta.dataFormat}</dt><dd>{layer.dataFormat}</dd></div>
-                  <div><dt>{t.caseStudyDetail.layerMeta.storage}</dt><dd>{layer.storage}</dd></div>
-                  <div><dt>{t.caseStudyDetail.layerMeta.transform}</dt><dd>{layer.transform}</dd></div>
-                  <div><dt>{t.caseStudyDetail.layerMeta.status}</dt><dd>{layer.status}</dd></div>
+                  {layer.meta ? (
+                    layer.meta.map(m => (
+                      <div key={m.label.en}><dt>{m.label[lang]}</dt><dd>{m.value}</dd></div>
+                    ))
+                  ) : (
+                    <>
+                      <div><dt>{t.caseStudyDetail.layerMeta.dataFormat}</dt><dd>{layer.dataFormat}</dd></div>
+                      <div><dt>{t.caseStudyDetail.layerMeta.storage}</dt><dd>{layer.storage}</dd></div>
+                      <div><dt>{t.caseStudyDetail.layerMeta.transform}</dt><dd>{layer.transform}</dd></div>
+                      <div><dt>{t.caseStudyDetail.layerMeta.status}</dt><dd>{layer.status}</dd></div>
+                    </>
+                  )}
                 </dl>
               </div>
             ))}
           </div>
         </div>
+
+        {study.codeSnippets && (
+          <div className="cs-section">
+            <h2 className="cs-h2">{t.caseStudyDetail.implementationTitle}</h2>
+            <div className="cs-code-grid">
+              {study.codeSnippets.map(snippet => (
+                <figure key={snippet.title.en} className="cs-code-card">
+                  <figcaption className="cs-code-title">
+                    <span>{snippet.title[lang]}</span>
+                    <span className="cs-code-lang">{snippet.language}</span>
+                  </figcaption>
+                  <pre className="cs-code"><code>{snippet.code}</code></pre>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="cs-section">
           <h2 className="cs-h2">{t.caseStudyDetail.techStackTitle}</h2>
@@ -99,6 +127,12 @@ export default function CaseStudyDetail() {
 
         <div className="cs-section">
           <h2 className="cs-h2">{t.caseStudyDetail.resultsTitle}</h2>
+          {study.resultsPending && (
+            <p className="cs-results-note">
+              <span className="pending-badge">{t.caseStudyDetail.pendingLabel}</span>
+              {t.caseStudyDetail.resultsPendingNote}
+            </p>
+          )}
           <div className="cs-results-grid">
             {study.results.map(r => (
               <div key={r.label[lang]} className="cs-result-card">

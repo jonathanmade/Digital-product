@@ -18,4 +18,9 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // Node.js reference implementation (Power BI embed token API)
+    files: ['projects/**/server/**/*.js'],
+    languageOptions: { globals: globals.node },
+  },
 ])

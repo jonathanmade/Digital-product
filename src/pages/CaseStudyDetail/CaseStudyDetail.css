@@ -251,6 +251,60 @@
   color: var(--muted);
 }
 
+/* Implementation code snippets */
+.cs-code-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 16px;
+}
+
+.cs-code-card {
+  margin: 0;
+  min-width: 0;
+  background: rgba(var(--sunken-rgb), 0.8);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cs-code-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text);
+}
+
+.cs-code-lang {
+  color: var(--cyan);
+  text-transform: uppercase;
+}
+
+.cs-code {
+  margin: 0;
+  padding: 14px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text2);
+}
+
+.cs-results-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  margin: -8px 0 20px;
+}
+
 /* Final CTA */
 .cs-cta-section {
   border-top: 1px solid var(--border);

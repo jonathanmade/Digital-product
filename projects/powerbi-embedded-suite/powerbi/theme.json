@@ -1,0 +1,35 @@
+{
+  "name": "Ops Console · Dark",
+  "dataColors": ["#00F5FF", "#5B8DEF", "#8A9AB8", "#0EA5A0", "#2F5D8A", "#B3FBFF", "#46607F", "#1E8CA0"],
+  "background": "#0D1321",
+  "foreground": "#C8D6F0",
+  "tableAccent": "#00F5FF",
+  "good": "#4ADE80",
+  "neutral": "#8A9AB8",
+  "bad": "#FF6B6B",
+  "maximum": "#00F5FF",
+  "center": "#2F5D8A",
+  "minimum": "#0D1321",
+  "textClasses": {
+    "title":   { "fontFace": "Segoe UI Semibold", "fontSize": 11, "color": "#FFFFFF" },
+    "header":  { "fontFace": "Segoe UI Semibold", "fontSize": 12, "color": "#C8D6F0" },
+    "label":   { "fontFace": "Segoe UI", "fontSize": 9, "color": "#8A9AB8" },
+    "callout": { "fontFace": "Segoe UI Light", "fontSize": 28, "color": "#FFFFFF" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": true, "color": { "solid": { "color": "#0D1321" } }, "transparency": 0 }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#1A2540" } }, "radius": 8 }],
+        "visualHeader": [{ "foreground": { "solid": { "color": "#5A6A8A" } }, "background": { "solid": { "color": "#0D1321" } } }],
+        "dropShadow": [{ "show": false }]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [{ "color": { "solid": { "color": "#050810" } }, "transparency": 0 }],
+        "outspace": [{ "color": { "solid": { "color": "#050810" } } }]
+      }
+    }
+  }
+}
