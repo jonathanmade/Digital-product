@@ -95,9 +95,8 @@ src/
 ### Sistema de tormenta (StormSystem)
 - Archivo: src/utils/stormSystem.js — clase StormSystem + singleton exportado
 - Canvas fijo global (position:fixed, z-index:9999, pointer-events:none)
-- Dos tipos de partículas:
-  - Tipo A: puntos flotantes suaves, suben lentamente, vida 400-800ms
-  - Tipo B: rayos eléctricos en zigzag, vida 150-400ms, solo con scroll rápido (velocity > 8)
+- Un tipo de partícula: puntos flotantes suaves, suben lentamente, vida 400-800ms
+  (el efecto de rayos eléctricos en zigzag se eliminó)
 - Intensidad reactiva a scroll velocity (0-1 → idle, 2-15 → suave, >15 → intenso)
 - Límite: 80 partículas simultáneas, requestAnimationFrame loop
 - Inicializado en App.jsx con useEffect + cleanup (storm.init / storm.destroy)

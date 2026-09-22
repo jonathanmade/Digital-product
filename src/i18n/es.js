@@ -220,7 +220,7 @@ export default {
         ],
       },
       {
-        title: 'Power BI Embedded Dashboard Suite · Pharmacy Network',
+        title: 'Power BI Embedded Dashboard Suite',
         description:
           'Un único informe de Power BI embebido en el portal de farmacias. Una API de tokens en Node.js y seguridad a nivel de fila sobre el ID de farmacia dan a cada farmacia su propio sell-out (unidades, valor, por producto, YTD y YoY) sin licencia de Power BI por usuario.',
         metrics: [

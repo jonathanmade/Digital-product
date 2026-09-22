@@ -3,7 +3,11 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  /* Bottom padding reserves room for .scroll-indicator (absolutely positioned,
+     ~102px tall incl. its own bottom offset) so vertically-centered content
+     never grows into it on shorter viewports — it centers within the space
+     above this padding instead of overlapping the indicator. */
+  padding: 0 24px 110px;
   overflow: hidden;
 }
 

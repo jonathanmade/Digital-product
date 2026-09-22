@@ -84,7 +84,7 @@ export class StormSystem {
     const v = this.scrollVelocity
     const W = this.canvas.width
     const H = this.canvas.height
-    let count = 0
+    let count
 
     if (v < 2) {
       count = Math.random() < 0.06 ? 1 : 0
@@ -99,41 +99,17 @@ export class StormSystem {
         this.particles.splice(0, 1)
       }
 
-      if (v > 12 && Math.random() < 0.3) {
-        // Type B — lightning bolt
-        const segs = Math.floor(3 + Math.random() * 3)
-        const pts = [{ x: Math.random() * W, y: Math.random() < 0.7 ? 0 : Math.random() * H }]
-        let angle = (Math.PI / 2) + (Math.random() - 0.5) * (Math.PI / 2)
-        for (let s = 0; s < segs; s++) {
-          const len = 15 + Math.random() * 30
-          angle += (Math.random() - 0.5) * 1.2
-          pts.push({
-            x: pts[pts.length - 1].x + Math.cos(angle) * len,
-            y: pts[pts.length - 1].y + Math.sin(angle) * len,
-          })
-        }
-        this.particles.push({
-          type: 'bolt',
-          pts,
-          alpha: 0.15 + Math.random() * 0.2,
-          width: 1 + Math.random() * 0.5,
-          born: performance.now(),
-          life: 150 + Math.random() * 250,
-        })
-      } else {
-        // Type A — floating dot
-        this.particles.push({
-          type: 'dot',
-          x: Math.random() * W,
-          y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: -(0.3 + Math.random() * 0.9),
-          r: 1 + Math.random() * 1.5,
-          alpha: 0.08 + Math.random() * 0.22,
-          born: performance.now(),
-          life: 400 + Math.random() * 400,
-        })
-      }
+      // Floating dot
+      this.particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: -(0.3 + Math.random() * 0.9),
+        r: 1 + Math.random() * 1.5,
+        alpha: 0.08 + Math.random() * 0.22,
+        born: performance.now(),
+        life: 400 + Math.random() * 400,
+      })
     }
   }
 
@@ -153,35 +129,17 @@ export class StormSystem {
         ? progress / 0.15
         : 1 - (progress - 0.15) / 0.85
 
-      if (p.type === 'dot') {
-        p.x += p.vx
-        p.y += p.vy
-        ctx.save()
-        ctx.globalAlpha = p.alpha * fade
-        ctx.shadowBlur = 8
-        ctx.shadowColor = '#00F5FF'
-        ctx.fillStyle = '#00F5FF'
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fill()
-        ctx.restore()
-      } else {
-        ctx.save()
-        ctx.globalAlpha = p.alpha * fade
-        ctx.shadowBlur = 10
-        ctx.shadowColor = '#00F5FF'
-        ctx.strokeStyle = '#00F5FF'
-        ctx.lineWidth = p.width
-        ctx.lineCap = 'round'
-        ctx.lineJoin = 'round'
-        ctx.beginPath()
-        ctx.moveTo(p.pts[0].x, p.pts[0].y)
-        for (let i = 1; i < p.pts.length; i++) {
-          ctx.lineTo(p.pts[i].x, p.pts[i].y)
-        }
-        ctx.stroke()
-        ctx.restore()
-      }
+      p.x += p.vx
+      p.y += p.vy
+      ctx.save()
+      ctx.globalAlpha = p.alpha * fade
+      ctx.shadowBlur = 8
+      ctx.shadowColor = '#00F5FF'
+      ctx.fillStyle = '#00F5FF'
+      ctx.beginPath()
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.restore()
 
       return true
     })
