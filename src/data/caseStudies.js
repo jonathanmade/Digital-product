@@ -11,75 +11,64 @@ export const CASE_STUDIES = {
     tags: ['Microsoft Fabric', 'SAP', 'PySpark', 'Power BI', 'Delta Lake', 'Azure'],
     summary: {
       en:
-        'End-to-end Medallion pipeline ingesting SAP into Bronze, transforming through Silver with PySpark, serving Power BI Direct Lake reports to 200+ users.',
+        'Medallion pipeline that unifies four enterprise systems: SAP lands in Bronze, PySpark refines it in Silver, and Power BI Direct Lake serves 200+ users.',
       es:
-        'Pipeline Medallion end-to-end que ingiere SAP en Bronze, transforma a través de Silver con PySpark, y sirve informes de Power BI Direct Lake a más de 200 usuarios.',
+        'Pipeline Medallion que unifica cuatro sistemas empresariales: SAP aterriza en Bronze, PySpark lo refina en Silver y Power BI Direct Lake sirve a más de 200 usuarios.',
     },
     challenge: {
       en:
-        'The client — a multinational pharmaceutical group — runs on four enterprise systems: ' +
-        'SAP ERP, Salesforce CRM, Odoo ERP, and Zinc WMS, each with its own schema, refresh ' +
-        'cadence, and data-quality profile. Business teams needed governed, near real-time ' +
-        'reporting without waiting on manual exports or fragile point-to-point integrations, ' +
-        'and IT needed a single source of truth that could scale as new systems were added, ' +
-        'without re-architecting the pipeline each time.',
+        'A multinational pharma group ran on SAP, Salesforce, Odoo and a warehouse system, each with its own schema and refresh cadence. Business teams needed governed, near real-time reporting without manual exports, and IT needed one source of truth that could absorb new systems without re-architecting.',
       es:
-        'El cliente — un grupo farmacéutico multinacional — opera sobre cuatro sistemas ' +
-        'empresariales: SAP ERP, Salesforce CRM, Odoo ERP y Zinc WMS, cada uno con su propio ' +
-        'esquema, cadencia de actualización y nivel de calidad de datos. Los equipos de negocio ' +
-        'necesitaban informes gobernados y casi en tiempo real sin depender de exportaciones ' +
-        'manuales ni integraciones punto a punto frágiles, y IT necesitaba una única fuente de ' +
-        'verdad capaz de escalar a medida que se añadían nuevos sistemas, sin rediseñar el ' +
-        'pipeline cada vez.',
+        'Un grupo farmacéutico multinacional operaba con SAP, Salesforce, Odoo y un sistema de almacén, cada uno con su esquema y cadencia propios. Negocio necesitaba reporting gobernado y casi en tiempo real sin exportaciones manuales, e IT una única fuente de verdad capaz de absorber nuevos sistemas sin rediseñar.',
     },
     process: [
       {
         title: { en: 'Requirement Intake', es: 'Recepción del Requerimiento' },
         description: {
-          en: 'Kickoff with business stakeholders to capture the reporting need, priority KPIs, and delivery constraints.',
-          es: 'Kickoff con los stakeholders de negocio para capturar la necesidad de reporting, los KPIs prioritarios y las restricciones de entrega.',
+          en: 'Kickoff with stakeholders to capture the reporting need, priority KPIs and constraints.',
+          es: 'Kickoff con stakeholders para capturar la necesidad de reporting, KPIs prioritarios y restricciones.',
         },
       },
       {
         title: { en: 'Data Source & Connections Diagnostic', es: 'Diagnóstico de Fuentes de Datos y Conexiones' },
         description: {
-          en: 'Map every source system (SAP, Salesforce, Odoo, Zinc WMS), its schema, refresh cadence, and access method before touching the pipeline.',
-          es: 'Mapeo de cada sistema fuente (SAP, Salesforce, Odoo, Zinc WMS), su esquema, cadencia de actualización y método de acceso, antes de tocar el pipeline.',
+          en: 'Map every source system, its schema, refresh cadence and access method.',
+          es: 'Mapeo de cada sistema fuente, su esquema, cadencia de actualización y método de acceso.',
         },
       },
       {
         title: { en: 'Requirement Analysis', es: 'Análisis del Requerimiento' },
         description: {
-          en: 'Translate the business ask into a technical spec: target Medallion layer, transformations needed, and semantic model design.',
-          es: 'Traducción de la necesidad de negocio a una especificación técnica: capa Medallion objetivo, transformaciones necesarias y diseño del modelo semántico.',
+          en: 'Turn the business ask into a technical spec: target layers, transformations and semantic model.',
+          es: 'De la necesidad de negocio a una especificación técnica: capas, transformaciones y modelo semántico.',
         },
       },
       {
         title: { en: 'Development', es: 'Desarrollo' },
         description: {
-          en: 'Build the pipeline layer by layer — ingestion, PySpark transforms, Delta tables, and the Power BI semantic model — in short, reviewable increments.',
-          es: 'Construcción del pipeline capa por capa — ingesta, transformaciones en PySpark, tablas Delta y modelo semántico de Power BI — en incrementos cortos y revisables.',
+          en: 'Build layer by layer (ingestion, PySpark, Delta tables, semantic model) in short, reviewable increments.',
+          es: 'Construcción capa por capa (ingesta, PySpark, tablas Delta, modelo semántico) en incrementos cortos y revisables.',
         },
       },
       {
         title: { en: 'UAT', es: 'UAT' },
         description: {
-          en: 'Business users validate the reports and underlying data against real scenarios before anything reaches production.',
-          es: 'Los usuarios de negocio validan los informes y los datos subyacentes contra escenarios reales antes de llegar a producción.',
+          en: 'Business users validate reports and data against real scenarios before production.',
+          es: 'Los usuarios de negocio validan informes y datos con escenarios reales antes de producción.',
         },
       },
       {
         title: { en: 'Business Adjustments', es: 'Ajustes de Negocio' },
         description: {
-          en: 'Incorporate UAT feedback — metric definitions, formatting, access/RLS rules — without breaking what has already been validated.',
-          es: 'Se incorporan los ajustes surgidos del UAT — definiciones de métricas, formato, reglas de acceso/RLS — sin romper lo ya validado.',
+          en: 'Fold UAT feedback (metrics, formatting, RLS rules) in without breaking what is validated.',
+          es: 'Se incorporan los ajustes del UAT (métricas, formato, reglas RLS) sin romper lo validado.',
         },
       },
       {
         title: { en: 'Deployment (Azure DevOps)', es: 'Despliegue (Azure DevOps)' },
         description: {
-          en: 'Versioned release through Azure DevOps pipelines — CI/CD, work-item tracking, and a rollback path for every environment promotion.',
-          es: 'Despliegue versionado a través de pipelines de Azure DevOps — CI/CD, seguimiento de work items y posibilidad de rollback en cada promoción de entorno.',
+          en: 'Versioned CI/CD releases with a rollback path for every promotion.',
+          es: 'Despliegues versionados con CI/CD y rollback en cada promoción.',
         },
       },
     ],
@@ -152,77 +141,64 @@ export const CASE_STUDIES = {
     heroVisual: 'embed-flow',
     summary: {
       en:
-        'One Power BI report embedded in a pharmacy portal. Each pharmacy sees only its own sell-out (units, value, by product, YTD and YoY), enforced by row-level security keyed on the pharmacy ID. A Node.js API issues short-lived embed tokens on behalf of a service principal.',
+        'One Power BI report embedded in a pharmacy portal. Row-level security on the pharmacy ID gives each pharmacy only its own sell-out, with short-lived tokens issued by a Node.js API.',
       es:
-        'Un único informe de Power BI embebido en el portal de farmacias. Cada farmacia ve solo su propio sell-out (unidades, valor, por producto, YTD y YoY), garantizado por seguridad a nivel de fila sobre el ID de farmacia. Una API en Node.js emite tokens de embebido de corta duración en nombre de un service principal.',
+        'Un único informe de Power BI embebido en el portal de farmacias. La seguridad a nivel de fila sobre el ID de farmacia muestra a cada una solo su sell-out, con tokens de corta duración emitidos por una API en Node.js.',
     },
     challenge: {
       en:
-        'Every pharmacy in the network wanted its own sell-out view (units and value by product, ' +
-        'by month, year-to-date and against last year) inside the portal it already uses. The ' +
-        'existing process was monthly exports emailed pharmacy by pharmacy: manual, stale on ' +
-        'arrival, and one wrong attachment away from a data leak. Sharing reports in the Power BI ' +
-        'service would have required a licence and a corporate account for every pharmacy user, and ' +
-        '"Publish to web" has no authentication at all. The solution had to be licence-free for ' +
-        'viewers, isolate each pharmacy\'s data by design, and scale by adding rows, not reports.',
+        'Every pharmacy wanted its own sell-out view inside the portal it already uses. Monthly emailed exports were manual, stale on arrival and one wrong attachment from a data leak, while per-user Power BI licences or Publish to web were not an option. The solution had to be licence-free for viewers, isolate each pharmacy by design and scale by adding rows, not reports.',
       es:
-        'Cada farmacia de la red quería su propia vista de sell-out (unidades y valor por producto, ' +
-        'por mes, acumulado anual y frente al año anterior) dentro del portal que ya utiliza. El ' +
-        'proceso existente eran exportaciones mensuales enviadas por email farmacia a farmacia: ' +
-        'manual, desactualizado al llegar y a un adjunto equivocado de una fuga de datos. Compartir ' +
-        'informes en el servicio de Power BI habría exigido una licencia y una cuenta corporativa ' +
-        'por cada usuario de farmacia, y "Publicar en la web" no tiene autenticación. La solución ' +
-        'debía ser sin licencias para los usuarios, aislar los datos de cada farmacia por diseño y ' +
-        'escalar añadiendo filas, no informes.',
+        'Cada farmacia quería su propia vista de sell-out dentro del portal que ya usa. Las exportaciones mensuales por email eran manuales, llegaban desactualizadas y a un adjunto de una fuga de datos, y las licencias por usuario o Publicar en la web no eran opción. La solución debía ser sin licencias para los usuarios, aislar cada farmacia por diseño y escalar añadiendo filas, no informes.',
     },
     process: [
       {
         title: { en: 'Need Diagnosis', es: 'Diagnóstico de la Necesidad' },
         description: {
-          en: 'Interview pharmacy and commercial stakeholders, audit the email-export process, and fix the KPI set: sell-out units, value, by product, by month, YTD and YoY.',
-          es: 'Entrevistas con farmacias y equipo comercial, auditoría del proceso de exportación por email y definición de los KPIs: unidades y valor de sell-out, por producto, por mes, YTD y YoY.',
+          en: 'Interview stakeholders, audit the email-export process and fix the KPI set.',
+          es: 'Entrevistas, auditoría del proceso de exportación por email y definición de los KPIs.',
         },
       },
       {
         title: { en: 'Embedding Model Decision', es: 'Decisión del Modelo de Embebido' },
         description: {
-          en: 'Compare sharing, Publish to web, embed-for-your-organization and embed-for-your-customers. Choose app-owns-data with one report plus RLS instead of one report per pharmacy.',
-          es: 'Comparación entre compartir, Publicar en la web, embed para tu organización y embed para tus clientes. Elección de app-owns-data con un único informe más RLS en lugar de un informe por farmacia.',
+          en: 'Compare embedding models; choose app-owns-data with one report plus RLS.',
+          es: 'Comparación de modelos de embebido; se elige app-owns-data con un informe más RLS.',
         },
       },
       {
         title: { en: 'Entra ID App & Service Principal', es: 'App en Entra ID y Service Principal' },
         description: {
-          en: 'Register the app in Microsoft Entra ID, store the secret in Key Vault, add the service principal to a security group allowed by the Power BI tenant settings, and grant it Member on a dedicated workspace.',
-          es: 'Registro de la app en Microsoft Entra ID, secreto en Key Vault, service principal en un grupo de seguridad habilitado en la configuración del tenant de Power BI y rol Member en un workspace dedicado.',
+          en: 'Register the app, keep the secret in Key Vault, grant the service principal access to a dedicated workspace.',
+          es: 'Registro de la app, secreto en Key Vault y acceso del service principal a un workspace dedicado.',
         },
       },
       {
         title: { en: 'Semantic Model & RLS', es: 'Modelo Semántico y RLS' },
         description: {
-          en: 'Star schema over the Gold layer (FactSellOut, DimDate, DimProduct, DimPharmacy), time-intelligence DAX, and a "Pharmacy" role filtering DimPharmacy[PharmacyId] = USERPRINCIPALNAME().',
-          es: 'Modelo en estrella sobre la capa Gold (FactSellOut, DimDate, DimProduct, DimPharmacy), DAX de inteligencia temporal y un rol "Pharmacy" que filtra DimPharmacy[PharmacyId] = USERPRINCIPALNAME().',
+          en: 'Star schema over Gold, time-intelligence DAX and a Pharmacy role filtering on the pharmacy ID.',
+          es: 'Modelo en estrella sobre Gold, DAX de inteligencia temporal y un rol Pharmacy filtrado por ID de farmacia.',
         },
       },
       {
         title: { en: 'Node.js Token API', es: 'API de Tokens en Node.js' },
         description: {
-          en: 'Express + MSAL: client-credentials token, report metadata, then GenerateToken with an effective identity whose username is the pharmacy ID, resolved server-side from the portal session.',
-          es: 'Express + MSAL: token por client credentials, metadatos del informe y GenerateToken con una identidad efectiva cuyo username es el ID de farmacia, resuelto en servidor a partir de la sesión del portal.',
+          en: 'Express + MSAL issue embed tokens with an identity resolved server-side from the portal session.',
+          es: 'Express + MSAL emiten tokens de embebido con identidad resuelta en servidor desde la sesión del portal.',
         },
       },
       {
         title: { en: 'HTML Embed & Custom Theme', es: 'Embebido HTML y Tema Personalizado' },
         description: {
-          en: 'powerbi-client embed page with a read-only token, hidden filter pane, silent token refresh before expiry, and a report theme matching the portal palette.',
-          es: 'Página de embebido con powerbi-client, token de solo lectura, panel de filtros oculto, renovación silenciosa del token antes de caducar y un tema de informe alineado con la paleta del portal.',
+          en: 'Read-only embed with hidden filters, silent token refresh and a portal-matched theme.',
+          es: 'Embebido de solo lectura con filtros ocultos, renovación silenciosa del token y tema alineado con el portal.',
         },
       },
       {
         title: { en: 'UAT per Pharmacy & Rollout', es: 'UAT por Farmacia y Despliegue' },
         description: {
-          en: 'Validate RLS with "View as" and with real portal users from several pharmacies, then promote Dev → Test → Prod through deployment pipelines.',
-          es: 'Validación del RLS con "Ver como" y con usuarios reales del portal de varias farmacias, y promoción Dev → Test → Prod mediante deployment pipelines.',
+          en: 'Validate RLS with real pharmacy users, then promote Dev → Test → Prod.',
+          es: 'Validación del RLS con usuarios reales de farmacia y promoción Dev → Test → Prod.',
         },
       },
     ],

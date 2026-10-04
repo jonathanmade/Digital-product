@@ -38,7 +38,7 @@ const LAYER_META = {
     glow: 'rgba(var(--bronze-rgb), 0.4)',
     dim: 'rgba(var(--bronze-rgb), 0.08)',
     icon: BronzeIcon,
-    nodes: ['SAP ERP', 'Salesforce CRM', 'Odoo ERP', 'Zinc WMS'],
+    nodes: ['SAP ERP', 'Salesforce CRM', 'Odoo ERP', 'Warehouse WMS'],
     tech: ['Azure Data Factory', 'Event Hubs', 'ADLS Gen2', 'Delta Lake'],
   },
   silver: {

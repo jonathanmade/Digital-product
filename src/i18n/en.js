@@ -27,9 +27,7 @@ export default {
     headlineHighlight: 'BI and AI you can trust',
     headlinePost: '',
     subheadline:
-      'Jonatan Marín — 10+ years in Data Engineering, BI, and Architecture, now extending ' +
-      'into end-to-end AI applications built on governed, production-grade data. ' +
-      'Based in Barcelona, working with enterprise teams across Europe.',
+      'A decade of Data Engineering, BI and Architecture, now extending into end-to-end AI applications on governed, production-grade data. Based in Barcelona, working with enterprise teams across Europe.',
     ctaPrimary: 'Book a Strategy Call',
     ctaSecondary: 'See Case Studies',
     credibility: [
@@ -43,55 +41,41 @@ export default {
 
   services: {
     eyebrow: 'Services',
-    titlePre: 'Where I ',
-    titleHighlight: 'add value',
+    titlePre: 'From scattered data to ',
+    titleHighlight: 'business impact',
     titlePost: '',
-    desc:
-      'Data scattered across SAP, Salesforce, Odoo, and warehouse systems rarely turns into ' +
-      'decisions on its own. Three ways to close that gap — governed pipelines, BI that scales, ' +
-      'and the AI layer built on top — delivered as one connected engagement, not stitched ' +
-      'together from separate vendors.',
+    desc: 'SAP, Salesforce and Odoo rarely speak the same language. We close the gap with governed pipelines, BI that scales and an AI layer on top, delivered as one connected project.',
     cards: [
       {
         title: 'Data Engineering & Architecture',
-        description:
-          "When data lives in SAP, Salesforce, Odoo, and Zinc — systems that don't talk to each " +
-          'other — every report starts with a manual reconciliation. I build governed pipelines ' +
-          'on Medallion Architecture (Bronze → Silver → Gold) that turn those fragmented sources ' +
-          'into one trusted, business-ready dataset.',
+        description: 'Every report starts with a manual reconciliation. We build governed Medallion pipelines (Bronze → Silver → Gold) that turn fragmented sources into one trusted dataset.',
         bullets: [
-          'Bronze/Silver/Gold pipeline design — raw data preserved, every transformation traceable (built on Databricks, PySpark, Delta Lake)',
-          'Enterprise source integration — SAP, Salesforce, Odoo, Zinc',
-          'Data quality, governance, and SLA-backed pipelines',
-          'Runs natively inside your existing Azure environment — no new infrastructure to procure or approve (ADF, ADLS Gen2, Event Hubs)',
+          'Traceable Bronze/Silver/Gold pipelines on Databricks, PySpark and Delta Lake',
+          'SAP, Salesforce and Odoo integration',
+          'Data quality, governance and SLA-backed operation',
+          'Runs natively in your Azure tenant, no new infrastructure to approve',
         ],
         engagement: 'Engagement: 6–12 weeks · fixed scope or embedded',
       },
       {
         title: 'BI & Data Architecture',
-        description:
-          'Dashboards that look great in a demo often slow to a crawl once hundreds of real ' +
-          'users are on them. I build Power BI Embedded and Direct Lake solutions that hold ' +
-          'sub-second query performance at that scale — not just for a handful of test users.',
+        description: 'Dashboards that shine in a demo often crawl with hundreds of real users. We keep Power BI Embedded and Direct Lake sub-second at that scale.',
         bullets: [
-          'Power BI Embedded with row-level security — each user or client sees only their own data',
-          'Direct Lake semantic models for sub-second queries',
-          'Advanced metrics and calculations (DAX), plus paginated reports for print-ready exports',
-          'Multi-tenant architecture — one platform serving multiple clients or business units with isolated data',
+          'Power BI Embedded with row-level security',
+          'Direct Lake semantic models and advanced DAX',
+          'Paginated, print-ready reports',
+          'Multi-tenant platforms with isolated data per client',
         ],
         engagement: 'Engagement: 4–8 weeks · dashboard suite or platform',
       },
       {
         title: 'AI-Powered Applications',
-        description:
-          'Most AI pilots impress in a demo, then die because they were never connected to ' +
-          'real, governed data. I build end-to-end AI applications that plug directly into your ' +
-          'existing data estate — production systems, not prototypes.',
+        description: 'Most AI pilots die because they never touch real, governed data. We build production AI that plugs directly into your data estate.',
         bullets: [
-          'AI that answers from your own governed data, not the public internet (RAG on the Gold layer)',
+          'AI that answers from your own data (RAG on the Gold layer)',
           'Internal agents for operational workflows',
-          'One team, one system — data pipeline, backend, and UI delivered together, not stitched from separate vendors',
-          'Deploys inside your existing Azure environment — no new infrastructure or security review required (Azure AI services)',
+          'Pipeline, backend and UI delivered as one system',
+          'Deployed inside your Azure environment',
         ],
         engagement: 'Engagement: scoped pilot → production rollout',
       },
@@ -100,33 +84,30 @@ export default {
 
   process: {
     eyebrow: 'Process',
-    titlePre: 'How an ',
-    titleHighlight: 'engagement',
+    titlePre: 'How a ',
+    titleHighlight: 'project',
     titlePost: ' runs',
-    desc:
-      'A fixed, predictable sequence with a clear deliverable at every stage — regardless of ' +
-      'whether the scope is a pipeline, a dashboard suite, or an AI application. No black box, ' +
-      'no guessing what happens next.',
+    desc: 'A predictable sequence with a clear deliverable at every stage. No black box.',
     steps: [
       {
         n: '01',
         title: 'Discovery & Audit',
-        description: 'Map your current data sources, pipelines, and reporting stack. Identify bottlenecks, gaps, and quick wins.',
+        description: 'We map your sources, pipelines and reporting stack, and surface bottlenecks and quick wins.',
       },
       {
         n: '02',
         title: 'Architecture & Design',
-        description: 'Design the target Medallion architecture, semantic model, or AI application — scoped to your systems and constraints, and documented so your own IT team can review and sign off before a line of code is written.',
+        description: 'Target architecture, semantic model or AI application, documented so your IT team can sign off before any code is written.',
       },
       {
         n: '03',
         title: 'Build & Deploy',
-        description: 'Implement in short, reviewable iterations. Production-grade from day one, not a throwaway proof of concept.',
+        description: 'Short, reviewable iterations. Production-grade from day one, never a throwaway proof of concept.',
       },
       {
         n: '04',
         title: 'Handover & Support',
-        description: 'Full documentation and hands-on knowledge transfer, so your team can run and extend the system without depending on me — plus an optional support window after go-live.',
+        description: 'Full documentation and hands-on knowledge transfer so your team runs it on its own, plus optional post-launch support.',
       },
     ],
   },
@@ -137,9 +118,7 @@ export default {
     titleHighlight: 'Architecture',
     titlePost: '',
     desc:
-      'A governed pipeline architecture — not just a diagram. Bronze → Silver → Gold turns ' +
-      'millions of raw events a day from your source systems into numbers your teams can trust ' +
-      'and act on, all the way to sub-second Power BI Direct Lake reporting.',
+      'A governed pipeline, not just a diagram. Bronze → Silver → Gold turns raw events from your source systems into numbers your teams can trust, all the way to sub-second Power BI Direct Lake.',
     sourcesOutputs: 'Sources / Outputs',
     technologies: 'Technologies',
     layers: [
@@ -147,19 +126,19 @@ export default {
         id: 'bronze',
         label: 'BRONZE LAYER',
         subtitle: 'Raw Ingestion',
-        description: 'Unprocessed data as-is from enterprise systems, with full history preserved — nothing is ever lost or overwritten, so any report can be traced back to its original source. Schema-on-read, no transformations applied.',
+        description: 'Source data as it arrives, with full history preserved. Nothing is lost or overwritten, so every report traces back to its origin.',
       },
       {
         id: 'silver',
         label: 'SILVER LAYER',
         subtitle: 'Cleanse & Validate',
-        description: 'Cleaned, deduplicated and standardized data — the layer where numbers from different systems finally agree with each other. Business rules enforced, schema-on-write, referential integrity validated.',
+        description: 'Cleaned, deduplicated and standardized. The layer where numbers from different systems finally agree.',
       },
       {
         id: 'gold',
         label: 'GOLD LAYER',
         subtitle: 'Business Ready',
-        description: 'Aggregated, optimized semantic models. Direct Lake mode for Power BI — sub-second query response on millions of rows.',
+        description: 'Optimized semantic models served through Direct Lake: sub-second queries on millions of rows.',
       },
     ],
     stats: [
@@ -176,8 +155,7 @@ export default {
     titleHighlight: 'Technologies',
     titlePost: '',
     desc:
-      'Production-proven platforms across the full data lifecycle — from ingestion to ' +
-      'Power BI Direct Lake, and increasingly AI applications layered on top.',
+      'Production-proven platforms across the full data lifecycle, from ingestion to Power BI Direct Lake and AI.',
     categories: [
       { name: 'Platform', items: ['Microsoft Fabric'] },
       { name: 'BI', items: ['Power BI', 'Power BI Embedded', 'DAX'] },
@@ -196,18 +174,14 @@ export default {
     titlePre: 'Case ',
     titleHighlight: 'Studies',
     titlePost: '',
-    desc: 'Enterprise-scale data engineering projects driving real business impact. Hover each card to explore.',
+    desc: 'Enterprise data engineering with measurable business impact.',
     viewMore: 'View More →',
     comingSoon: 'Coming soon',
     caseStudyLabel: (n) => `Case Study ${n}`,
     cards: [
       {
         title: 'Medallion Architecture · Pharma Group',
-        description:
-          'A multinational pharma group needed governed, near real-time reporting across four ' +
-          'disconnected systems — without manual exports slowing the business down. We built ' +
-          'an end-to-end Medallion pipeline: SAP ingested via ADF into Bronze, PySpark transforms ' +
-          'through Silver, and Power BI Direct Lake reports now serving 200+ users.',
+        description: 'Governed, near real-time reporting across four disconnected systems. SAP lands in Bronze via ADF, PySpark refines it in Silver, and Direct Lake serves 200+ users.',
         metrics: [
           { label: 'Data sources', value: '4' },
           { label: 'Daily events', value: '50M+' },
@@ -216,21 +190,16 @@ export default {
       },
       {
         title: 'Power BI Embedded Dashboard Suite',
-        description:
-          'One Power BI report embedded in a pharmacy portal. A Node.js token API and row-level security on the pharmacy ID give every pharmacy its own sell-out view (units, value, by product, YTD and YoY) with no Power BI licence per user.',
+        description: 'One report embedded in a pharmacy portal. A token API and row-level security give each pharmacy its own sell-out view, with no per-user licence.',
         metrics: [
-          { label: 'Report, all pharmacies', value: '1' },
+          { label: 'One report, all pharmacies', value: '1' },
           { label: 'Viewer licences', value: '0' },
           { label: 'Isolation', value: 'RLS' },
         ],
       },
       {
         title: 'Real-time Pipeline · Databricks',
-        description:
-          'Salesforce and Odoo data, available the moment it happens — not hours later. A ' +
-          'streaming pipeline built on Delta Live Tables, with schema evolution, automated data ' +
-          'quality assertions, and SLA monitoring keeping it reliable at production scale, not ' +
-          'just fast.',
+        description: 'Salesforce and Odoo data available the moment it happens. Delta Live Tables streaming with schema evolution, automated quality checks and SLA monitoring.',
         metrics: [
           { label: 'Event latency', value: '<5s' },
           { label: 'Tables managed', value: '120+' },
@@ -240,11 +209,7 @@ export default {
     ],
     aiPlaceholder: {
       title: 'AI Application — End-to-End Delivery',
-      description:
-        'This is where the next AI case study will go — a production application built ' +
-        'end-to-end on a governed data platform, following the same Data → BI → AI chain as ' +
-        'the work above. Client, metrics, and architecture will be added as soon as the ' +
-        'engagement can be made public.',
+      description: 'The next case study: a production AI application built end-to-end on a governed data platform, following the same Data → BI → AI chain.',
       badge: 'Add real case study',
     },
   },
@@ -280,25 +245,23 @@ export default {
     titlePre: 'AI applications built on ',
     titleHighlight: 'solid data ground',
     titlePost: '',
-    desc:
-      'Most AI projects fail on messy, ungoverned data. Ten years of Data Engineering ' +
-      'means the AI layer sits on a foundation that was already built to be trusted.',
+    desc: 'Most AI projects fail on messy, ungoverned data. Our AI layer sits on a foundation built to be trusted.',
     capabilities: [
       {
-        title: 'Retrieval over your own data',
-        description: 'RAG built directly on the Gold layer — answers grounded in governed, up-to-date data, not a static document dump.',
+        title: 'Retrieval on your own data',
+        description: 'RAG built on the Gold layer: answers grounded in governed, up-to-date data.',
       },
       {
         title: 'Internal agents',
-        description: 'Agents that automate operational workflows against your systems — not chatbots, task-completing tools.',
+        description: 'Agents that complete operational tasks on your systems, not just chat.',
       },
       {
         title: 'End-to-end delivery',
-        description: 'Data pipeline, backend, and UI shipped as one system — a working application, not a notebook demo.',
+        description: 'Pipeline, backend and UI as one working system, not a notebook demo.',
       },
       {
-        title: 'Azure-native integration',
-        description: 'Built on the same Azure estate as the data platform — Azure AI services, identity, and networking already in place.',
+        title: 'Native Azure integration',
+        description: 'Azure AI services, identity and networking already in place.',
       },
     ],
   },

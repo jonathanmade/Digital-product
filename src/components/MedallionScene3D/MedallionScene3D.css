@@ -352,7 +352,7 @@
   flex-direction: column;
   /* stretch (not center): a column flex container's align-items also governs
      each child's own width, and .flow-node-sub is long enough on the Source
-     node ("SAP · Salesforce · Odoo · Zinc") that shrink-to-fit let it overflow
+     node ("SAP · Salesforce · Odoo · WMS") that shrink-to-fit let it overflow
      past the 104px column into the next connector's label. text-align on the
      children keeps everything visually centered once they're full-width. */
   align-items: stretch;
@@ -363,7 +363,7 @@
 /* Inset from the column's own 104px edges: connector format labels (e.g.
    "Direct Lake") are centered over their much narrower (28px) connector line
    and can overhang it by up to ~14px on each side, so node text needs a
-   buffer or its longest lines (e.g. "SAP · Salesforce · Odoo · Zinc") collide
+   buffer or its longest lines (e.g. "SAP · Salesforce · Odoo · WMS") collide
    with the neighboring connector's label. */
 .flow-node-label {
   text-align: center;

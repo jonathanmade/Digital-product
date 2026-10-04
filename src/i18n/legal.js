@@ -8,7 +8,7 @@ export const legal = {
   en: {
     banner: {
       title: 'Cookies and measurement',
-      text: 'I use Google Analytics to understand how the site is used. It only runs if you accept, and it never uses advertising features.',
+      text: 'We use Google Analytics to understand how the site is used. It only runs if you accept, and it never uses advertising features.',
       accept: 'Accept',
       reject: 'Reject',
       more: 'Privacy & cookies',
@@ -22,21 +22,21 @@ export const legal = {
       sections: [
         {
           h: 'Who is responsible',
-          p: [`The person responsible for this website is Jonatan Marín, operating as DeltaForge Gold, based in Barcelona (Spain). You can contact me at ${CONTACT_EMAIL}.`],
+          p: [`This website is operated by DeltaForge Gold, based in Barcelona (Spain). You can contact us at ${CONTACT_EMAIL}.`],
         },
         {
           h: 'What data is processed and why',
           p: [
             'Website analytics (only if you accept): Google Analytics 4 collects pseudonymous usage data such as pages viewed, approximate location, device and browser type, how you arrived at the site and interactions such as clicks on "Book a Strategy Call". Advertising features and Google signals are disabled.',
-            'Booking a call: the scheduling widget is provided by Calendly. Whatever you enter there is processed by Calendly under its own privacy policy and is shared with me so I can attend the call.',
-            'Messages you send me: I use your email and message only to reply to you.',
+            'Booking a call: the scheduling widget is provided by Calendly. Whatever you enter there is processed by Calendly under its own privacy policy and is shared with us so we can attend the call.',
+            'Messages you send us: we use your email and message only to reply to you.',
           ],
         },
         {
           h: 'Legal basis',
           p: [
             'Analytics cookies are used only with your consent (Art. 6.1.a GDPR). You can withdraw it at any time with "Cookie settings" in the footer, and withdrawing does not affect anything done before.',
-            'Handling a call booking or an enquiry is based on taking steps at your request before a possible contract, and on my legitimate interest in answering you.',
+            'Handling a call booking or an enquiry is based on taking steps at your request before a possible contract, and on our legitimate interest in answering you.',
           ],
         },
         {
@@ -72,7 +72,7 @@ export const legal = {
   es: {
     banner: {
       title: 'Cookies y medición',
-      text: 'Uso Google Analytics para entender cómo se utiliza la web. Solo se activa si lo aceptas y nunca usa funciones de publicidad.',
+      text: 'Usamos Google Analytics para entender cómo se utiliza la web. Solo se activa si lo aceptas y nunca usa funciones de publicidad.',
       accept: 'Aceptar',
       reject: 'Rechazar',
       more: 'Privacidad y cookies',
@@ -86,21 +86,21 @@ export const legal = {
       sections: [
         {
           h: 'Responsable',
-          p: [`El responsable de esta web es Jonatan Marín, que opera como DeltaForge Gold, con sede en Barcelona (España). Puedes contactar conmigo en ${CONTACT_EMAIL}.`],
+          p: [`Esta web es operada por DeltaForge Gold, con sede en Barcelona (España). Puedes contactarnos en ${CONTACT_EMAIL}.`],
         },
         {
           h: 'Qué datos se tratan y para qué',
           p: [
             'Analítica web (solo si aceptas): Google Analytics 4 recoge datos de uso seudonimizados, como las páginas vistas, la ubicación aproximada, el tipo de dispositivo y navegador, cómo llegaste a la web e interacciones como los clics en "Reservar una Llamada Estratégica". Las funciones de publicidad y las señales de Google están desactivadas.',
-            'Reserva de llamada: el widget de agenda lo proporciona Calendly. Lo que introduzcas allí lo trata Calendly según su propia política de privacidad y se comparte conmigo para poder atender la llamada.',
-            'Mensajes que me envíes: uso tu correo y tu mensaje únicamente para responderte.',
+            'Reserva de llamada: el widget de agenda lo proporciona Calendly. Lo que introduzcas allí lo trata Calendly según su propia política de privacidad y se comparte con nosotros para poder atender la llamada.',
+            'Mensajes que nos envíes: usamos tu correo y tu mensaje únicamente para responderte.',
           ],
         },
         {
           h: 'Base jurídica',
           p: [
             'Las cookies de analítica se usan solo con tu consentimiento (art. 6.1.a RGPD). Puedes retirarlo en cualquier momento con "Configurar cookies" en el pie de página, y retirarlo no afecta a lo hecho antes.',
-            'La gestión de una reserva o consulta se basa en la aplicación de medidas precontractuales a petición tuya y en mi interés legítimo en responderte.',
+            'La gestión de una reserva o consulta se basa en la aplicación de medidas precontractuales a petición tuya y en nuestro interés legítimo en responderte.',
           ],
         },
         {

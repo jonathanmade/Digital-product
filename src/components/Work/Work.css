@@ -4,7 +4,7 @@
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
   gap: 24px;
 }
 
@@ -50,6 +50,8 @@
   border-radius: 10px;
   padding: 28px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   position: relative;
   z-index: 1;
   transition: background 0.3s;
@@ -96,8 +98,8 @@
 .card-desc {
   font-size: 13px;
   color: var(--muted);
-  line-height: 1.8;
-  margin-bottom: 24px;
+  line-height: 1.75;
+  margin-bottom: 22px;
 }
 
 .card-metrics {
@@ -105,8 +107,9 @@
   gap: 16px;
   margin-bottom: 24px;
   padding: 16px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 6px;
+  margin-top: auto;
+  background: rgba(var(--sunken-rgb), 0.6);
+  border-radius: 8px;
   border: 1px solid var(--border);
 }
 
@@ -126,7 +129,7 @@
 
 .metric-label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--muted);
@@ -136,6 +139,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  margin-bottom: 4px;
 }
 
 .p-tag {
@@ -158,6 +162,8 @@
   letter-spacing: 0.5px;
   color: var(--cyan);
   margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
   transition: gap 0.2s;
 }
 
