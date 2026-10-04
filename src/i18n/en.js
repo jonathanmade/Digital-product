@@ -255,7 +255,7 @@ export default {
     titleHighlight: 'Dashboard',
     titlePost: '',
     desc: 'Simulated Power BI Embedded environment showcasing Direct Lake analytics.',
-    shellTitle: 'Jonatan Marín · Analytics Suite',
+    shellTitle: 'DeltaForge Gold · Analytics Suite',
     liveBadge: 'Live Data · Direct Lake Mode',
     barChartLabel: 'Pipeline Volume · Monthly',
     lineChartLabel: 'Latency Trend (ms)',
@@ -330,7 +330,7 @@ export default {
   },
 
   footer: {
-    tagline: 'Jonatan Marín · Data & AI Engineering · Barcelona',
+    tagline: 'DeltaForge Gold · Data & AI Engineering · Barcelona',
   },
 
   caseStudyDetail: {
