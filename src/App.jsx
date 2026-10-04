@@ -5,6 +5,9 @@ import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 import Home from './pages/Home/Home'
 const CaseStudyDetail = lazy(() => import('./pages/CaseStudyDetail/CaseStudyDetail'))
+const Privacy = lazy(() => import('./pages/Privacy/Privacy'))
+import CookieBanner from './components/CookieBanner/CookieBanner'
+import { trackPageView } from './utils/analytics'
 import { storm } from './utils/stormSystem'
 import { watchCalendlyOverlay } from './utils/calendly'
 import { useScrollProgress } from './hooks/useScrollProgress'
@@ -41,6 +44,14 @@ function PageTransition({ children }) {
   )
 }
 
+// Single-page app: report a page_view on every route change (not on hash
+// changes, which are just in-page anchors). Inert until analytics consent.
+function RouteTracker() {
+  const { pathname } = useLocation()
+  useEffect(() => { trackPageView() }, [pathname])
+  return null
+}
+
 function AnimatedRoutes() {
   const location = useLocation()
   return (
@@ -48,6 +59,7 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/case-studies/:slug" element={<PageTransition><CaseStudyDetail /></PageTransition>} />
+        <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
       </Routes>
     </AnimatePresence></Suspense>
   )
@@ -71,12 +83,14 @@ export default function App() {
     <LanguageProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <RouteTracker />
         <ScrollProgressBar />
         <Navbar />
         <main>
           <AnimatedRoutes />
         </main>
         <Footer />
+        <CookieBanner />
       </BrowserRouter>
     </LanguageProvider>
   )

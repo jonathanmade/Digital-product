@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../context/LanguageContext'
 import { openCalendlyPopup, CALENDLY_URL } from '../../utils/calendly'
+import { trackEvent } from '../../utils/analytics'
 import './Navbar.css'
 import Logo from '../Logo/Logo'
 
@@ -48,6 +49,7 @@ export default function Navbar() {
   const handleBookCall = (e) => {
     // Opens Calendly as an in-page popup; falls back to the real href
     // (new tab) if the widget script hasn't loaded for any reason.
+    trackEvent('book_call_click', { location: 'navbar' })
     if (openCalendlyPopup(CALENDLY_URL)) e.preventDefault()
   }
 

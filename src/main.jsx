@@ -1,5 +1,8 @@
 import { createRoot } from 'react-dom/client'
 import './styles/globals.css'
 import App from './App.jsx'
+import { initAnalytics } from './utils/analytics'
+
+initAnalytics()
 
 createRoot(document.getElementById('root')).render(<App />)

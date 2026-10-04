@@ -204,3 +204,12 @@ entre las 4 fuentes sin romper la regla del acento único.
 - `useScrollProgress.js`: mismo patrón rAF-throttled que `useScrollReveal`/
   `StormSystem`. Barra fija cian de 3px arriba del todo, z-index por debajo del
   navbar (999 vs 1000) y por encima del contenido.
+
+## Analítica (GA4)
+- `src/utils/analytics.js`: GA4 con Consent Mode v2. Nada se carga ni se guarda hasta que el
+  visitante acepta; sin `VITE_GA_MEASUREMENT_ID` el módulo y el banner quedan inactivos.
+- Eventos propios: `book_call_click` (location: navbar|contact), `case_study_click` (slug),
+  `language_change` (language), `calendly_event_scheduled` (conversión). Los `page_view` se envían
+  a mano en cada cambio de ruta (`RouteTracker` en App.jsx).
+- Textos del banner y de `/privacy` en `src/i18n/legal.js`. Si se añade otra herramienta que use
+  cookies o datos personales, hay que actualizar esa página y respetar el consentimiento.
