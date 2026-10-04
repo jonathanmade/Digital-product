@@ -19,3 +19,7 @@ Files used:
 - `real_time_intelligence_48_color.svg`
 - `data_science_48_color.svg`
 - `semantic_model_48_item.svg`
+- `copy_job_48_item.svg`
+- `graph_intelligence_48_color.svg`
+- `copilot_48_color.svg`
+- `data_agent_48_item.svg`

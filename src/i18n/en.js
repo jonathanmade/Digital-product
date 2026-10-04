@@ -118,27 +118,39 @@ export default {
     titleHighlight: 'Architecture',
     titlePost: '',
     desc:
-      'A governed pipeline, not just a diagram. Bronze → Silver → Gold turns raw events from your source systems into numbers your teams can trust, all the way to sub-second Power BI Direct Lake.',
-    sourcesOutputs: 'Sources / Outputs',
-    technologies: 'Technologies',
+      'A governed pipeline, not just a diagram. Fabric extracts your sources, notebooks refine each layer in an orchestrated DAG, and a semantic model plus ontology feed Power BI and AI Copilot.',
+    stages: {
+      extract: { label: '1 · Extract', title: 'Data Pipeline', desc: 'A Fabric pipeline lands every source as-is, on schedule or event-driven.', activity: 'Copy data', sourcesLabel: 'Sources' },
+      dag: { label: '2 · Transform', title: 'Notebook DAG', desc: 'One notebook per layer, chained in a DAG: ordered, retryable and traceable end to end.' },
+      consume: {
+        label: '3 · Consume & AI',
+        title: 'Semantic Model + Ontology',
+        desc: 'Business meaning on top of Gold, so reports and AI answer from the same governed definitions.',
+        items: [
+          { title: 'Semantic model', desc: 'Measures, relationships and security in Direct Lake.' },
+          { title: 'Ontology', desc: 'Business entities and rules that ground Copilot and data agents.' },
+        ],
+        outputs: ['Power BI', 'Copilot', 'Data agent'],
+      },
+    },
     layers: [
       {
         id: 'bronze',
         label: 'BRONZE LAYER',
         subtitle: 'Raw Ingestion',
-        description: 'Source data as it arrives, with full history preserved. Nothing is lost or overwritten, so every report traces back to its origin.',
+        description: 'Source data as it arrives, full history preserved and traceable.',
       },
       {
         id: 'silver',
         label: 'SILVER LAYER',
         subtitle: 'Cleanse & Validate',
-        description: 'Cleaned, deduplicated and standardized. The layer where numbers from different systems finally agree.',
+        description: 'Cleaned, deduplicated, standardized: where systems finally agree.',
       },
       {
         id: 'gold',
         label: 'GOLD LAYER',
         subtitle: 'Business Ready',
-        description: 'Optimized semantic models served through Direct Lake: sub-second queries on millions of rows.',
+        description: 'Optimized models for Direct Lake: sub-second on millions of rows.',
       },
     ],
     stats: [

@@ -118,27 +118,39 @@ export default {
     titleHighlight: 'Medallion',
     titlePost: '',
     desc:
-      'Un pipeline gobernado, no solo un diagrama. Bronze → Silver → Gold convierte eventos en bruto de tus sistemas en cifras fiables, hasta Power BI Direct Lake en menos de un segundo.',
-    sourcesOutputs: 'Fuentes / Salidas',
-    technologies: 'Tecnologías',
+      'Un pipeline gobernado, no solo un diagrama. Fabric extrae tus fuentes, notebooks refinan cada capa en un DAG orquestado y un modelo semántico con ontología alimentan Power BI y el Copilot de IA.',
+    stages: {
+      extract: { label: '1 · Extracción', title: 'Data Pipeline', desc: 'Un pipeline de Fabric aterriza cada fuente tal cual, programado o por eventos.', activity: 'Copy data', sourcesLabel: 'Fuentes' },
+      dag: { label: '2 · Transformación', title: 'DAG de notebooks', desc: 'Un notebook por capa, encadenados en un DAG: ordenados, reintentables y trazables de extremo a extremo.' },
+      consume: {
+        label: '3 · Consumo e IA',
+        title: 'Modelo Semántico + Ontología',
+        desc: 'Significado de negocio sobre Gold, para que informes e IA respondan con las mismas definiciones gobernadas.',
+        items: [
+          { title: 'Modelo semántico', desc: 'Medidas, relaciones y seguridad en Direct Lake.' },
+          { title: 'Ontología', desc: 'Entidades y reglas de negocio que dan contexto a Copilot y a los agentes de datos.' },
+        ],
+        outputs: ['Power BI', 'Copilot', 'Agente de datos'],
+      },
+    },
     layers: [
       {
         id: 'bronze',
         label: 'CAPA BRONZE',
         subtitle: 'Ingesta Bruta',
-        description: 'Datos de origen tal cual llegan, con todo el histórico. Nada se pierde ni se sobrescribe, así que cada informe se rastrea hasta su origen.',
+        description: 'Datos de origen tal cual llegan, con todo el histórico y trazables.',
       },
       {
         id: 'silver',
         label: 'CAPA SILVER',
         subtitle: 'Limpieza y Validación',
-        description: 'Datos limpios, deduplicados y estandarizados. La capa donde las cifras de distintos sistemas por fin coinciden.',
+        description: 'Limpios, deduplicados y estandarizados: donde los sistemas por fin coinciden.',
       },
       {
         id: 'gold',
         label: 'CAPA GOLD',
         subtitle: 'Lista para el Negocio',
-        description: 'Modelos semánticos optimizados servidos con Direct Lake: consultas en menos de un segundo sobre millones de filas.',
+        description: 'Modelos optimizados para Direct Lake: menos de un segundo sobre millones de filas.',
       },
     ],
     stats: [

@@ -199,8 +199,8 @@ v2. Se sustituyeron por una escala secuencial de opacidades de cyan
 entre las 4 fuentes sin romper la regla del acento único.
 
 ### Scroll
-- Scrollbar del navegador oculta visualmente (`scrollbar-width:none` +
-  `::-webkit-scrollbar{display:none}` en `html`); el scroll sigue funcionando.
+- Scrollbar personalizada (fina, píldora con degradado cian, tokens del tema) en `globals.css`;
+  antes estaba oculta.
 - `useScrollProgress.js`: mismo patrón rAF-throttled que `useScrollReveal`/
   `StormSystem`. Barra fija cian de 3px arriba del todo, z-index por debajo del
   navbar (999 vs 1000) y por encima del contenido.
@@ -213,3 +213,28 @@ entre las 4 fuentes sin romper la regla del acento único.
   a mano en cada cambio de ruta (`RouteTracker` en App.jsx).
 - Textos del banner y de `/privacy` en `src/i18n/legal.js`. Si se añade otra herramienta que use
   cookies o datos personales, hay que actualizar esa página y respetar el consentimiento.
+
+## Pendiente de revisar (decisiones abiertas)
+- **Aviso legal / RGPD:** `/privacy` ya nombra al responsable (Jonatan Marín, DeltaForge Gold,
+  Barcelona) y el correo `contact@deltaforgegold.com` (confirmar que es el definitivo). Falta
+  decidir si se añaden NIF y domicilio (LSSI) y si hace falta un aviso legal aparte.
+- **Nombre en el resto de la web:** deliberadamente ausente (ni "Jonatan Marín", ni Uriach, ni
+  Zinc). Siguen las URLs con el handle `jonatanmarin` (LinkedIn en Contact.jsx / llms.txt /
+  JSON-LD `sameAs`, Calendly en `src/utils/calendly.js`) y los docs internos (CLAUDE.md,
+  DESIGN.md, PRODUCT.md, `.impeccable/design.json`).
+- **Voz:** todo el copy en plural/impersonal ("construimos", "we build"); no usar primera
+  persona del singular en ninguna sección ni en `legal.js`.
+- **JSON-LD:** se eliminó el nodo `Person` (y la credencial DP-600). Valorar mostrar el DP-600
+  de otra forma.
+- **Cifras sin verificar:** 50M+ eventos/día, <1s, 99.9% SLA, 200+ usuarios, <5s, 120+ tablas.
+- **Placeholders visibles:** testimonios "pendientes", tarjeta "Añadir caso de estudio real",
+  caso Real-time Pipeline "Próximamente", etiqueta "Pendiente" en resultados del caso Power BI.
+- **SEO:** prerender (vite-react-ssg), URLs `/es/` con hreflang, FAQ/About, og:image.
+- **GA4:** retención de datos a 14 meses y marcar `calendly_event_scheduled` como evento clave.
+- **Medallion (rediseño):** flujo Pipeline + Copy data -> notebooks por capa en un DAG ->
+  modelo semántico + ontología -> Power BI / Copilot / agente de datos, con iconos oficiales de
+  Fabric. El icono de "Copy data" es el de Copy job y el de ontología es Graph Intelligence
+  (no hay icono de ontología en el pack v6.1.0): revisar. Los nombres de notebooks
+  (`nb_bronze_ingest`...) son ilustrativos.
+- **Tecnologías:** solo iconos de Fabric (pack MIT `@fabric-msft/svg-icons` 6.1.0, atribución en
+  `src/assets/icons/fabric/ICONS_LICENSE.md`); el resto de herramientas son etiquetas de texto.
