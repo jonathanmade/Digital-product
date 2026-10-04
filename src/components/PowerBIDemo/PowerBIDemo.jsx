@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
 import './PowerBIDemo.css'
 
 function useCounter(target, duration = 1800, active) {
@@ -56,12 +57,21 @@ function LatencyIcon() {
   )
 }
 
+// Non-translatable per-KPI data (icon, target number, prefix/suffix, trend
+// direction) kept local, matched by index with the translated copy.
+const KPI_META = [
+  { icon: RevenueIcon, target: 4872340, prefix: '€', suffix: '', trendUp: true },
+  { icon: PipelineIcon, target: 247, prefix: '', suffix: '', trendUp: true },
+  { icon: UsersIcon, target: 532, prefix: '', suffix: '', trendUp: true },
+  { icon: LatencyIcon, target: 380, prefix: '', suffix: 'ms', trendUp: false },
+]
+
 function KPICard({ kpi, active }) {
   const count = useCounter(kpi.target, 1800, active)
   const Icon = kpi.icon
 
   return (
-    <div className="kpi-card" style={{ '--kpi-color': kpi.color }}>
+    <div className="kpi-card" style={{ '--kpi-color': 'var(--cyan)' }}>
       <div className="kpi-icon"><Icon /></div>
       <div className="kpi-value">
         {kpi.prefix}{count.toLocaleString()}{kpi.suffix}
@@ -77,10 +87,10 @@ function KPICard({ kpi, active }) {
 const BAR_DATA = [42, 68, 55, 80, 73, 91, 64, 88, 77, 95, 82, 100]
 const MONTHS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
 
-function BarChart({ active }) {
+function BarChart({ active, label }) {
   return (
     <div className="chart-box">
-      <div className="chart-label">Pipeline Volume · Monthly</div>
+      <div className="chart-label">{label}</div>
       <div className="bar-chart">
         {BAR_DATA.map((h, i) => (
           <div key={i} className="bar-col">
@@ -98,11 +108,11 @@ function BarChart({ active }) {
 
 const LINE_POINTS = [20, 35, 28, 50, 42, 65, 58, 72, 68, 85, 78, 92]
 
-function LineChart({ active }) {
+function LineChart({ active, label }) {
   const pts = LINE_POINTS.map((y, i) => `${(i / (LINE_POINTS.length - 1)) * 280},${90 - y * 0.8}`).join(' ')
   return (
     <div className="chart-box">
-      <div className="chart-label">Latency Trend (ms)</div>
+      <div className="chart-label">{label}</div>
       <svg width="100%" height="100" viewBox="0 0 280 90" preserveAspectRatio="none" className="line-chart">
         <defs>
           <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -139,13 +149,13 @@ const DONUT_SEGMENTS = [
   { label: 'Zinc', pct: 12, color: 'rgba(var(--cyan-rgb), 0.25)' },
 ]
 
-function DonutChart() {
+function DonutChart({ label, centerLabel }) {
   const r = 36, cx = 50, cy = 50
   const circ = 2 * Math.PI * r
   let offset = 0
   return (
     <div className="chart-box donut-box">
-      <div className="chart-label">Source Distribution</div>
+      <div className="chart-label">{label}</div>
       <div className="donut-wrap">
         <svg width="100" height="100" viewBox="0 0 100 100">
           {DONUT_SEGMENTS.map((s) => {
@@ -167,7 +177,7 @@ function DonutChart() {
             return seg
           })}
           <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="var(--heading)" fontFamily="'JetBrains Mono', monospace" fontWeight="700">
-            4 src
+            {centerLabel}
           </text>
         </svg>
         <div className="donut-legend">
@@ -184,26 +194,22 @@ function DonutChart() {
   )
 }
 
-const KPIS = [
-  { icon: RevenueIcon, label: 'Revenue Processed', target: 4872340, prefix: '€', suffix: '', color: 'var(--cyan)', trend: '+12.4% MoM', trendUp: true },
-  { icon: PipelineIcon, label: 'Pipelines Active', target: 247, prefix: '', suffix: '', color: 'var(--cyan)', trend: '+8 this week', trendUp: true },
-  { icon: UsersIcon, label: 'Active Users', target: 532, prefix: '', suffix: '', color: 'var(--cyan)', trend: '+3.1% WoW', trendUp: true },
-  { icon: LatencyIcon, label: 'Avg Latency (ms)', target: 380, prefix: '', suffix: 'ms', color: 'var(--cyan)', trend: '-45ms', trendUp: false },
-]
-
 export default function PowerBIDemo() {
   const { ref, visible } = useScrollReveal(0.15)
+  const { t } = useLanguage()
+
+  const kpis = t.powerbi.kpis.map((kpi, i) => ({ ...kpi, ...KPI_META[i] }))
 
   return (
     <section id="powerbi" className="powerbi">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">Power BI Demo</p>
+          <p className="section-tag">{t.powerbi.eyebrow}</p>
           <h2 className="section-title">
-            Live Data <span>Dashboard</span>
+            {t.powerbi.titlePre}<span>{t.powerbi.titleHighlight}</span>{t.powerbi.titlePost}
           </h2>
           <p className="section-desc">
-            Simulated Power BI Embedded environment showcasing Direct Lake analytics.
+            {t.powerbi.desc}
           </p>
         </div>
 
@@ -215,34 +221,34 @@ export default function PowerBIDemo() {
               <span style={{ background: '#febc2e' }} />
               <span style={{ background: '#28c840' }} />
             </div>
-            <div className="pbi-title">Jonatan Marín · Analytics Suite</div>
+            <div className="pbi-title">{t.powerbi.shellTitle}</div>
             <div className="pbi-badge">
               <span className="live-dot" />
-              Live Data · Direct Lake Mode
+              {t.powerbi.liveBadge}
             </div>
           </div>
 
           {/* KPI row */}
           <div className="kpi-row">
-            {KPIS.map(kpi => (
+            {kpis.map(kpi => (
               <KPICard key={kpi.label} kpi={kpi} active={visible} />
             ))}
           </div>
 
           {/* Charts row */}
           <div className="charts-row">
-            <BarChart active={visible} />
-            <LineChart active={visible} />
-            <DonutChart />
+            <BarChart active={visible} label={t.powerbi.barChartLabel} />
+            <LineChart active={visible} label={t.powerbi.lineChartLabel} />
+            <DonutChart label={t.powerbi.donutLabel} centerLabel={t.powerbi.donutCenter} />
           </div>
 
           {/* Watermark */}
           <div className="pbi-footer">
-            <span>Last refresh: <strong>just now</strong></span>
+            <span>{t.powerbi.footer.lastRefreshLabel} <strong>{t.powerbi.footer.lastRefreshValue}</strong></span>
             <span>·</span>
-            <span>Microsoft Fabric · Direct Lake</span>
+            <span>{t.powerbi.footer.platform}</span>
             <span>·</span>
-            <span>Medallion v3.1</span>
+            <span>{t.powerbi.footer.version}</span>
           </div>
         </div>
       </div>

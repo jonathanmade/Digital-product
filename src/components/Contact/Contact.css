@@ -42,13 +42,6 @@
   margin-top: 16px;
 }
 
-.calendly-note code {
-  color: var(--cyan);
-  background: var(--cyan-dim);
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
 .social-links {
   display: flex;
   justify-content: center;

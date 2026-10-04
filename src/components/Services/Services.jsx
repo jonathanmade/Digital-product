@@ -1,4 +1,5 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
 import './Services.css'
 
 function PipelineIcon() {
@@ -29,50 +30,9 @@ function AIIcon() {
   )
 }
 
-const SERVICES = [
-  {
-    icon: PipelineIcon,
-    title: 'Data Engineering & Architecture',
-    description:
-      'Enterprise-scale pipelines built on Medallion Architecture — from raw ingestion across your source systems to governed, business-ready data.',
-    bullets: [
-      'Bronze/Silver/Gold pipeline design (Databricks, PySpark, Delta Lake)',
-      'Enterprise source integration — SAP, Salesforce, Odoo, Zinc',
-      'Data quality, governance, and SLA-backed pipelines',
-      'Azure-native architecture (ADF, ADLS Gen2, Event Hubs)',
-    ],
-    engagement: 'Engagement: 6–12 weeks · fixed scope or embedded',
-  },
-  {
-    icon: DashboardIcon,
-    title: 'BI & Data Architecture',
-    description:
-      'Power BI Embedded and Direct Lake solutions that scale to hundreds of concurrent users without sacrificing query performance.',
-    bullets: [
-      'Power BI Embedded with row-level security',
-      'Direct Lake semantic models for sub-second queries',
-      'DAX modeling & paginated reports',
-      'Multi-tenant analytics architecture',
-    ],
-    engagement: 'Engagement: 4–8 weeks · dashboard suite or platform',
-  },
-  {
-    icon: AIIcon,
-    title: 'AI-Powered Applications',
-    description:
-      'End-to-end AI applications built on solid data foundations — production systems that plug into your existing data estate, not prototypes.',
-    bullets: [
-      'Retrieval over your own governed data (RAG on the Gold layer)',
-      'Internal agents for operational workflows',
-      'End-to-end delivery: data, backend, and UI',
-      'Native integration with Azure AI services',
-    ],
-    engagement: 'Engagement: scoped pilot → production rollout',
-  },
-]
+const ICONS = [PipelineIcon, DashboardIcon, AIIcon]
 
-function ServiceCard({ service, index, visible }) {
-  const Icon = service.icon
+function ServiceCard({ service, icon: Icon, index, visible }) {
   return (
     <div className={`service-card${visible ? ' visible' : ''}`} style={{ animationDelay: `${index * 0.12}s` }}>
       <div className="service-icon"><Icon /></div>
@@ -88,23 +48,24 @@ function ServiceCard({ service, index, visible }) {
 
 export default function Services() {
   const { ref, visible } = useScrollReveal(0.1)
+  const { t } = useLanguage()
 
   return (
     <section id="services" className="services">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">Services</p>
+          <p className="section-tag">{t.services.eyebrow}</p>
           <h2 className="section-title">
-            Where I <span>add value</span>
+            {t.services.titlePre}<span>{t.services.titleHighlight}</span>{t.services.titlePost}
           </h2>
           <p className="section-desc">
-            Three ways to engage — from enterprise pipelines to the AI layer built on top of them.
+            {t.services.desc}
           </p>
         </div>
 
         <div className="services-grid">
-          {SERVICES.map((s, i) => (
-            <ServiceCard key={s.title} service={s} index={i} visible={visible} />
+          {t.services.cards.map((s, i) => (
+            <ServiceCard key={s.title} service={s} icon={ICONS[i]} index={i} visible={visible} />
           ))}
         </div>
       </div>

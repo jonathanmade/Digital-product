@@ -1,0 +1,682 @@
+<title>Pharmacy Sell-out Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* Single dark world on purpose: mirrors the portfolio's "Ops Console" design system. */
+:root {
+  color-scheme: dark;
+  --bg: #050810;
+  --canvas: #080c18;
+  --panel: #0d1321;
+  --raised: #111827;
+  --border: #1a2540;
+  --border2: #243050;
+  --cyan: #00F5FF;
+  --cyan-rgb: 0, 245, 255;
+  --py: #7C8DB5;
+  --text: #c8d6f0;
+  --text2: #8a9ab8;
+  --muted: #5a6a8a;
+  --heading: #ffffff;
+  --good: #4ade80;
+  --bad: #ff6b6b;
+  --pbi: #F2C811;
+  --azure: #0078D4;
+  --f-display: 'Orbitron', 'Rajdhani', sans-serif;
+  --f-ui: 'Rajdhani', 'Segoe UI', sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--text); }
+body { font-family: var(--f-mono); font-size: 13px; padding-inline: 16px; padding-block: 16px 28px; }
+button, select { font: inherit; color: inherit; }
+button:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.num { font-variant-numeric: tabular-nums; }
+
+.shell { max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+
+/* ── Portal chrome (the host app around the embed) ─────────────── */
+.portal {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px;
+  padding: 12px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark { width: 30px; height: 30px; border: 1.5px solid var(--cyan); border-radius: 6px; display: grid; place-items: center; }
+.brand-mark svg { width: 16px; height: 16px; }
+.brand h1 { margin: 0; font-family: var(--f-display); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; color: var(--heading); }
+.brand p { margin: 2px 0 0; font-size: 11px; color: var(--muted); letter-spacing: .5px; }
+.identity { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.identity label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.select-wrap { position: relative; }
+.select-wrap select {
+  appearance: none; background: var(--bg); border: 1px solid var(--border2); border-radius: 4px;
+  padding: 7px 30px 7px 10px; font-family: var(--f-ui); font-weight: 600; font-size: 14px; cursor: pointer;
+}
+.select-wrap::after { content: ''; position: absolute; right: 11px; top: 50%; margin-top: -3px; border: 4px solid transparent; border-top: 5px solid var(--cyan); pointer-events: none; }
+.token {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text2);
+  padding: 6px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg);
+}
+.token i { width: 7px; height: 7px; border-radius: 50%; background: var(--good); box-shadow: 0 0 8px rgba(74,222,128,.6); }
+.token b { color: var(--text); font-weight: 500; }
+.flash { animation: flash .9s ease; }
+@keyframes flash { 0% { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(var(--cyan-rgb), .18); } 100% { border-color: var(--border); box-shadow: none; } }
+
+.explain { font-size: 11.5px; color: var(--text2); line-height: 1.6; padding: 0 2px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.explain code { color: var(--cyan); background: rgba(var(--cyan-rgb), .06); padding: 1px 6px; border-radius: 3px; }
+.sample { color: var(--muted); border: 1px dashed var(--border2); border-radius: 999px; padding: 1px 8px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── Embedded report frame ─────────────────────────────────────── */
+.embed { display: grid; grid-template-columns: 1fr auto; background: var(--canvas); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.report { min-width: 0; display: flex; flex-direction: column; }
+.canvas { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+
+.slicers { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; }
+.slicer { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; }
+.slicer-title { font-family: var(--f-ui); font-weight: 600; font-size: 12px; color: var(--text2); letter-spacing: .3px; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip {
+  border: 1px solid var(--border2); background: transparent; border-radius: 3px; padding: 3px 9px;
+  font-family: var(--f-mono); font-size: 11px; color: var(--text2); cursor: pointer;
+}
+.chip:hover { border-color: var(--text2); color: var(--text); }
+.chip[aria-pressed="true"] { background: rgba(var(--cyan-rgb), .12); border-color: var(--cyan); color: var(--heading); }
+.slicer select { background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 3px 6px; font-size: 11px; font-family: var(--f-mono); }
+.crossfilter { margin-left: auto; align-self: center; display: none; align-items: center; gap: 8px; font-size: 11px; color: var(--text2); }
+.crossfilter.on { display: inline-flex; }
+.crossfilter button { border: 1px solid var(--border2); background: var(--panel); border-radius: 3px; padding: 3px 8px; cursor: pointer; font-size: 11px; }
+.crossfilter button:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.span-3 { grid-column: span 3; } .span-4 { grid-column: span 4; } .span-5 { grid-column: span 5; }
+.span-7 { grid-column: span 7; } .span-8 { grid-column: span 8; } .span-12 { grid-column: span 12; }
+@media (max-width: 1080px) { .span-3 { grid-column: span 6; } .span-4, .span-5, .span-7, .span-8 { grid-column: span 12; } }
+@media (max-width: 560px) { .span-3 { grid-column: span 12; } }
+
+/* Visual container: Power BI anatomy (title, hover header with "More options") */
+.visual { position: relative; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; min-width: 0; transition: border-color .2s; }
+.visual:hover { border-color: var(--border2); }
+.v-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.v-title { font-family: var(--f-ui); font-weight: 600; font-size: 14px; color: var(--heading); margin: 0; letter-spacing: .2px; }
+.v-sub { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+.v-menu { opacity: 0; display: flex; gap: 2px; transition: opacity .15s; }
+.visual:hover .v-menu, .visual:focus-within .v-menu { opacity: 1; }
+.v-btn { background: transparent; border: 1px solid transparent; border-radius: 3px; width: 24px; height: 22px; display: grid; place-items: center; cursor: pointer; color: var(--text2); padding: 0; }
+.v-btn:hover, .v-btn[aria-pressed="true"] { border-color: var(--border2); color: var(--cyan); }
+.v-btn svg { width: 14px; height: 14px; }
+@media (hover: none) { .v-menu { opacity: 1; } }
+
+/* KPI cards */
+.kpi { display: flex; flex-direction: column; gap: 6px; }
+.kpi-label { font-size: 10.5px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text2); }
+.kpi-value { font-family: var(--f-display); font-weight: 700; font-size: clamp(22px, 2.4vw, 30px); color: var(--heading); letter-spacing: .5px; line-height: 1.1; }
+.kpi-foot { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+.delta { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; padding: 1px 6px; border-radius: 3px; }
+.delta.up { color: var(--good); background: rgba(74,222,128,.1); }
+.delta.down { color: var(--bad); background: rgba(255,107,107,.1); }
+.delta svg { width: 9px; height: 9px; }
+.spark { width: 100%; height: 30px; display: block; }
+
+/* Charts */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.axis text { fill: var(--muted); font-family: var(--f-mono); font-size: 10px; }
+.gridline { stroke: var(--border); stroke-width: 1; }
+.legend { display: flex; gap: 14px; font-size: 11px; color: var(--text2); margin-bottom: 4px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw-line { width: 16px; height: 0; border-top: 2px solid var(--cyan); }
+.sw-line.py { border-top: 2px dashed var(--py); }
+.bar-row { cursor: pointer; }
+.bar-row .bar { transition: opacity .15s; }
+.bar-row:hover .bar { opacity: .85; }
+.dim .bar { opacity: .28; }
+.bar-label { fill: var(--text); font-family: var(--f-ui); font-weight: 500; font-size: 12.5px; }
+.bar-val { fill: var(--text2); font-family: var(--f-mono); font-size: 10.5px; }
+
+.tip {
+  position: fixed; z-index: 20; pointer-events: none; background: var(--raised); border: 1px solid var(--border2);
+  border-radius: 5px; padding: 8px 10px; font-size: 11px; color: var(--text); min-width: 150px; box-shadow: 0 6px 20px rgba(0,0,0,.45);
+}
+.tip-h { font-family: var(--f-ui); font-weight: 700; font-size: 13px; color: var(--heading); margin-bottom: 4px; }
+.tip-r { display: flex; justify-content: space-between; gap: 14px; }
+.tip-r em { font-style: normal; color: var(--text2); }
+
+/* Tables (matrix visual and "Show as a table") */
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 11.5px; }
+th { text-align: right; font-family: var(--f-ui); font-weight: 600; font-size: 12px; color: var(--text2); padding: 6px 8px; border-bottom: 1px solid var(--border2); white-space: nowrap; cursor: pointer; user-select: none; }
+th:first-child, td:first-child { text-align: left; }
+th[aria-sort] { color: var(--cyan); }
+td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+tbody tr:hover td { background: rgba(var(--cyan-rgb), .04); }
+tfoot td { font-weight: 700; color: var(--heading); border-top: 1px solid var(--border2); border-bottom: 0; }
+.databar { position: relative; }
+.databar::before { content: ''; position: absolute; left: 6px; top: 5px; bottom: 5px; width: var(--w); background: rgba(var(--cyan-rgb), .14); border-radius: 2px; }
+.databar span { position: relative; }
+.pos { color: var(--good); } .neg { color: var(--bad); }
+.heat td.cell { color: var(--heading); }
+
+/* Filters pane (collapsed rail, like an embedded report) */
+.fpane { border-left: 1px solid var(--border); background: var(--panel); display: flex; }
+.fpane-toggle { writing-mode: vertical-rl; background: transparent; border: 0; cursor: pointer; padding: 14px 8px; font-family: var(--f-ui); font-weight: 600; font-size: 13px; letter-spacing: 1px; color: var(--text2); display: flex; align-items: center; gap: 8px; }
+.fpane-toggle:hover { color: var(--cyan); }
+.fpane-body { width: 250px; padding: 14px 14px 14px 4px; display: flex; flex-direction: column; gap: 10px; }
+.fcard { border: 1px solid var(--border); border-radius: 5px; padding: 8px 10px; background: var(--bg); }
+.fcard h4 { margin: 0 0 3px; font-family: var(--f-ui); font-size: 13px; color: var(--heading); display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.fcard p { margin: 0; font-size: 11px; color: var(--text2); line-height: 1.5; }
+.fcard.rls { border-color: rgba(var(--cyan-rgb), .5); }
+.lock { font-size: 9.5px; letter-spacing: 1px; color: var(--cyan); text-transform: uppercase; }
+.fpane-title { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 760px) {
+  .embed { grid-template-columns: 1fr; }
+  .fpane { border-left: 0; border-top: 1px solid var(--border); flex-direction: column; }
+  .fpane-toggle { writing-mode: horizontal-tb; }
+  .fpane-body { width: auto; padding: 0 14px 14px; }
+}
+
+/* Page tabs (bottom bar of an embedded report) */
+.tabs { display: flex; align-items: stretch; gap: 0; border-top: 1px solid var(--border); background: var(--panel); overflow-x: auto; }
+.tab { background: transparent; border: 0; border-right: 1px solid var(--border); padding: 9px 16px; cursor: pointer; font-family: var(--f-ui); font-weight: 600; font-size: 13px; color: var(--text2); white-space: nowrap; border-top: 2px solid transparent; }
+.tab:hover { color: var(--text); }
+.tab[aria-selected="true"] { color: var(--heading); border-top-color: var(--cyan); background: var(--canvas); }
+.tabs-meta { margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+.pbi-badge { color: var(--pbi); border: 1px solid rgba(242,200,17,.35); border-radius: 3px; padding: 1px 6px; font-size: 10px; letter-spacing: .5px; }
+
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="shell">
+  <header class="portal">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 16 16" fill="none" stroke="#00F5FF" stroke-width="2"><path d="M8 2v12M2 8h12"/></svg>
+      </div>
+      <div>
+        <h1>PORTAL FARMACIAS</h1>
+        <p>Sell-out analytics · Power BI Embedded</p>
+      </div>
+    </div>
+    <div class="identity">
+      <label for="who">Signed in as</label>
+      <div class="select-wrap">
+        <select id="who" aria-describedby="rls-note"></select>
+      </div>
+      <span class="token" id="token"><i></i>Embed token · <b class="num" id="ttl">60:00</b> · RLS <b id="tokenId">PH-001</b></span>
+    </div>
+  </header>
+
+  <p class="explain" id="rls-note">
+    <span>Switching user re-issues the embed token with <code>identities: [{ username: "<span id="uid">PH-001</span>", roles: ["Pharmacy"] }]</code>. The report is the same, and RLS decides which rows it gets.</span>
+    <span class="sample">Sample data</span>
+  </p>
+
+  <section class="embed" aria-label="Embedded Power BI report">
+    <div class="report">
+      <div class="canvas">
+        <div class="slicers">
+          <div class="slicer">
+            <span class="slicer-title">Year</span>
+            <div class="chips" id="yearChips"></div>
+          </div>
+          <div class="slicer">
+            <span class="slicer-title">Through month</span>
+            <select id="monthSel" aria-label="Through month"></select>
+          </div>
+          <div class="slicer">
+            <span class="slicer-title">Category</span>
+            <div class="chips" id="catChips"></div>
+          </div>
+          <div class="crossfilter" id="xf">
+            <span>Cross-filtered by <b id="xfName"></b></span>
+            <button type="button" id="xfClear">Clear</button>
+          </div>
+        </div>
+
+        <!-- PAGE 1 · OVERVIEW -->
+        <div class="page grid" id="page-overview">
+          <div class="visual span-3 kpi" id="kpi-units"></div>
+          <div class="visual span-3 kpi" id="kpi-value"></div>
+          <div class="visual span-3 kpi" id="kpi-ytd"></div>
+          <div class="visual span-3 kpi" id="kpi-price"></div>
+
+          <div class="visual span-8" data-visual="trend">
+            <div class="v-head">
+              <div><h3 class="v-title">Sell-out value by month</h3><div class="v-sub">Current year vs prior year · €</div></div>
+              <div class="v-menu"></div>
+            </div>
+            <div class="legend"><span><i class="sw-line"></i><b id="lgCY">2026</b></span><span><i class="sw-line py"></i><span id="lgPY">2025</span></span></div>
+            <div class="chart" id="trend"></div>
+          </div>
+
+          <div class="visual span-4" data-visual="cat">
+            <div class="v-head">
+              <div><h3 class="v-title">Value YTD by category</h3><div class="v-sub">Click a bar to cross-filter</div></div>
+              <div class="v-menu"></div>
+            </div>
+            <div class="chart" id="catBars"></div>
+          </div>
+
+          <div class="visual span-12" data-visual="top">
+            <div class="v-head">
+              <div><h3 class="v-title">Top products by value YTD</h3><div class="v-sub">Units, value and YoY against the same period last year</div></div>
+              <div class="v-menu"></div>
+            </div>
+            <div class="chart" id="topBars"></div>
+          </div>
+        </div>
+
+        <!-- PAGE 2 · PRODUCTS -->
+        <div class="page grid" id="page-products" hidden>
+          <div class="visual span-12" data-visual="ptable">
+            <div class="v-head">
+              <div><h3 class="v-title">Product performance YTD</h3><div class="v-sub">Click a column header to sort</div></div>
+            </div>
+            <div class="tbl-wrap" id="prodTable"></div>
+          </div>
+        </div>
+
+        <!-- PAGE 3 · MONTHLY -->
+        <div class="page grid" id="page-monthly" hidden>
+          <div class="visual span-12" data-visual="units">
+            <div class="v-head">
+              <div><h3 class="v-title">Sell-out units by month</h3><div class="v-sub">Current year · hover a column for YoY</div></div>
+              <div class="v-menu"></div>
+            </div>
+            <div class="chart" id="unitCols"></div>
+          </div>
+          <div class="visual span-12" data-visual="matrix">
+            <div class="v-head">
+              <div><h3 class="v-title">Value by category and month</h3><div class="v-sub">€ thousands · shading scales with value</div></div>
+            </div>
+            <div class="tbl-wrap" id="matrix"></div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="Report pages">
+        <button class="tab" role="tab" aria-selected="true" data-page="overview">Overview</button>
+        <button class="tab" role="tab" aria-selected="false" data-page="products">Products</button>
+        <button class="tab" role="tab" aria-selected="false" data-page="monthly">Monthly detail</button>
+        <span class="tabs-meta"><span class="pbi-badge">Power BI</span><span>Sell-out · Pharmacy network</span></span>
+      </nav>
+    </div>
+
+    <aside class="fpane" id="fpane">
+      <button class="fpane-toggle" id="fpToggle" aria-expanded="false" aria-controls="fpBody">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12L9.5 8.5V13l-3 1.5V8.5z"/></svg>
+        Filters
+      </button>
+      <div class="fpane-body" id="fpBody" hidden>
+        <span class="fpane-title">Filters on this report</span>
+        <div class="fcard rls"><h4>Row-level security <span class="lock">Token</span></h4><p>DimPharmacy[PharmacyId] = <b id="fpRls">PH-001</b><br>Set by the embed token and cannot be changed here.</p></div>
+        <div class="fcard"><h4>Year</h4><p id="fpYear"></p></div>
+        <div class="fcard"><h4>Through month</h4><p id="fpMonth"></p></div>
+        <div class="fcard"><h4>Category</h4><p id="fpCat"></p></div>
+        <p class="fcard" style="border-style:dashed"><span style="font-size:11px;color:var(--text2)">In production this pane is hidden (<code style="color:var(--cyan)">panes.filters.visible: false</code>). It is shown here to explain the RLS filter.</span></p>
+      </div>
+    </aside>
+  </section>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<script>
+(() => {
+  // ── Sample data (deterministic) ───────────────────────────────────────────
+  const PHARMACIES = [
+    { id: 'PH-001', name: 'Farmacia Gràcia', scale: 1.00 },
+    { id: 'PH-002', name: 'Farmacia del Port', scale: 0.72 },
+    { id: 'PH-003', name: 'Farmacia Sant Andreu', scale: 1.28 },
+    { id: 'PH-004', name: 'Farmacia Rambla Nova', scale: 0.55 },
+  ];
+  const PRODUCTS = [
+    { id: 1, name: 'Protector solar SPF50+ 50ml', cat: 'Dermocosmetics', price: 18.9, base: 60, season: 'summer' },
+    { id: 2, name: 'Sérum ácido hialurónico 30ml', cat: 'Dermocosmetics', price: 24.5, base: 34, season: 'flat' },
+    { id: 3, name: 'Gel limpiador facial 200ml', cat: 'Dermocosmetics', price: 11.9, base: 48, season: 'flat' },
+    { id: 4, name: 'Ibuprofeno 400mg 20 comp.', cat: 'OTC', price: 3.2, base: 210, season: 'winter' },
+    { id: 5, name: 'Paracetamol 1g 20 comp.', cat: 'OTC', price: 2.6, base: 240, season: 'winter' },
+    { id: 6, name: 'Antihistamínico 10mg 20 comp.', cat: 'OTC', price: 6.8, base: 70, season: 'spring' },
+    { id: 7, name: 'Vitamina D3 gotas 10ml', cat: 'Nutrition', price: 9.4, base: 55, season: 'winter' },
+    { id: 8, name: 'Magnesio + B6 60 comp.', cat: 'Nutrition', price: 12.5, base: 62, season: 'flat' },
+    { id: 9, name: 'Colágeno bebible 30 sobres', cat: 'Nutrition', price: 29.9, base: 22, season: 'flat' },
+    { id: 10, name: 'Crema pañal 100ml', cat: 'Baby', price: 8.7, base: 58, season: 'flat' },
+    { id: 11, name: 'Probiótico infantil gotas', cat: 'Baby', price: 16.2, base: 26, season: 'winter' },
+    { id: 12, name: 'Pasta dental sensibilidad 75ml', cat: 'Oral care', price: 5.9, base: 90, season: 'flat' },
+    { id: 13, name: 'Colutorio sin alcohol 500ml', cat: 'Oral care', price: 7.3, base: 44, season: 'flat' },
+  ];
+  const CATS = ['Dermocosmetics', 'OTC', 'Nutrition', 'Baby', 'Oral care'];
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const YEARS = [2024, 2025, 2026];
+  const LAST = { 2026: 8 }; // data loaded through Aug 2026
+
+  function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  const SEASON = {
+    summer: [.5,.55,.75,.95,1.3,1.8,2.0,1.7,1.0,.6,.45,.45],
+    winter: [1.45,1.35,1.1,.9,.8,.7,.65,.7,.9,1.1,1.3,1.5],
+    spring: [.6,.7,1.2,1.7,1.6,1.1,.8,.7,.8,.8,.7,.6],
+    flat:   [1,.96,1.02,1,1.03,.98,.94,.88,1.02,1.05,1.04,1.12],
+  };
+  const GROWTH = { 2024: 0.88, 2025: 1.0, 2026: 1.07 };
+  // rows: [pharmacyIdx, year, monthIdx, productIdx, units, value]
+  const FACT = [];
+  PHARMACIES.forEach((ph, pi) => {
+    const r = rng(97 + pi * 131);
+    const trend = { 2024: 1, 2025: 1, 2026: 1 + (pi === 1 ? -0.09 : pi === 3 ? 0.12 : 0) };
+    YEARS.forEach(y => {
+      const last = LAST[y] ?? 12;
+      for (let m = 0; m < last; m++) {
+        PRODUCTS.forEach((p, k) => {
+          const noise = 0.85 + r() * 0.3;
+          const units = Math.round(p.base * ph.scale * SEASON[p.season][m] * GROWTH[y] * trend[y] * noise);
+          const price = p.price * (y === 2026 ? 1.03 : y === 2024 ? 0.97 : 1);
+          FACT.push([pi, y, m, k, units, units * price]);
+        });
+      }
+    });
+  });
+
+  // ── State ────────────────────────────────────────────────────────────────
+  const state = { ph: 0, year: 2026, through: 7, cat: 'All', xf: null, page: 'overview', tables: {}, sort: { key: 'value', dir: -1 } };
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
+  const eur = (v) => '€' + Math.round(v).toLocaleString('es-ES');
+  const eurK = (v) => v >= 1e6 ? '€' + (v / 1e6).toFixed(2).replace('.', ',') + ' M' : '€' + (v / 1e3).toFixed(1).replace('.', ',') + 'K';
+  const int = (v) => Math.round(v).toLocaleString('es-ES');
+  const pct = (v) => (v >= 0 ? '+' : '') + (v * 100).toFixed(1).replace('.', ',') + '%';
+  const yoy = (c, p) => p ? (c - p) / p : 0;
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const fit = (t, px) => { const n = Math.floor((px - 10) / 6.6); return t.length > n ? t.slice(0, Math.max(3, n - 1)) + '…' : t; };
+  const activeCat = () => state.xf ?? (state.cat === 'All' ? null : state.cat);
+  const maxMonth = (y) => Math.min(state.through, (LAST[y] ?? 12) - 1);
+
+  // RLS: every query goes through here, exactly like the semantic model filter.
+  function rows({ year, upTo = 11, cat = activeCat(), product } = {}) {
+    return FACT.filter(r => r[0] === state.ph && r[1] === year && r[2] <= upTo
+      && (!cat || PRODUCTS[r[3]].cat === cat) && (product == null || r[3] === product));
+  }
+  const sum = (rs, i) => rs.reduce((a, r) => a + r[i], 0);
+  function byMonth(year, cat = activeCat()) {
+    const u = Array(12).fill(null), v = Array(12).fill(null);
+    const last = (LAST[year] ?? 12) - 1;
+    rows({ year, upTo: last, cat }).forEach(r => { u[r[2]] = (u[r[2]] ?? 0) + r[4]; v[r[2]] = (v[r[2]] ?? 0) + r[5]; });
+    return { u, v };
+  }
+
+  const ICON_UP = '<svg viewBox="0 0 10 10"><path d="M5 1l4 6H1z" fill="currentColor"/></svg>';
+  const ICON_DN = '<svg viewBox="0 0 10 10"><path d="M5 9L1 3h8z" fill="currentColor"/></svg>';
+  const delta = (d) => `<span class="delta ${d >= 0 ? 'up' : 'down'}">${d >= 0 ? ICON_UP : ICON_DN}${pct(d)}</span>`;
+
+  // ── Tooltip ──────────────────────────────────────────────────────────────
+  const tip = $('tip');
+  function showTip(e, html) {
+    tip.innerHTML = html; tip.hidden = false;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = e.clientX + 14, y = e.clientY + 14;
+    if (x + w > innerWidth - 8) x = e.clientX - w - 14;
+    if (y + h > innerHeight - 8) y = e.clientY - h - 14;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  const hideTip = () => { tip.hidden = true; };
+
+  // ── Visual header menu: "Show as a table" (Power BI's accessible view) ───
+  const TABLE_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 6.5h12M2 10h12M6.5 3v10"/></svg>';
+  document.querySelectorAll('.v-menu').forEach(menu => {
+    const key = menu.closest('.visual').dataset.visual;
+    menu.innerHTML = `<button class="v-btn" type="button" aria-pressed="false" title="Show as a table" aria-label="Show as a table">${TABLE_ICON}</button>`;
+    menu.firstChild.addEventListener('click', (ev) => {
+      state.tables[key] = !state.tables[key];
+      ev.currentTarget.setAttribute('aria-pressed', String(!!state.tables[key]));
+      render();
+    });
+  });
+  function simpleTable(head, body) {
+    return `<div class="tbl-wrap"><table><thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${
+      body.map(r => `<tr>${r.map(c => `<td class="num">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  }
+
+  // ── KPI cards ────────────────────────────────────────────────────────────
+  function sparkPath(vals, w, h) {
+    const pts = vals.map((v, i) => [i, v]).filter(p => p[1] != null);
+    if (pts.length < 2) return { line: '', area: '', end: null };
+    const max = Math.max(...pts.map(p => p[1])), min = Math.min(...pts.map(p => p[1]));
+    const x = i => (i / (pts.length - 1)) * (w - 6) + 3, y = v => h - 3 - ((v - min) / (max - min || 1)) * (h - 8);
+    const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join('');
+    const area = `${line}L${x(pts.length - 1)},${h}L${x(0)},${h}Z`;
+    return { line, area, end: [x(pts.length - 1), y(pts[pts.length - 1][1])] };
+  }
+  function kpi(el, label, value, d, foot, spark) {
+    const s = sparkPath(spark, 200, 30);
+    el.innerHTML = `<span class="kpi-label">${label}</span>
+      <span class="kpi-value num">${value}</span>
+      <span class="kpi-foot">${d != null ? delta(d) : ''}<span>${foot}</span></span>
+      <svg class="spark" viewBox="0 0 200 30" preserveAspectRatio="none" aria-hidden="true">
+        <path d="${s.area}" fill="rgba(0,245,255,.08)"/><path d="${s.line}" fill="none" stroke="#00F5FF" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      </svg>`;
+  }
+  function renderKpis() {
+    const y = state.year, py = y - 1, m = maxMonth(y);
+    const cur = byMonth(y), prev = byMonth(py);
+    const curM = { u: cur.u[m] ?? 0, v: cur.v[m] ?? 0 }, prevM = { u: prev.u[m] ?? 0, v: prev.v[m] ?? 0 };
+    const ytd = sum(rows({ year: y, upTo: m }), 5), pytd = sum(rows({ year: py, upTo: m }), 5);
+    const ytdU = sum(rows({ year: y, upTo: m }), 4), pytdU = sum(rows({ year: py, upTo: m }), 4);
+    const hasPY = YEARS.includes(py);
+    kpi($('kpi-units'), `Sell-out units · ${MONTHS[m]}`, int(curM.u), hasPY ? yoy(curM.u, prevM.u) : null, hasPY ? `vs ${MONTHS[m]} ${py}` : 'no prior year', cur.u.slice(0, m + 1));
+    kpi($('kpi-value'), `Sell-out value · ${MONTHS[m]}`, eur(curM.v), hasPY ? yoy(curM.v, prevM.v) : null, hasPY ? `vs ${MONTHS[m]} ${py}` : 'no prior year', cur.v.slice(0, m + 1));
+    kpi($('kpi-ytd'), `Value YTD · Jan–${MONTHS[m]}`, eurK(ytd), hasPY ? yoy(ytd, pytd) : null, hasPY ? `PY YTD ${eurK(pytd)}` : 'no prior year',
+      cur.v.slice(0, m + 1).reduce((a, v) => (a.push((a.at(-1) ?? 0) + (v ?? 0)), a), []));
+    kpi($('kpi-price'), `Units YTD · Jan–${MONTHS[m]}`, int(ytdU), hasPY ? yoy(ytdU, pytdU) : null, `avg price ${ytdU ? '€' + (ytd / ytdU).toFixed(2).replace('.', ',') : '–'}`,
+      cur.u.slice(0, m + 1).reduce((a, v) => (a.push((a.at(-1) ?? 0) + (v ?? 0)), a), []));
+  }
+
+  // ── Line chart: CY vs PY value by month ──────────────────────────────────
+  function niceMax(v) { const p = Math.pow(10, Math.floor(Math.log10(v || 1))); const n = v / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p; }
+  function renderTrend() {
+    const el = $('trend'), y = state.year, py = y - 1, hasPY = YEARS.includes(py);
+    const cur = byMonth(y).v, prev = hasPY ? byMonth(py).v : Array(12).fill(null);
+    $('lgCY').textContent = y; $('lgPY').textContent = hasPY ? py : 'no prior year';
+    if (state.tables.trend) {
+      el.innerHTML = simpleTable(['Month', String(y), hasPY ? String(py) : 'PY', 'YoY'],
+        MONTHS.map((mm, i) => [mm, cur[i] == null ? '–' : eur(cur[i]), prev[i] == null ? '–' : eur(prev[i]), cur[i] != null && prev[i] ? pct(yoy(cur[i], prev[i])) : '–']));
+      return;
+    }
+    const W = Math.max(280, el.clientWidth), H = W < 500 ? 200 : 250, L = 56, R = 14, T = 10, B = 26;
+    const max = niceMax(Math.max(...cur.filter(v => v != null), ...prev.filter(v => v != null)) * 1.05);
+    const x = i => L + (i / 11) * (W - L - R), yv = v => T + (1 - v / max) * (H - T - B);
+    const ticks = [0, .25, .5, .75, 1].map(f => f * max);
+    const path = (arr) => arr.map((v, i) => v == null ? null : [x(i), yv(v)]).filter(Boolean).map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('');
+    const curPts = cur.map((v, i) => v == null ? null : [x(i), yv(v)]).filter(Boolean);
+    const areaCY = curPts.length ? `${path(cur)}L${curPts.at(-1)[0]},${yv(0)}L${curPts[0][0]},${yv(0)}Z` : '';
+    const end = curPts.at(-1);
+    const lastIdx = cur.map(v => v != null).lastIndexOf(true);
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart of monthly sell-out value, ${y} against ${py}">
+      <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00F5FF" stop-opacity=".18"/><stop offset="1" stop-color="#00F5FF" stop-opacity="0"/></linearGradient></defs>
+      <g class="axis">${ticks.map(t => `<line class="gridline" x1="${L}" x2="${W - R}" y1="${yv(t)}" y2="${yv(t)}"/><text x="${L - 8}" y="${yv(t) + 3}" text-anchor="end">${eurK(t).replace(',0K', 'K')}</text>`).join('')}
+      ${MONTHS.map((mm, i) => (W < 500 && i % 2) ? '' : `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${mm}</text>`).join('')}</g>
+      <path d="${areaCY}" fill="url(#ga)"/>
+      <path d="${path(prev)}" fill="none" stroke="#7C8DB5" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>
+      <path d="${path(cur)}" fill="none" stroke="#00F5FF" stroke-width="2" stroke-linejoin="round"/>
+      ${end ? `<circle cx="${end[0]}" cy="${end[1]}" r="4.5" fill="#00F5FF" stroke="#0d1321" stroke-width="2"/>
+      <text x="${end[0] + (lastIdx > 9 ? -8 : 8)}" y="${end[1] - 10}" text-anchor="${lastIdx > 9 ? 'end' : 'start'}" fill="#ffffff" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">${eurK(cur[lastIdx])}</text>` : ''}
+      <line id="xh" y1="${T}" y2="${H - B}" stroke="#243050" stroke-width="1" visibility="hidden"/>
+      <g id="xhDots"></g>
+      <rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" id="hit"/>
+    </svg>`;
+    const svg = el.querySelector('svg'), hit = el.querySelector('#hit'), xh = el.querySelector('#xh'), dots = el.querySelector('#xhDots');
+    hit.addEventListener('mousemove', (e) => {
+      const pt = svg.getBoundingClientRect(); const sx = (e.clientX - pt.left) * (W / pt.width);
+      const i = Math.max(0, Math.min(11, Math.round((sx - L) / ((W - L - R) / 11))));
+      xh.setAttribute('x1', x(i)); xh.setAttribute('x2', x(i)); xh.setAttribute('visibility', 'visible');
+      dots.innerHTML = [[cur[i], '#00F5FF'], [prev[i], '#7C8DB5']].filter(d => d[0] != null).map(d => `<circle cx="${x(i)}" cy="${yv(d[0])}" r="4" fill="${d[1]}" stroke="#0d1321" stroke-width="2"/>`).join('');
+      showTip(e, `<div class="tip-h">${MONTHS[i]}</div>
+        <div class="tip-r"><em>${y}</em><span class="num">${cur[i] == null ? 'not loaded yet' : eur(cur[i])}</span></div>
+        <div class="tip-r"><em>${hasPY ? py : 'PY'}</em><span class="num">${prev[i] == null ? '–' : eur(prev[i])}</span></div>
+        ${cur[i] != null && prev[i] ? `<div class="tip-r"><em>YoY</em><span class="num ${cur[i] >= prev[i] ? 'pos' : 'neg'}">${pct(yoy(cur[i], prev[i]))}</span></div>` : ''}`);
+    });
+    hit.addEventListener('mouseleave', () => { xh.setAttribute('visibility', 'hidden'); dots.innerHTML = ''; hideTip(); });
+  }
+
+  // ── Horizontal bars (shared by category + top products) ──────────────────
+  function hbars(el, items, { labelW = 120, onClick, selected, rowH = 30 } = {}) {
+    const W = Math.max(260, el.clientWidth), R = 104; labelW = Math.min(labelW, Math.round(W * 0.42)); const max = Math.max(...items.map(d => d.value), 1);
+    const H = items.length * rowH + 4, bw = (v) => Math.max(2, (v / max) * (W - labelW - R));
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Bar chart">
+      ${items.map((d, i) => {
+        const yy = i * rowH + 4, dim = selected && selected !== d.key ? ' dim' : '';
+        return `<g class="bar-row${dim}" data-i="${i}" tabindex="${onClick ? 0 : -1}" role="${onClick ? 'button' : 'img'}" aria-label="${esc(d.label)} ${esc(d.valueText)}">
+          <rect x="0" y="${yy - 2}" width="${W}" height="${rowH}" fill="transparent"/>
+          <text class="bar-label" x="${labelW - 8}" y="${yy + rowH / 2 + 2}" text-anchor="end">${esc(fit(d.label, labelW))}</text><title>${esc(d.label)}</title>
+          <path class="bar" fill="#00F5FF" d="M${labelW},${yy + 5}h${bw(d.value) - 4}a4,4 0 0 1 4,4v${rowH - 18}a4,4 0 0 1 -4,4h-${bw(d.value) - 4}z"/>
+          <text class="bar-val num" x="${labelW + bw(d.value) + 6}" y="${yy + rowH / 2 + 2}">${d.valueText}</text>
+        </g>`;
+      }).join('')}
+    </svg>`;
+    el.querySelectorAll('.bar-row').forEach(g => {
+      const d = items[+g.dataset.i];
+      g.addEventListener('mousemove', (e) => showTip(e, d.tip));
+      g.addEventListener('mouseleave', hideTip);
+      if (onClick) {
+        g.addEventListener('click', () => { hideTip(); onClick(d); });
+        g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(d); } });
+      }
+    });
+  }
+  function renderCats() {
+    const y = state.year, py = y - 1, m = maxMonth(y);
+    const cats = (state.cat === 'All' ? CATS : [state.cat]).map(c => {
+      const v = sum(rows({ year: y, upTo: m, cat: c }), 5), p = sum(rows({ year: py, upTo: m, cat: c }), 5);
+      return { key: c, label: c, value: v, valueText: eurK(v),
+        tip: `<div class="tip-h">${c}</div><div class="tip-r"><em>Value YTD</em><span class="num">${eur(v)}</span></div>${p ? `<div class="tip-r"><em>YoY</em><span class="num ${v >= p ? 'pos' : 'neg'}">${pct(yoy(v, p))}</span></div>` : ''}<div class="tip-r"><em>Click</em><span>cross-filter</span></div>` };
+    }).sort((a, b) => b.value - a.value);
+    if (state.tables.cat) { $('catBars').innerHTML = simpleTable(['Category', 'Value YTD'], cats.map(c => [c.label, eur(c.value)])); return; }
+    hbars($('catBars'), cats, { labelW: 112, selected: state.xf, rowH: 34,
+      onClick: (d) => { state.xf = state.xf === d.key ? null : d.key; render(); } });
+  }
+  function productStats() {
+    const y = state.year, py = y - 1, m = maxMonth(y);
+    return PRODUCTS.map((p, k) => {
+      if (activeCat() && p.cat !== activeCat()) return null;
+      const cr = rows({ year: y, upTo: m, cat: null, product: k }), pr = rows({ year: py, upTo: m, cat: null, product: k });
+      return { k, name: p.name, cat: p.cat, units: sum(cr, 4), value: sum(cr, 5), pUnits: sum(pr, 4), pValue: sum(pr, 5) };
+    }).filter(Boolean);
+  }
+  function renderTop() {
+    const ps = productStats().sort((a, b) => b.value - a.value).slice(0, 8);
+    if (state.tables.top) { $('topBars').innerHTML = simpleTable(['Product', 'Units', 'Value', 'YoY'], ps.map(p => [p.name, int(p.units), eur(p.value), p.pValue ? pct(yoy(p.value, p.pValue)) : '–'])); return; }
+    hbars($('topBars'), ps.map(p => ({ key: p.k, label: p.name, value: p.value,
+      valueText: `${eurK(p.value)}${p.pValue ? '  ' + pct(yoy(p.value, p.pValue)) : ''}`,
+      tip: `<div class="tip-h">${esc(p.name)}</div><div class="tip-r"><em>Category</em><span>${p.cat}</span></div><div class="tip-r"><em>Units</em><span class="num">${int(p.units)}</span></div><div class="tip-r"><em>Value</em><span class="num">${eur(p.value)}</span></div>${p.pValue ? `<div class="tip-r"><em>YoY value</em><span class="num ${p.value >= p.pValue ? 'pos' : 'neg'}">${pct(yoy(p.value, p.pValue))}</span></div>` : ''}` })),
+      { labelW: 230, rowH: 30 });
+  }
+
+  // ── Products page: sortable table with data bars ─────────────────────────
+  function renderProducts() {
+    const ps = productStats().map(p => ({ ...p, uY: p.pUnits ? yoy(p.units, p.pUnits) : null, vY: p.pValue ? yoy(p.value, p.pValue) : null, price: p.units ? p.value / p.units : 0 }));
+    const { key, dir } = state.sort;
+    ps.sort((a, b) => (typeof a[key] === 'string' ? a[key].localeCompare(b[key]) : (a[key] ?? -1e9) - (b[key] ?? -1e9)) * dir);
+    const maxV = Math.max(...ps.map(p => p.value), 1), maxU = Math.max(...ps.map(p => p.units), 1);
+    const cols = [['name', 'Product'], ['cat', 'Category'], ['units', 'Units YTD'], ['uY', 'Units YoY'], ['value', 'Value YTD'], ['vY', 'Value YoY'], ['price', 'Avg price']];
+    const tot = { u: ps.reduce((a, p) => a + p.units, 0), v: ps.reduce((a, p) => a + p.value, 0), pu: ps.reduce((a, p) => a + p.pUnits, 0), pv: ps.reduce((a, p) => a + p.pValue, 0) };
+    const yc = (v) => v == null ? '–' : `<span class="${v >= 0 ? 'pos' : 'neg'}">${v >= 0 ? '▲' : '▼'} ${pct(v)}</span>`;
+    $('prodTable').innerHTML = `<table><thead><tr>${cols.map(([k, l]) => `<th data-k="${k}" ${k === key ? `aria-sort="${dir < 0 ? 'descending' : 'ascending'}"` : ''} tabindex="0">${l}${k === key ? (dir < 0 ? ' ↓' : ' ↑') : ''}</th>`).join('')}</tr></thead>
+      <tbody>${ps.map(p => `<tr><td>${esc(p.name)}</td><td style="text-align:left;color:var(--text2)">${p.cat}</td>
+        <td class="num databar" style="--w:${(p.units / maxU * 70).toFixed(1)}%"><span>${int(p.units)}</span></td><td class="num">${yc(p.uY)}</td>
+        <td class="num databar" style="--w:${(p.value / maxV * 70).toFixed(1)}%"><span>${eur(p.value)}</span></td><td class="num">${yc(p.vY)}</td>
+        <td class="num">€${p.price.toFixed(2).replace('.', ',')}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><td>Total</td><td></td><td class="num">${int(tot.u)}</td><td class="num">${tot.pu ? yc(yoy(tot.u, tot.pu)) : '–'}</td><td class="num">${eur(tot.v)}</td><td class="num">${tot.pv ? yc(yoy(tot.v, tot.pv)) : '–'}</td><td class="num">€${tot.u ? (tot.v / tot.u).toFixed(2).replace('.', ',') : '–'}</td></tr></tfoot></table>`;
+    $('prodTable').querySelectorAll('th').forEach(th => {
+      const go = () => { const k = th.dataset.k; state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : (k === 'name' || k === 'cat' ? 1 : -1) }; renderProducts(); };
+      th.addEventListener('click', go); th.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+    });
+  }
+
+  // ── Monthly page: column chart + heat matrix ─────────────────────────────
+  function renderMonthly() {
+    const y = state.year, py = y - 1, cur = byMonth(y).u, prev = YEARS.includes(py) ? byMonth(py).u : Array(12).fill(null);
+    const el = $('unitCols');
+    if (state.tables.units) {
+      el.innerHTML = simpleTable(['Month', 'Units', 'PY units', 'YoY'], MONTHS.map((mm, i) => [mm, cur[i] == null ? '–' : int(cur[i]), prev[i] == null ? '–' : int(prev[i]), cur[i] != null && prev[i] ? pct(yoy(cur[i], prev[i])) : '–']));
+    } else {
+      const W = Math.max(280, el.clientWidth), H = 220, L = 50, R = 10, T = 16, B = 26, max = niceMax(Math.max(...cur.filter(v => v != null), 1) * 1.08);
+      const slot = (W - L - R) / 12, bw = Math.min(40, slot - 6), yv = v => T + (1 - v / max) * (H - T - B);
+      el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Column chart of units by month">
+        <g class="axis">${[0, .5, 1].map(f => `<line class="gridline" x1="${L}" x2="${W - R}" y1="${yv(f * max)}" y2="${yv(f * max)}"/><text x="${L - 8}" y="${yv(f * max) + 3}" text-anchor="end">${int(f * max)}</text>`).join('')}
+        ${MONTHS.map((mm, i) => (W < 500 && i % 2) ? '' : `<text x="${L + slot * i + slot / 2}" y="${H - 6}" text-anchor="middle">${mm}</text>`).join('')}</g>
+        ${cur.map((v, i) => v == null ? '' : `<g class="bar-row col" data-i="${i}"><rect x="${L + slot * i}" y="${T}" width="${slot}" height="${H - T - B}" fill="transparent"/>
+          <path class="bar" fill="#00F5FF" d="M${L + slot * i + (slot - bw) / 2},${yv(0)}V${yv(v) + 4}a4,4 0 0 1 4,-4h${bw - 8}a4,4 0 0 1 4,4V${yv(0)}z"/></g>`).join('')}
+      </svg>`;
+      el.querySelectorAll('.col').forEach(g => {
+        const i = +g.dataset.i;
+        g.addEventListener('mousemove', e => showTip(e, `<div class="tip-h">${MONTHS[i]} ${y}</div><div class="tip-r"><em>Units</em><span class="num">${int(cur[i])}</span></div>${prev[i] ? `<div class="tip-r"><em>${py}</em><span class="num">${int(prev[i])}</span></div><div class="tip-r"><em>YoY</em><span class="num ${cur[i] >= prev[i] ? 'pos' : 'neg'}">${pct(yoy(cur[i], prev[i]))}</span></div>` : ''}`));
+        g.addEventListener('mouseleave', hideTip);
+      });
+    }
+    // Matrix
+    const cats = activeCat() ? [activeCat()] : CATS, last = (LAST[y] ?? 12) - 1;
+    const grid = cats.map(c => { const r = Array(12).fill(null); rows({ year: y, upTo: last, cat: c }).forEach(f => r[f[2]] = (r[f[2]] ?? 0) + f[5]); return r; });
+    const mx = Math.max(...grid.flat().filter(v => v != null), 1);
+    $('matrix').innerHTML = `<table class="heat"><thead><tr><th>Category</th>${MONTHS.map(mm => `<th>${mm}</th>`).join('')}<th>Total</th></tr></thead><tbody>${
+      grid.map((r, ci) => `<tr><td>${cats[ci]}</td>${r.map(v => v == null ? '<td class="num" style="color:var(--muted)">–</td>' : `<td class="num cell" style="background:rgba(0,245,255,${(0.04 + (v / mx) * 0.36).toFixed(3)})">${(v / 1000).toFixed(1).replace('.', ',')}</td>`).join('')}<td class="num" style="color:var(--heading)">${(r.reduce((a, v) => a + (v ?? 0), 0) / 1000).toFixed(1).replace('.', ',')}</td></tr>`).join('')}</tbody></table>`;
+  }
+
+  // ── Slicers, identity, filters pane, tabs ────────────────────────────────
+  function chips(el, values, current, onPick) {
+    el.innerHTML = values.map(v => `<button type="button" class="chip" aria-pressed="${v === current}" data-v="${v}">${v}</button>`).join('');
+    el.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => onPick(isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v)));
+  }
+  function renderSlicers() {
+    chips($('yearChips'), YEARS, state.year, (v) => { state.year = v; render(); });
+    chips($('catChips'), ['All', ...CATS], state.cat, (v) => { state.cat = v; state.xf = null; render(); });
+    const last = (LAST[state.year] ?? 12) - 1;
+    if (state.through > last) state.through = last;
+    $('monthSel').innerHTML = MONTHS.slice(0, last + 1).map((mm, i) => `<option value="${i}" ${i === state.through ? 'selected' : ''}>${mm}</option>`).join('');
+    $('xf').classList.toggle('on', !!state.xf); $('xfName').textContent = state.xf ?? '';
+    $('fpYear').textContent = state.year;
+    $('fpMonth').textContent = `Jan – ${MONTHS[state.through]} (YTD window)`;
+    $('fpCat').textContent = state.xf ? `${state.xf} (cross-filter)` : state.cat === 'All' ? 'All categories' : state.cat;
+  }
+  $('monthSel').addEventListener('change', e => { state.through = +e.target.value; render(); });
+  $('xfClear').addEventListener('click', () => { state.xf = null; render(); });
+
+  const who = $('who');
+  who.innerHTML = PHARMACIES.map((p, i) => `<option value="${i}">${p.name} · ${p.id}</option>`).join('');
+  let expiry = Date.now() + 60 * 60 * 1000;
+  who.addEventListener('change', () => {
+    state.ph = +who.value; state.xf = null; expiry = Date.now() + 60 * 60 * 1000;
+    const tok = $('token'); tok.classList.remove('flash'); void tok.offsetWidth; tok.classList.add('flash');
+    render();
+  });
+  function tick() {
+    const s = Math.max(0, Math.round((expiry - Date.now()) / 1000));
+    $('ttl').textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    if (s <= 300) expiry = Date.now() + 60 * 60 * 1000; // silent setAccessToken() refresh 5 min before expiry
+  }
+  setInterval(tick, 1000);
+
+  const fpToggle = $('fpToggle'), fpBody = $('fpBody');
+  fpToggle.addEventListener('click', () => { const open = fpBody.hidden; fpBody.hidden = !open; fpToggle.setAttribute('aria-expanded', String(open)); });
+
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    state.page = t.dataset.page;
+    document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+    ['overview', 'products', 'monthly'].forEach(p => { $('page-' + p).hidden = p !== state.page; });
+    hideTip(); render();
+  }));
+  if (/^#(products|monthly)$/.test(location.hash)) document.querySelector(`.tab[data-page="${location.hash.slice(1)}"]`).click();
+
+  function render() {
+    const ph = PHARMACIES[state.ph];
+    $('uid').textContent = ph.id; $('tokenId').textContent = ph.id; $('fpRls').textContent = ph.id;
+    renderSlicers();
+    if (state.page === 'overview') { renderKpis(); renderTrend(); renderCats(); renderTop(); }
+    if (state.page === 'products') renderProducts();
+    if (state.page === 'monthly') renderMonthly();
+    tick();
+  }
+  render();
+  let rz; let lastW = 0;
+  new ResizeObserver(([e]) => { const w = Math.round(e.contentRect.width); if (w === lastW) return; lastW = w; clearTimeout(rz); rz = setTimeout(render, 120); }).observe(document.querySelector('.canvas'));
+})();
+</script>

@@ -1,8 +1,7 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
+import { openCalendlyPopup, CALENDLY_URL } from '../../utils/calendly'
 import './Contact.css'
-
-const CALENDLY_URL = '[CALENDLY_URL]'
-const CONTACT_EMAIL = 'contact@jonatanmarin.dev'
 
 function CalendarIcon() {
   return (
@@ -17,29 +16,26 @@ function CalendarIcon() {
   )
 }
 
-function MailIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="M3 7l9 6 9-6" />
-    </svg>
-  )
-}
-
 export default function Contact() {
   const { ref, visible } = useScrollReveal(0.1)
+  const { t } = useLanguage()
+
+  const handleBookCall = (e) => {
+    // Opens Calendly as an in-page popup; falls back to the real href
+    // (new tab) if the widget script hasn't loaded for any reason.
+    if (openCalendlyPopup(CALENDLY_URL)) e.preventDefault()
+  }
 
   return (
     <section id="contact" className="contact">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">Contact</p>
+          <p className="section-tag">{t.contact.eyebrow}</p>
           <h2 className="section-title">
-            Let's talk about your <span>data & AI</span> roadmap
+            {t.contact.titlePre}<span>{t.contact.titleHighlight}</span>{t.contact.titlePost}
           </h2>
           <p className="section-desc">
-            30 minutes to walk through your current stack, where it's costing you time or money,
-            and whether a Data Engineering, BI, or AI engagement makes sense.
+            {t.contact.desc}
           </p>
         </div>
 
@@ -49,17 +45,14 @@ export default function Contact() {
             target="_blank"
             rel="noopener noreferrer"
             className="btn-neon primary contact-cta"
+            onClick={handleBookCall}
           >
             <CalendarIcon />
-            Book a Strategy Call
-          </a>
-          <a href={`mailto:${CONTACT_EMAIL}`} className="btn-neon outline contact-cta">
-            <MailIcon />
-            {CONTACT_EMAIL}
+            {t.contact.ctaPrimary}
           </a>
         </div>
         <p className="calendly-note">
-          Calendly link pending — placeholder <code>{CALENDLY_URL}</code>
+          {t.contact.calendlyNote}
         </p>
 
         <div className="social-links">

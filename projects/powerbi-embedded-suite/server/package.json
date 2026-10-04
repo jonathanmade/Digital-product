@@ -1,0 +1,19 @@
+{
+  "name": "powerbi-embedded-token-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Node.js token service for Power BI Embedded (app owns data) with per-pharmacy row-level security.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch --env-file=.env src/index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^2.16.0",
+    "express": "^4.21.0"
+  }
+}

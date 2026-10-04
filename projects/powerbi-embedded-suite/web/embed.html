@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pharmacy Sell-out · Power BI Embedded</title>
+  <!-- Official Power BI JavaScript SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2/dist/powerbi.min.js"></script>
+  <style>
+    :root {
+      --bg: #050810; --panel: #0d1321; --border: #1a2540;
+      --cyan: #00F5FF; --text: #c8d6f0; --muted: #5a6a8a;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); }
+    header h1 { font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; margin: 0; }
+    #status { font-size: 11px; color: var(--muted); }
+    #status.ok::before { content: '●'; color: #4ade80; margin-right: 6px; }
+    #status.err { color: #ff6b6b; }
+    #report { height: calc(100vh - 56px); border: 0; }
+    #report iframe { border: 0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sell-out · <span id="pharmacy">—</span></h1>
+    <span id="status">Loading report…</span>
+  </header>
+  <div id="report"></div>
+
+  <script>
+    // Where the Node token API lives, and how this page proves who the user is.
+    // In the real portal the session token comes from the portal login; here it
+    // is read from ?session= so the demo users in server/src/auth.js can be used.
+    const API_BASE = '';
+    const SESSION = new URLSearchParams(location.search).get('session') ?? 'demo-token-farmacia-001';
+    const REFRESH_MARGIN_MS = 5 * 60 * 1000; // refresh 5 min before expiry
+
+    const models = window['powerbi-client'].models;
+    const container = document.getElementById('report');
+    const statusEl = document.getElementById('status');
+    let report;
+    let refreshTimer;
+
+    async function fetchEmbedConfig() {
+      const res = await fetch(`${API_BASE}/api/embed-config`, {
+        headers: { Authorization: `Bearer ${SESSION}` },
+      });
+      if (!res.ok) throw new Error(`Token API returned ${res.status}`);
+      return res.json();
+    }
+
+    function scheduleRefresh(expiration) {
+      clearTimeout(refreshTimer);
+      const wait = Math.max(new Date(expiration).getTime() - Date.now() - REFRESH_MARGIN_MS, 10_000);
+      refreshTimer = setTimeout(refreshToken, wait);
+    }
+
+    async function refreshToken() {
+      try {
+        const cfg = await fetchEmbedConfig();
+        await report.setAccessToken(cfg.accessToken); // no reload, no flicker
+        scheduleRefresh(cfg.expiration);
+      } catch (err) {
+        statusEl.textContent = 'Session expired — reload the page';
+        statusEl.className = 'err';
+        console.error(err);
+      }
+    }
+
+    async function embed() {
+      try {
+        const cfg = await fetchEmbedConfig();
+        document.getElementById('pharmacy').textContent = cfg.pharmacyId;
+
+        report = powerbi.embed(container, {
+          type: 'report',
+          id: cfg.reportId,
+          embedUrl: cfg.embedUrl,
+          accessToken: cfg.accessToken,
+          tokenType: models.TokenType.Embed,   // app-owns-data
+          permissions: models.Permissions.Read,
+          settings: {
+            background: models.BackgroundType.Transparent,
+            panes: {
+              filters: { visible: false },     // RLS already scopes the data
+              pageNavigation: { visible: true, position: models.PageNavigationPosition.Left },
+            },
+            bars: { actionBar: { visible: false } },
+          },
+        });
+
+        report.on('loaded', () => { statusEl.textContent = 'Connected'; statusEl.className = 'ok'; });
+        report.on('error', (e) => { statusEl.textContent = 'Report error'; statusEl.className = 'err'; console.error(e.detail); });
+
+        scheduleRefresh(cfg.expiration);
+      } catch (err) {
+        statusEl.textContent = err.message;
+        statusEl.className = 'err';
+      }
+    }
+
+    // Refresh straight away if the tab was asleep past the refresh point.
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && report) refreshToken();
+    });
+
+    embed();
+  </script>
+</body>
+</html>

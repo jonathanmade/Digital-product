@@ -1,4 +1,5 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
 import './AISection.css'
 
 function RetrievalIcon() {
@@ -39,49 +40,28 @@ function AzureIcon() {
   )
 }
 
-const CAPABILITIES = [
-  {
-    icon: RetrievalIcon,
-    title: 'Retrieval over your own data',
-    description: 'RAG built directly on the Gold layer — answers grounded in governed, up-to-date data, not a static document dump.',
-  },
-  {
-    icon: AgentIcon,
-    title: 'Internal agents',
-    description: 'Agents that automate operational workflows against your systems — not chatbots, task-completing tools.',
-  },
-  {
-    icon: DeliveryIcon,
-    title: 'End-to-end delivery',
-    description: 'Data pipeline, backend, and UI shipped as one system — a working application, not a notebook demo.',
-  },
-  {
-    icon: AzureIcon,
-    title: 'Azure-native integration',
-    description: 'Built on the same Azure estate as the data platform — Azure AI services, identity, and networking already in place.',
-  },
-]
+const ICONS = [RetrievalIcon, AgentIcon, DeliveryIcon, AzureIcon]
 
 export default function AISection() {
   const { ref, visible } = useScrollReveal(0.1)
+  const { t } = useLanguage()
 
   return (
     <section id="ai" className="ai-section">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">AI</p>
+          <p className="section-tag">{t.ai.eyebrow}</p>
           <h2 className="section-title">
-            AI applications built on <span>solid data ground</span>
+            {t.ai.titlePre}<span>{t.ai.titleHighlight}</span>{t.ai.titlePost}
           </h2>
           <p className="section-desc">
-            Most AI projects fail on messy, ungoverned data. Ten years of Data Engineering
-            means the AI layer sits on a foundation that was already built to be trusted.
+            {t.ai.desc}
           </p>
         </div>
 
         <div className="ai-grid">
-          {CAPABILITIES.map((c, i) => {
-            const Icon = c.icon
+          {t.ai.capabilities.map((c, i) => {
+            const Icon = ICONS[i]
             return (
               <div key={c.title} className={`ai-card${visible ? ' visible' : ''}`} style={{ animationDelay: `${i * 0.1}s` }}>
                 <div className="ai-icon"><Icon /></div>

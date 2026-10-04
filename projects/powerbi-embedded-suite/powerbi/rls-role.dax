@@ -1,0 +1,13 @@
+// ─────────────────────────────────────────────────────────────────────────
+// Row-level security role: "Pharmacy"
+// Model view → Manage roles → New role "Pharmacy" → table DimPharmacy
+// ─────────────────────────────────────────────────────────────────────────
+// The Node API sends the pharmacy ID as the effective-identity username in
+// GenerateToken. USERPRINCIPALNAME() returns that value at query time, so
+// every visual only sees the caller's pharmacy. Filters propagate from
+// DimPharmacy (1) → FactSellOut (*) through the relationship.
+
+[PharmacyId] = USERPRINCIPALNAME()
+
+// Test in Power BI Desktop: Modeling → View as → Other user = "PH-001"
+// + role "Pharmacy". Every visual must show only PH-001 data.

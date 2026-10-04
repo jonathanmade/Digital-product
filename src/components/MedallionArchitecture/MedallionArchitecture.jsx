@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
+import { useLanguage } from '../../context/LanguageContext'
 import './MedallionArchitecture.css'
 
 function BronzeIcon() {
@@ -29,54 +30,47 @@ function GoldIcon() {
   )
 }
 
-const LAYERS = [
-  {
-    id: 'bronze',
+// Non-translatable per-layer data (colors, icons, technology/source names)
+// kept local, matched by id with the translated copy in the dictionaries.
+const LAYER_META = {
+  bronze: {
     color: 'var(--bronze)',
     glow: 'rgba(var(--bronze-rgb), 0.4)',
     dim: 'rgba(var(--bronze-rgb), 0.08)',
-    label: 'BRONZE LAYER',
     icon: BronzeIcon,
-    subtitle: 'Raw Ingestion',
-    description: 'Unprocessed data as-is from enterprise systems. Schema-on-read, full history preserved, no transformations applied.',
     nodes: ['SAP ERP', 'Salesforce CRM', 'Odoo ERP', 'Zinc WMS'],
     tech: ['Azure Data Factory', 'Event Hubs', 'ADLS Gen2', 'Delta Lake'],
   },
-  {
-    id: 'silver',
+  silver: {
     color: 'var(--silver)',
     glow: 'rgba(var(--silver-rgb), 0.4)',
     dim: 'rgba(var(--silver-rgb), 0.06)',
-    label: 'SILVER LAYER',
     icon: SilverIcon,
-    subtitle: 'Cleanse & Validate',
-    description: 'Cleaned, deduplicated and standardized data. Business rules enforced, schema-on-write, referential integrity validated.',
     nodes: ['PySpark Jobs', 'Delta Live Tables', 'Data Quality', 'Deduplication'],
     tech: ['Databricks', 'PySpark', 'Delta Lake', 'Great Expectations'],
   },
-  {
-    id: 'gold',
+  gold: {
     color: 'var(--gold)',
     glow: 'rgba(var(--gold-rgb), 0.4)',
     dim: 'rgba(var(--gold-rgb), 0.08)',
-    label: 'GOLD LAYER',
     icon: GoldIcon,
-    subtitle: 'Business Ready',
-    description: 'Aggregated, optimized semantic models. Direct Lake mode for Power BI — sub-second query response on millions of rows.',
     nodes: ['Power BI Embedded', 'Direct Lake Mode', 'Semantic Models', 'KPI Dashboards'],
     tech: ['Microsoft Fabric', 'Power BI', 'DAX', 'Direct Lake'],
   },
-]
+}
 
 export default function MedallionArchitecture() {
   const { ref, visible } = useScrollReveal(0.1)
+  const { t } = useLanguage()
   const [activeLayer, setActiveLayer] = useState(null)
   const [animKey, setAnimKey] = useState(0)
 
+  const layers = t.medallion.layers.map(layer => ({ ...layer, ...LAYER_META[layer.id] }))
+
   useEffect(() => {
     if (visible) {
-      const t = setInterval(() => setAnimKey(k => k + 1), 3000)
-      return () => clearInterval(t)
+      const timer = setInterval(() => setAnimKey(k => k + 1), 3000)
+      return () => clearInterval(timer)
     }
   }, [visible])
 
@@ -84,13 +78,12 @@ export default function MedallionArchitecture() {
     <section id="architecture" className="medallion">
       <div className="section-inner" ref={ref}>
         <div className={`medallion-header reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">Architecture</p>
+          <p className="section-tag">{t.medallion.eyebrow}</p>
           <h2 className="section-title">
-            Medallion <span>Architecture</span>
+            {t.medallion.titlePre}<span>{t.medallion.titleHighlight}</span>{t.medallion.titlePost}
           </h2>
           <p className="section-desc">
-            Enterprise-scale data pipeline processing millions of events daily.
-            Bronze → Silver → Gold — from raw ingestion to Power BI Direct Lake.
+            {t.medallion.desc}
           </p>
         </div>
 
@@ -101,10 +94,10 @@ export default function MedallionArchitecture() {
             <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
               <defs>
                 <marker id="arrow-bronze" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill={LAYERS[0].color} />
+                  <path d="M0,0 L6,3 L0,6 Z" fill={layers[0].color} />
                 </marker>
                 <marker id="arrow-silver" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill={LAYERS[1].color} />
+                  <path d="M0,0 L6,3 L0,6 Z" fill={layers[1].color} />
                 </marker>
                 <filter id="glow-b">
                   <feGaussianBlur stdDeviation="1.5" result="blur" />
@@ -116,7 +109,7 @@ export default function MedallionArchitecture() {
               <path
                 key={`flow1-${animKey}`}
                 d="M 50 33 L 50 39"
-                stroke={LAYERS[0].color}
+                stroke={layers[0].color}
                 strokeWidth="0.6"
                 fill="none"
                 strokeDasharray="8 3"
@@ -128,7 +121,7 @@ export default function MedallionArchitecture() {
               <path
                 key={`flow2-${animKey}`}
                 d="M 50 65 L 50 71"
-                stroke={LAYERS[1].color}
+                stroke={layers[1].color}
                 strokeWidth="0.6"
                 fill="none"
                 strokeDasharray="8 3"
@@ -139,7 +132,7 @@ export default function MedallionArchitecture() {
             </svg>
           </div>
 
-          {LAYERS.map((layer, i) => (
+          {layers.map((layer, i) => (
             <div
               key={layer.id}
               className={`layer-card layer-${layer.id}${activeLayer === layer.id ? ' active' : ''}${visible ? ' visible' : ''}`}
@@ -166,7 +159,7 @@ export default function MedallionArchitecture() {
               <div className="layer-body">
                 <p className="layer-desc-text">{layer.description}</p>
                 <div className="layer-nodes">
-                  <span className="nodes-label">Sources / Outputs</span>
+                  <span className="nodes-label">{t.medallion.sourcesOutputs}</span>
                   <div className="nodes-list">
                     {layer.nodes.map(n => (
                       <span key={n} className="node-tag">{n}</span>
@@ -174,10 +167,10 @@ export default function MedallionArchitecture() {
                   </div>
                 </div>
                 <div className="layer-tech">
-                  <span className="nodes-label">Technologies</span>
+                  <span className="nodes-label">{t.medallion.technologies}</span>
                   <div className="nodes-list">
-                    {layer.tech.map(t => (
-                      <span key={t} className="tech-tag">{t}</span>
+                    {layer.tech.map(tech => (
+                      <span key={tech} className="tech-tag">{tech}</span>
                     ))}
                   </div>
                 </div>
@@ -188,13 +181,12 @@ export default function MedallionArchitecture() {
 
         {/* Stats row */}
         <div className={`arch-stats${visible ? ' visible' : ''}`}>
-          {[
-            { value: '4+', label: 'Data Sources', color: 'var(--bronze)' },
-            { value: '50M+', label: 'Events / Day', color: 'var(--silver)' },
-            { value: '<1s', label: 'Query Latency', color: 'var(--gold)' },
-            { value: '99.9%', label: 'Pipeline SLA', color: 'var(--cyan)' },
-          ].map((s, i) => (
-            <div key={s.label} className="arch-stat" style={{ '--stat-color': s.color, animationDelay: `${i * 0.1 + 0.5}s` }}>
+          {t.medallion.stats.map((s, i) => (
+            <div
+              key={s.label}
+              className="arch-stat"
+              style={{ '--stat-color': ['var(--bronze)', 'var(--silver)', 'var(--gold)', 'var(--cyan)'][i], animationDelay: `${i * 0.1 + 0.5}s` }}
+            >
               <div className="stat-value">{s.value}</div>
               <div className="stat-label">{s.label}</div>
             </div>
