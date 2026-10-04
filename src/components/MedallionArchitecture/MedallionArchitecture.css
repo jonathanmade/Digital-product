@@ -4,21 +4,9 @@
 }
 
 .medallion-header {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto 60px;
-}
-
-.medallion-header .section-tag,
-.medallion-header .section-title,
-.medallion-header .section-desc {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-.medallion-header .section-tag {
-  justify-content: center;
+  text-align: left;
+  max-width: 760px;
+  margin: 0 0 56px;
 }
 
 .medallion-header .section-desc {

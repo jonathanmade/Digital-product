@@ -176,7 +176,7 @@ function DonutChart({ label, centerLabel }) {
             offset += dashLen
             return seg
           })}
-          <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="var(--heading)" fontFamily="'JetBrains Mono', monospace" fontWeight="700">
+          <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="var(--heading)" fontFamily="'Geist Mono', monospace" fontWeight="700">
             {centerLabel}
           </text>
         </svg>

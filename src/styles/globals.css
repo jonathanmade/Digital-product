@@ -6,8 +6,8 @@
   --surface2: #111827;
   --border: #1a2540;
   --border2: #243050;
-  --cyan: #00F5FF;
-  --cyan-rgb: 0, 245, 255;
+  --cyan: #38D5E0;
+  --cyan-rgb: 56, 213, 224;
   --cyan-dim: rgba(var(--cyan-rgb), 0.1);
   --cyan-dim2: rgba(var(--cyan-rgb), 0.15);
   --cyan-glow: rgba(var(--cyan-rgb), 0.35);
@@ -35,9 +35,9 @@
   /* Glass-panel base RGB triplets — used as rgba(var(--panel-rgb), alpha) */
   --panel-rgb: 13, 19, 33;
   --sunken-rgb: 5, 8, 16;
-  --font-display: 'Orbitron', 'Rajdhani', sans-serif;
-  --font-ui: 'Rajdhani', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Geist', system-ui, sans-serif;
+  --font-ui: 'Geist', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
   --radius: 8px;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -113,8 +113,8 @@ html::-webkit-scrollbar-thumb:hover {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 15px;
+  font-family: var(--font-ui);
+  font-size: 16px;
   line-height: 1.7;
   overflow-x: hidden;
   transition: background 0.3s ease, color 0.3s ease;
@@ -151,8 +151,8 @@ section {
   align-items: center;
   gap: 10px;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 3px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cyan);
   margin-bottom: 16px;
@@ -168,10 +168,11 @@ section {
 /* ─── Section heading ───────────────────────────────────────── */
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 700;
+  font-size: clamp(30px, 4.4vw, 56px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
   color: var(--heading);
-  line-height: 1.15;
+  line-height: 1.05;
   margin-bottom: 16px;
 }
 
@@ -184,8 +185,9 @@ section {
 
 .section-desc {
   color: var(--muted);
-  font-size: 14px;
-  max-width: 600px;
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 62ch;
   margin-bottom: 60px;
 }
 

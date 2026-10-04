@@ -8,6 +8,15 @@
   gap: 24px;
 }
 
+@media (min-width: 1000px) {
+  .services-grid {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+  .service-card:first-child {
+    padding: 40px 36px;
+  }
+}
+
 .service-card {
   background: rgba(var(--panel-rgb), 0.7);
   border: 1px solid var(--border);

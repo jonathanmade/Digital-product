@@ -24,15 +24,15 @@
 - **Aesthetic:** Dark cinematic, neon gradients, futuristic / gaming feel
 - **BG:** #050810 (deep black)
 - **Surface:** #0d1321
-- **Cyan:** #00F5FF (electric)
+- **Cyan:** #38D5E0 (suavizado; antes #00F5FF)
 - **Violet:** #7B2FFF (neon)
 - **Gold:** #FFB800 (data gold)
 - **Text:** #c8d6f0
 - **Muted:** #5a6a8a
 
 ## Typography
-- Display/Titles: Orbitron or Rajdhani (Google Fonts)
-- Code/Data: JetBrains Mono
+- Display/Titles/UI: Geist (Google Fonts), pesos 500-600, tracking negativo en titulares
+- Código/etiquetas/datos: Geist Mono
 - NEVER: Inter, Roboto, Arial, system-ui
 
 ## Sections (current order, see v3 below for rationale)
@@ -86,7 +86,7 @@ src/
 ## Decisiones de diseño v2 (ajustes post-deploy)
 
 ### Paleta simplificada
-- Monocromático oscuro con UN SOLO acento: cyan #00F5FF
+- Monocromático oscuro con UN SOLO acento: cyan #38D5E0
 - Violeta (#7B2FFF) y dorado (#FFB800) eliminados de la UI general
 - Violeta permitido únicamente en gradientes radiales de fondo con opacidad < 0.05
 - Excepción semántica: colores Bronze/Silver/Gold solo en MedallionArchitecture (son colores de datos, no chrome UI)

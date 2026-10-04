@@ -34,7 +34,7 @@ function ParticleCanvas() {
 
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    const mat = new THREE.PointsMaterial({ color: 0x00F5FF, size: 0.56, transparent: true, opacity: 0.6 })
+    const mat = new THREE.PointsMaterial({ color: 0x38D5E0, size: 0.56, transparent: true, opacity: 0.6 })
     const points = new THREE.Points(geo, mat)
     scene.add(points)
 
@@ -54,7 +54,7 @@ function ParticleCanvas() {
     const linePositions = new Float32Array(linePairs.length * 6)
     const lineGeo = new THREE.BufferGeometry()
     lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3))
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x00F5FF, transparent: true, opacity: 0.08 })
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x38D5E0, transparent: true, opacity: 0.08 })
     const lines = new THREE.LineSegments(lineGeo, lineMat)
     scene.add(lines)
 
