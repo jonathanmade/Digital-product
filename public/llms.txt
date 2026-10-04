@@ -1,0 +1,19 @@
+# DeltaForge Gold
+
+> DeltaForge Gold is a Data & AI Engineering consultancy led by Jonatan Marín (Barcelona, Spain). It designs Medallion architectures (Bronze/Silver/Gold) on Microsoft Fabric and Databricks, Power BI Embedded and Direct Lake solutions, and AI applications built on governed data. The site is available in English and Spanish.
+
+## Services
+- [Data Engineering & Architecture](https://deltaforgegold.com/#services): governed Bronze → Silver → Gold pipelines unifying sources such as SAP, Salesforce, Odoo and Zinc.
+- [BI & Data Architecture](https://deltaforgegold.com/#services): Power BI Embedded with row-level security, Direct Lake semantic models and DAX.
+- [AI-Powered Applications](https://deltaforgegold.com/#ai): AI applications built on top of governed data, delivered end to end in Azure.
+
+## Case studies
+- [Medallion Architecture on Microsoft Fabric (multinational pharmaceutical group)](https://deltaforgegold.com/case-studies/pharma-medallion-fabric)
+- [Power BI Embedded Dashboard Suite (pharmacy network, Spain)](https://deltaforgegold.com/case-studies/powerbi-embedded-pharmacy)
+
+## Process
+- [How an engagement works](https://deltaforgegold.com/#process): Discovery & Audit, Architecture & Design, Build & Deploy, Handover & Support.
+
+## Contact
+- [Book a strategy call](https://calendly.com/jonatanmarin/meeting)
+- [LinkedIn: Jonatan Marín](https://linkedin.com/in/jonatanmarin)

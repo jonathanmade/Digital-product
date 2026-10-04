@@ -6,9 +6,11 @@ const STORAGE_KEY = 'site-language'
 const DICTIONARIES = { en, es }
 
 function getInitialLanguage() {
-  const stored = localStorage.getItem(STORAGE_KEY)
-  if (stored === 'en' || stored === 'es') return stored
-  return navigator.language?.toLowerCase().startsWith('es') ? 'es' : 'en'
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored === 'en' || stored === 'es') return stored
+  } catch { /* storage blocked (private mode): fall through to browser language */ }
+  return typeof navigator !== 'undefined' && navigator.language?.toLowerCase().startsWith('es') ? 'es' : 'en'
 }
 
 const LanguageContext = createContext(null)
@@ -17,7 +19,7 @@ export function LanguageProvider({ children }) {
   const [lang, setLang] = useState(getInitialLanguage)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, lang)
+    try { localStorage.setItem(STORAGE_KEY, lang) } catch { /* storage blocked */ }
     document.documentElement.setAttribute('lang', lang)
   }, [lang])
 

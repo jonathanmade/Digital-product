@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import { useSeo } from '../../hooks/useSeo'
+import { useLanguage } from '../../context/LanguageContext'
 import Hero from '../../components/Hero/Hero'
 import Services from '../../components/Services/Services'
 import MedallionArchitecture from '../../components/MedallionArchitecture/MedallionArchitecture'
@@ -12,14 +14,29 @@ import TrustBar from '../../components/TrustBar/TrustBar'
 import Testimonials from '../../components/Testimonials/Testimonials'
 import Contact from '../../components/Contact/Contact'
 
-export default function Home() {
-  const { hash } = useLocation()
+const SEO = {
+  en: {
+    title: 'DeltaForge Gold · Microsoft Fabric & Medallion Consulting',
+    description: 'Data & AI engineering consultancy in Barcelona: Medallion architecture on Microsoft Fabric and Databricks, Power BI Embedded and AI on governed data.',
+  },
+  es: {
+    title: 'DeltaForge Gold · Consultoría Microsoft Fabric y Medallion',
+    description: 'Consultoría de datos e IA en Barcelona: arquitectura Medallion en Fabric y Databricks, Power BI Embedded y aplicaciones de IA sobre datos gobernados.',
+  },
+}
 
+export default function Home() {
+  const { hash, key } = useLocation()
+  const { lang } = useLanguage()
+  useSeo({ ...SEO[lang], path: '/' })
+
+  // `key` changes on every navigation, so clicking the same anchor twice
+  // still scrolls (the hash alone would not change).
   useEffect(() => {
     if (!hash) return
     const el = document.getElementById(hash.slice(1))
     if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }, [hash])
+  }, [hash, key])
 
   return (
     <>

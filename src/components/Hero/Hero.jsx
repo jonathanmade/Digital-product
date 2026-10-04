@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import * as THREE from 'three'
 import { useLanguage } from '../../context/LanguageContext'
 import './Hero.css'
 
@@ -7,6 +6,10 @@ function ParticleCanvas() {
   const canvasRef = useRef(null)
 
   useEffect(() => {
+    let cleanup = () => {}
+    let cancelled = false
+    import('three').then((THREE) => {
+    if (cancelled) return
     const canvas = canvasRef.current
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -91,11 +94,13 @@ function ParticleCanvas() {
     }
     window.addEventListener('resize', onResize)
 
-    return () => {
+    cleanup = () => {
       cancelAnimationFrame(frame)
       window.removeEventListener('resize', onResize)
       renderer.dispose()
     }
+    })
+    return () => { cancelled = true; cleanup() }
   }, [])
 
   return <canvas ref={canvasRef} className="hero-canvas" />

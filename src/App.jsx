@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Navbar from './components/Navbar/Navbar'
 import Footer from './components/Footer/Footer'
 import Home from './pages/Home/Home'
-import CaseStudyDetail from './pages/CaseStudyDetail/CaseStudyDetail'
+const CaseStudyDetail = lazy(() => import('./pages/CaseStudyDetail/CaseStudyDetail'))
 import { storm } from './utils/stormSystem'
 import { watchCalendlyOverlay } from './utils/calendly'
 import { useScrollProgress } from './hooks/useScrollProgress'
@@ -44,18 +44,19 @@ function PageTransition({ children }) {
 function AnimatedRoutes() {
   const location = useLocation()
   return (
-    <AnimatePresence mode="wait">
+    <Suspense fallback={null}><AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/case-studies/:slug" element={<PageTransition><CaseStudyDetail /></PageTransition>} />
       </Routes>
-    </AnimatePresence>
+    </AnimatePresence></Suspense>
   )
 }
 
 export default function App() {
   useEffect(() => {
-    storm.init()
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!reduceMotion) storm.init()
     // Free up the main thread while the Calendly popup is open — the
     // storm canvas repaints every frame, and that was competing with the
     // popup's own event handlers (reported as a slow "close" click / INP).
