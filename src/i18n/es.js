@@ -155,18 +155,9 @@ export default {
     titleHighlight: 'Tecnologías',
     titlePost: '',
     desc:
-      'Plataformas probadas en producción a lo largo de todo el ciclo del dato, desde la ingesta hasta Power BI Direct Lake y la IA.',
-    categories: [
-      { name: 'Plataforma', items: ['Microsoft Fabric'] },
-      { name: 'BI', items: ['Power BI', 'Power BI Embedded', 'DAX'] },
-      { name: 'Procesamiento', items: ['Databricks', 'PySpark', 'Delta Live Tables'] },
-      { name: 'Almacenamiento', items: ['Delta Lake', 'ADLS Gen2'] },
-      { name: 'Orquestación', items: ['Azure Data Factory', 'Apache Kafka'] },
-      { name: 'Lenguaje', items: ['Python', 'SQL / T-SQL'] },
-      { name: 'Nube', items: ['Azure', 'Azure AD B2C', 'Synapse Analytics'] },
-    ],
-    alsoKnowLabel: 'También dominamos:',
-    alsoKnow: ['dbt', 'Power Automate', 'Git', 'Docker', 'M Query', 'Great Expectations'],
+      'Una sola plataforma a lo largo de todo el ciclo del dato, desde la ingesta hasta Power BI Direct Lake y la IA.',
+    alsoKnowLabel: 'También trabajamos con:',
+    alsoKnow: ['Databricks', 'PySpark', 'Delta Lake', 'ADLS Gen2', 'Kafka', 'Python', 'SQL / T-SQL', 'DAX', 'dbt', 'Git'],
   },
 
   work: {

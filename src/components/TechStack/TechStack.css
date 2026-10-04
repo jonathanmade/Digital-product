@@ -2,59 +2,56 @@
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg-alt) 100%);
 }
 
-.category-grid {
+.tool-grid {
+  list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
   margin-bottom: 40px;
 }
 
-.category-group {
+.tool-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 12px 18px;
+  text-align: center;
+  background: rgba(var(--panel-rgb), 0.7);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   opacity: 0;
   transform: translateY(16px);
+  transition: border-color 0.2s, box-shadow 0.2s, translate 0.2s;
 }
 
-.category-group.visible {
+.tool-tile.visible {
   animation: group-in 0.5s ease both;
+}
+
+.tool-tile:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 24px var(--cyan-glow);
+  translate: 0 -3px;
+}
+
+.tool-tile img {
+  width: 44px;
+  height: 44px;
+  filter: drop-shadow(0 4px 10px rgba(var(--sunken-rgb), 0.5));
+}
+
+.tool-name {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text);
 }
 
 @keyframes group-in {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: none; }
-}
-
-.category-name {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--cyan);
-  margin-bottom: 12px;
-}
-
-.category-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.capability-chip {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  border: 1px solid var(--border);
-  background: rgba(var(--panel-rgb), 0.7);
-  padding: 8px 14px;
-  border-radius: 6px;
-  transition: border-color 0.2s, color 0.2s, transform 0.15s;
-}
-
-.capability-chip:hover {
-  border-color: var(--cyan);
-  color: var(--cyan);
-  transform: translateY(-2px);
 }
 
 /* Also know */

@@ -155,18 +155,9 @@ export default {
     titleHighlight: 'Technologies',
     titlePost: '',
     desc:
-      'Production-proven platforms across the full data lifecycle, from ingestion to Power BI Direct Lake and AI.',
-    categories: [
-      { name: 'Platform', items: ['Microsoft Fabric'] },
-      { name: 'BI', items: ['Power BI', 'Power BI Embedded', 'DAX'] },
-      { name: 'Processing', items: ['Databricks', 'PySpark', 'Delta Live Tables'] },
-      { name: 'Storage', items: ['Delta Lake', 'ADLS Gen2'] },
-      { name: 'Orchestration', items: ['Azure Data Factory', 'Apache Kafka'] },
-      { name: 'Language', items: ['Python', 'SQL / T-SQL'] },
-      { name: 'Cloud', items: ['Azure', 'Azure AD B2C', 'Synapse Analytics'] },
-    ],
-    alsoKnowLabel: 'Also proficient in:',
-    alsoKnow: ['dbt', 'Power Automate', 'Git', 'Docker', 'M Query', 'Great Expectations'],
+      'One platform across the full data lifecycle, from ingestion to Power BI Direct Lake and AI.',
+    alsoKnowLabel: 'Also work with:',
+    alsoKnow: ['Databricks', 'PySpark', 'Delta Lake', 'ADLS Gen2', 'Kafka', 'Python', 'SQL / T-SQL', 'DAX', 'dbt', 'Git'],
   },
 
   work: {
