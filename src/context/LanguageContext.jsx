@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import en from '../i18n/en'
 import es from '../i18n/es'
+import { trackEvent } from '../utils/analytics'
 
 const STORAGE_KEY = 'site-language'
 const DICTIONARIES = { en, es }
@@ -23,7 +24,11 @@ export function LanguageProvider({ children }) {
     document.documentElement.setAttribute('lang', lang)
   }, [lang])
 
-  const toggleLanguage = () => setLang(l => (l === 'en' ? 'es' : 'en'))
+  const toggleLanguage = () => {
+    const next = lang === 'en' ? 'es' : 'en'
+    setLang(next)
+    trackEvent('language_change', { language: next })
+  }
 
   const value = { lang, toggleLanguage, t: DICTIONARIES[lang] }
 

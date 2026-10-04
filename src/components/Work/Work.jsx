@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useLanguage } from '../../context/LanguageContext'
+import { trackEvent } from '../../utils/analytics'
 import './Work.css'
 
 // Non-translatable per-card data (tech names, slugs, colors) kept local,
@@ -81,7 +82,11 @@ function CaseStudyCard({ project, index, visible }) {
         </div>
 
         {project.slug ? (
-          <Link to={`/case-studies/${project.slug}`} className="view-more-link">
+          <Link
+            to={`/case-studies/${project.slug}`}
+            className="view-more-link"
+            onClick={() => trackEvent('case_study_click', { slug: project.slug })}
+          >
             {project.viewMore}
           </Link>
         ) : (

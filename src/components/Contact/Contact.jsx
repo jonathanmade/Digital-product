@@ -1,6 +1,7 @@
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useLanguage } from '../../context/LanguageContext'
 import { openCalendlyPopup, CALENDLY_URL } from '../../utils/calendly'
+import { trackEvent } from '../../utils/analytics'
 import './Contact.css'
 
 function CalendarIcon() {
@@ -23,6 +24,7 @@ export default function Contact() {
   const handleBookCall = (e) => {
     // Opens Calendly as an in-page popup; falls back to the real href
     // (new tab) if the widget script hasn't loaded for any reason.
+    trackEvent('book_call_click', { location: 'contact' })
     if (openCalendlyPopup(CALENDLY_URL)) e.preventDefault()
   }
 
