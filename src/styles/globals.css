@@ -294,3 +294,35 @@ section {
     padding: 70px 16px;
   }
 }
+
+/* ─── Polish: focus, press feedback, typography, reduced motion ───────── */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.btn-neon:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+h1, h2, h3, .section-title {
+  text-wrap: balance;
+}
+
+.section-desc, .card-desc, .stage-desc, .service-desc, .layer-desc {
+  text-wrap: pretty;
+}
+
+.stat-value, .metric-value, .cs-result-value, .credibility-value {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
