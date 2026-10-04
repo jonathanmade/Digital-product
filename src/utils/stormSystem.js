@@ -134,8 +134,8 @@ export class StormSystem {
       ctx.save()
       ctx.globalAlpha = p.alpha * fade
       ctx.shadowBlur = 8
-      ctx.shadowColor = '#00F5FF'
-      ctx.fillStyle = '#00F5FF'
+      ctx.shadowColor = '#38D5E0'
+      ctx.fillStyle = '#38D5E0'
       ctx.beginPath()
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
       ctx.fill()

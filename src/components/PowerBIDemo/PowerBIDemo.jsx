@@ -146,7 +146,7 @@ const DONUT_SEGMENTS = [
   { label: 'SAP', pct: 42, color: 'var(--cyan)' },
   { label: 'Salesforce', pct: 28, color: 'rgba(var(--cyan-rgb), 0.7)' },
   { label: 'Odoo', pct: 18, color: 'rgba(var(--cyan-rgb), 0.45)' },
-  { label: 'Zinc', pct: 12, color: 'rgba(var(--cyan-rgb), 0.25)' },
+  { label: 'WMS', pct: 12, color: 'rgba(var(--cyan-rgb), 0.25)' },
 ]
 
 function DonutChart({ label, centerLabel }) {
@@ -176,7 +176,7 @@ function DonutChart({ label, centerLabel }) {
             offset += dashLen
             return seg
           })}
-          <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="var(--heading)" fontFamily="'JetBrains Mono', monospace" fontWeight="700">
+          <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="var(--heading)" fontFamily="'Geist Mono', monospace" fontWeight="700">
             {centerLabel}
           </text>
         </svg>

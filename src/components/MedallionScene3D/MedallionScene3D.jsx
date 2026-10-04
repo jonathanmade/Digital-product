@@ -79,7 +79,7 @@ export default function MedallionScene3D({ layers }) {
 
   // Source + <real layers, incl. Landing> + Dashboard, in display order.
   const nodes = [
-    { id: 'source', kind: 'icon', color: 'var(--azure)', icon: dataFactoryIconUrl, title: 'DATA FACTORY', sub: 'SAP · Salesforce · Odoo · Zinc' },
+    { id: 'source', kind: 'icon', color: 'var(--azure)', icon: dataFactoryIconUrl, title: 'DATA FACTORY', sub: 'SAP · Salesforce · Odoo · WMS' },
     ...layers.map(l => ({
       id: l.id,
       kind: 'db',

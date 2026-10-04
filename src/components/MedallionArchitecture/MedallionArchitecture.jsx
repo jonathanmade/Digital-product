@@ -1,191 +1,155 @@
-import { useState, useEffect } from 'react'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useLanguage } from '../../context/LanguageContext'
+import pipelineIcon from '../../assets/icons/fabric/pipeline_48_item.svg'
+import copyIcon from '../../assets/icons/fabric/copy_job_48_item.svg'
+import notebookIcon from '../../assets/icons/fabric/notebook_48_item.svg'
+import lakehouseIcon from '../../assets/icons/fabric/lakehouse_48_item.svg'
+import semanticIcon from '../../assets/icons/fabric/semantic_model_48_item.svg'
+import ontologyIcon from '../../assets/icons/fabric/graph_intelligence_48_color.svg'
+import powerBiIcon from '../../assets/icons/fabric/power_bi_48_color.svg'
+import copilotIcon from '../../assets/icons/fabric/copilot_48_color.svg'
+import agentIcon from '../../assets/icons/fabric/data_agent_48_item.svg'
 import './MedallionArchitecture.css'
 
-function BronzeIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <ellipse cx="12" cy="6" rx="8" ry="3" />
-      <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
-      <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
-    </svg>
-  )
-}
+const SOURCES = ['SAP', 'Salesforce', 'Odoo', 'WMS']
 
-function SilverIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 4h18l-7 9v6l-4 2v-8L3 4z" />
-    </svg>
-  )
-}
-
-function GoldIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 20V13M10 20V7M16 20V11M22 20V4" />
-      <path d="M2 20h20" />
-    </svg>
-  )
-}
-
-// Non-translatable per-layer data (colors, icons, technology/source names)
-// kept local, matched by id with the translated copy in the dictionaries.
+// Non-translatable per-layer data: Medallion colors, notebook names, Delta traits.
 const LAYER_META = {
-  bronze: {
-    color: 'var(--bronze)',
-    glow: 'rgba(var(--bronze-rgb), 0.4)',
-    dim: 'rgba(var(--bronze-rgb), 0.08)',
-    icon: BronzeIcon,
-    nodes: ['SAP ERP', 'Salesforce CRM', 'Odoo ERP', 'Zinc WMS'],
-    tech: ['Azure Data Factory', 'Event Hubs', 'ADLS Gen2', 'Delta Lake'],
-  },
-  silver: {
-    color: 'var(--silver)',
-    glow: 'rgba(var(--silver-rgb), 0.4)',
-    dim: 'rgba(var(--silver-rgb), 0.06)',
-    icon: SilverIcon,
-    nodes: ['PySpark Jobs', 'Delta Live Tables', 'Data Quality', 'Deduplication'],
-    tech: ['Databricks', 'PySpark', 'Delta Lake', 'Great Expectations'],
-  },
-  gold: {
-    color: 'var(--gold)',
-    glow: 'rgba(var(--gold-rgb), 0.4)',
-    dim: 'rgba(var(--gold-rgb), 0.08)',
-    icon: GoldIcon,
-    nodes: ['Power BI Embedded', 'Direct Lake Mode', 'Semantic Models', 'KPI Dashboards'],
-    tech: ['Microsoft Fabric', 'Power BI', 'DAX', 'Direct Lake'],
-  },
+  bronze: { color: 'var(--bronze)', notebook: 'nb_bronze_ingest', traits: ['Delta', 'append-only', 'schema-on-read'] },
+  silver: { color: 'var(--silver)', notebook: 'nb_silver_clean', traits: ['dedup', 'validation', 'schema-on-write'] },
+  gold: { color: 'var(--gold)', notebook: 'nb_gold_model', traits: ['star schema', 'aggregates', 'Direct Lake'] },
+}
+
+const OUTPUT_ICONS = [powerBiIcon, copilotIcon, agentIcon]
+
+function Icon({ src, size = 28 }) {
+  return <img src={src} alt="" width={size} height={size} loading="lazy" />
 }
 
 export default function MedallionArchitecture() {
   const { ref, visible } = useScrollReveal(0.1)
   const { t } = useLanguage()
-  const [activeLayer, setActiveLayer] = useState(null)
-  const [animKey, setAnimKey] = useState(0)
-
-  const layers = t.medallion.layers.map(layer => ({ ...layer, ...LAYER_META[layer.id] }))
-
-  useEffect(() => {
-    if (visible) {
-      const timer = setInterval(() => setAnimKey(k => k + 1), 3000)
-      return () => clearInterval(timer)
-    }
-  }, [visible])
+  const m = t.medallion
+  const layers = m.layers.map(layer => ({ ...layer, ...LAYER_META[layer.id] }))
 
   return (
     <section id="architecture" className="medallion">
       <div className="section-inner" ref={ref}>
         <div className={`medallion-header reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">{t.medallion.eyebrow}</p>
+          <p className="section-tag">{m.eyebrow}</p>
           <h2 className="section-title">
-            {t.medallion.titlePre}<span>{t.medallion.titleHighlight}</span>{t.medallion.titlePost}
+            {m.titlePre}<span>{m.titleHighlight}</span>{m.titlePost}
           </h2>
-          <p className="section-desc">
-            {t.medallion.desc}
-          </p>
+          <p className="section-desc">{m.desc}</p>
         </div>
 
-        <div className={`medallion-diagram${visible ? ' visible' : ''}`}>
-
-          {/* Flow connector lines */}
-          <div className="flow-connectors">
-            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <marker id="arrow-bronze" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill={layers[0].color} />
-                </marker>
-                <marker id="arrow-silver" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6 Z" fill={layers[1].color} />
-                </marker>
-                <filter id="glow-b">
-                  <feGaussianBlur stdDeviation="1.5" result="blur" />
-                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                </filter>
-              </defs>
-
-              {/* Bronze to Silver connector */}
-              <path
-                key={`flow1-${animKey}`}
-                d="M 50 33 L 50 39"
-                stroke={layers[0].color}
-                strokeWidth="0.6"
-                fill="none"
-                strokeDasharray="8 3"
-                markerEnd="url(#arrow-bronze)"
-                filter="url(#glow-b)"
-                className="flow-path"
-              />
-              {/* Silver to Gold connector */}
-              <path
-                key={`flow2-${animKey}`}
-                d="M 50 65 L 50 71"
-                stroke={layers[1].color}
-                strokeWidth="0.6"
-                fill="none"
-                strokeDasharray="8 3"
-                markerEnd="url(#arrow-silver)"
-                className="flow-path"
-                style={{ animationDelay: '0.5s' }}
-              />
-            </svg>
-          </div>
-
-          {layers.map((layer, i) => (
-            <div
-              key={layer.id}
-              className={`layer-card layer-${layer.id}${activeLayer === layer.id ? ' active' : ''}${visible ? ' visible' : ''}`}
-              style={{ animationDelay: `${i * 0.2}s`, '--layer-color': layer.color, '--layer-glow': layer.glow, '--layer-dim': layer.dim }}
-              onMouseEnter={() => setActiveLayer(layer.id)}
-              onMouseLeave={() => setActiveLayer(null)}
-            >
-              <div className="layer-header">
-                <div className="layer-indicator">
-                  <div className="layer-dot-outer">
-                    <div className="layer-dot-inner" />
-                  </div>
+        <div className={`flow${visible ? ' visible' : ''}`}>
+          {/* 1 · Extract */}
+          <div className="flow-stage">
+            <span className="stage-label">{m.stages.extract.label}</span>
+            <div className="extract-row">
+              <div className="extract-sources">
+                <span className="mini-label">{m.stages.extract.sourcesLabel}</span>
+                <div className="chip-row">
+                  {SOURCES.map(s => <span key={s} className="chip">{s}</span>)}
                 </div>
-                <div className="layer-title-group">
-                  <span className="layer-icon"><layer.icon /></span>
-                  <div>
-                    <div className="layer-label">{layer.label}</div>
-                    <div className="layer-subtitle">{layer.subtitle}</div>
-                  </div>
-                </div>
-                <div className="layer-expand-icon">{activeLayer === layer.id ? '−' : '+'}</div>
               </div>
-
-              <div className="layer-body">
-                <p className="layer-desc-text">{layer.description}</p>
-                <div className="layer-nodes">
-                  <span className="nodes-label">{t.medallion.sourcesOutputs}</span>
-                  <div className="nodes-list">
-                    {layer.nodes.map(n => (
-                      <span key={n} className="node-tag">{n}</span>
-                    ))}
+              <span className="flow-arrow h" aria-hidden="true" />
+              <div className="stage-card">
+                <div className="card-title-row">
+                  <Icon src={pipelineIcon} />
+                  <div>
+                    <h3 className="stage-title">{m.stages.extract.title}</h3>
+                    <p className="stage-desc">{m.stages.extract.desc}</p>
                   </div>
                 </div>
-                <div className="layer-tech">
-                  <span className="nodes-label">{t.medallion.technologies}</span>
-                  <div className="nodes-list">
-                    {layer.tech.map(tech => (
-                      <span key={tech} className="tech-tag">{tech}</span>
-                    ))}
-                  </div>
+                <div className="activity">
+                  <Icon src={copyIcon} size={20} />
+                  <span>{m.stages.extract.activity}</span>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
+
+          <span className="flow-arrow v" aria-hidden="true" />
+
+          {/* 2 · Transform: notebooks chained in a DAG */}
+          <div className="flow-stage">
+            <span className="stage-label">{m.stages.dag.label}</span>
+            <div className="dag">
+              <div className="dag-head">
+                <span className="dag-badge">DAG</span>
+                <div>
+                  <h3 className="stage-title">{m.stages.dag.title}</h3>
+                  <p className="stage-desc">{m.stages.dag.desc}</p>
+                </div>
+              </div>
+              <div className="layers">
+                {layers.map((layer, i) => (
+                  <div key={layer.id} className="layer-wrap">
+                    <div className="layer" style={{ '--layer-color': layer.color, animationDelay: `${i * 0.15}s` }}>
+                      <div className="layer-top">
+                        <span className="layer-label">{layer.label}</span>
+                        <Icon src={lakehouseIcon} size={22} />
+                      </div>
+                      <span className="layer-subtitle">{layer.subtitle}</span>
+                      <p className="layer-desc">{layer.description}</p>
+                      <div className="layer-notebook">
+                        <Icon src={notebookIcon} size={18} />
+                        <code>{layer.notebook}</code>
+                      </div>
+                      <div className="chip-row">
+                        {layer.traits.map(x => <span key={x} className="chip small">{x}</span>)}
+                      </div>
+                    </div>
+                    {i < layers.length - 1 && <span className="flow-arrow h in-dag" aria-hidden="true" />}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <span className="flow-arrow v" aria-hidden="true" />
+
+          {/* 3 · Consume & AI */}
+          <div className="flow-stage">
+            <span className="stage-label">{m.stages.consume.label}</span>
+            <div className="consume">
+              <div className="consume-head">
+                <h3 className="stage-title">{m.stages.consume.title}</h3>
+                <p className="stage-desc">{m.stages.consume.desc}</p>
+              </div>
+              <div className="consume-items">
+                {m.stages.consume.items.map((item, i) => (
+                  <div key={item.title} className="stage-card">
+                    <div className="card-title-row">
+                      <Icon src={i === 0 ? semanticIcon : ontologyIcon} />
+                      <div>
+                        <h4 className="item-title">{item.title}</h4>
+                        <p className="stage-desc">{item.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="outputs">
+                {m.stages.consume.outputs.map((o, i) => (
+                  <span key={o} className="output">
+                    <Icon src={OUTPUT_ICONS[i]} size={20} />
+                    {o}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Stats row */}
         <div className={`arch-stats${visible ? ' visible' : ''}`}>
-          {t.medallion.stats.map((s, i) => (
+          {m.stats.map((s, i) => (
             <div
               key={s.label}
               className="arch-stat"
-              style={{ '--stat-color': ['var(--bronze)', 'var(--silver)', 'var(--gold)', 'var(--cyan)'][i], animationDelay: `${i * 0.1 + 0.5}s` }}
+              style={{ '--stat-color': ['var(--bronze)', 'var(--silver)', 'var(--gold)', 'var(--cyan)'][i] }}
             >
               <div className="stat-value">{s.value}</div>
               <div className="stat-label">{s.label}</div>

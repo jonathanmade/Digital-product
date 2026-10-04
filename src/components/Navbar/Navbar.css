@@ -112,8 +112,13 @@
 }
 
 .lang-toggle button.active {
-  color: #000;
+  color: var(--bg);
   background: var(--cyan);
+}
+
+.lang-toggle button:focus-visible {
+  outline-offset: -3px;
+  border-radius: 20px;
 }
 
 .lang-toggle button:not(.active):hover {
