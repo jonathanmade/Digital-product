@@ -22,7 +22,7 @@ export const legal = {
       sections: [
         {
           h: 'Who is responsible',
-          p: [`This website is operated by DeltaForge Gold, based in Barcelona (Spain). You can contact us at ${CONTACT_EMAIL}.`],
+          p: [`Data controller: Jonatan Marín, operating as DeltaForge Gold, based in Barcelona (Spain). Contact: ${CONTACT_EMAIL}.`],
         },
         {
           h: 'What data is processed and why',
@@ -86,7 +86,7 @@ export const legal = {
       sections: [
         {
           h: 'Responsable',
-          p: [`Esta web es operada por DeltaForge Gold, con sede en Barcelona (España). Puedes contactarnos en ${CONTACT_EMAIL}.`],
+          p: [`Responsable del tratamiento: Jonatan Marín, que opera como DeltaForge Gold, con sede en Barcelona (España). Contacto: ${CONTACT_EMAIL}.`],
         },
         {
           h: 'Qué datos se tratan y para qué',
