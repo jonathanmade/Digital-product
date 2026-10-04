@@ -2,6 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Apply the saved/system theme before first paint to avoid a wrong-colour flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      html { background: #050810; color-scheme: dark; }
+      html[data-theme="light"] { background: #f5f7fb; color-scheme: light; }
+      body { margin: 0; background: inherit; }
+      #splash { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; }
+      #splash svg { width: 56px; height: 56px; animation: splash-pulse 1.4s ease-in-out infinite; }
+      @keyframes splash-pulse { 0%, 100% { opacity: 0.35; transform: scale(0.94); } 50% { opacity: 1; transform: scale(1); } }
+      @media (prefers-reduced-motion: reduce) { #splash svg { animation: none; } }
+    </style>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DeltaForge Gold · Microsoft Fabric & Medallion Consulting</title>
@@ -66,13 +85,14 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
     <!-- Calendly popup widget assets -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div id="splash" role="status" aria-label="Loading"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 16 L86 80 H14 Z" fill="none" style="stroke:var(--cyan,#00F5FF)" stroke-width="7" stroke-linejoin="round"/><path d="M50 44 L64 70 H36 Z" style="fill:var(--cyan,#00F5FF)" opacity="0.85"/></svg></div></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
