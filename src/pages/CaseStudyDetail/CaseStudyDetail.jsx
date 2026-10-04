@@ -3,6 +3,7 @@ import { getCaseStudy, CASE_STUDY_INDEX } from '../../data/caseStudies'
 import MedallionScene3D from '../../components/MedallionScene3D/MedallionScene3D'
 import EmbedFlowDiagram from '../../components/EmbedFlowDiagram/EmbedFlowDiagram'
 import { useLanguage } from '../../context/LanguageContext'
+import { useSeo } from '../../hooks/useSeo'
 import './CaseStudyDetail.css'
 
 function BackIcon() {
@@ -30,6 +31,10 @@ export default function CaseStudyDetail() {
   const { slug } = useParams()
   const { lang, t } = useLanguage()
   const study = getCaseStudy(slug)
+
+  useSeo(study
+    ? { title: `${study.title} | DeltaForge Gold`, description: study.summary[lang], path: `/case-studies/${study.slug}` }
+    : { title: 'Not found | DeltaForge Gold', description: '', path: `/case-studies/${slug}`, noindex: true })
 
   if (!study) return <NotFound />
 
