@@ -260,7 +260,7 @@ export default {
     titleHighlight: 'Datos en Vivo',
     titlePost: '',
     desc: 'Entorno simulado de Power BI Embedded que muestra analítica con Direct Lake.',
-    shellTitle: 'Jonatan Marín · Suite de Analítica',
+    shellTitle: 'DeltaForge Gold · Suite de Analítica',
     liveBadge: 'Datos en Vivo · Direct Lake Mode',
     barChartLabel: 'Volumen de Pipeline · Mensual',
     lineChartLabel: 'Tendencia de Latencia (ms)',
@@ -335,7 +335,7 @@ export default {
   },
 
   footer: {
-    tagline: 'Jonatan Marín · Ingeniería de Datos e IA · Barcelona',
+    tagline: 'DeltaForge Gold · Ingeniería de Datos e IA · Barcelona',
   },
 
   caseStudyDetail: {

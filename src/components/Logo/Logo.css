@@ -1,0 +1,32 @@
+.dfg-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dfg-mark {
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(var(--cyan-rgb), 0.35));
+}
+
+.dfg-initials {
+  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--heading);
+}
+
+.dfg-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+@media (max-width: 420px) {
+  .dfg-name {
+    display: none;
+  }
+}

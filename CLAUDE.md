@@ -1,6 +1,7 @@
-# Portfolio — Jonatan Marín · Data & AI Engineering
+# DeltaForge Gold — Data & AI Engineering (Jonatan Marín)
 
 ## Developer
+- **Brand:** DeltaForge Gold (deltaforgegold.com), logo/monogram DFG (`components/Logo`)
 - **Name:** Jonatan Marín — Data & AI Engineering consultant, Barcelona
 - **Role:** 10+ years in Data Engineering, BI, and Architecture; now extending into
   end-to-end AI applications built on governed, production-grade data

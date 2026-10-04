@@ -4,6 +4,7 @@ import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../context/LanguageContext'
 import { openCalendlyPopup, CALENDLY_URL } from '../../utils/calendly'
 import './Navbar.css'
+import Logo from '../Logo/Logo'
 
 function SunIcon() {
   return (
@@ -54,8 +55,7 @@ export default function Navbar() {
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <div className="nav-inner">
         <Link className="nav-logo" to="/">
-          <span className="logo-bracket">[</span>JM<span className="logo-bracket">]</span>
-          <span className="logo-sub"> data_engineer</span>
+          <Logo showName />
         </Link>
 
         <div className="nav-right">
