@@ -310,6 +310,16 @@ export default {
   },
 
   caseStudyDetail: {
+    article: {
+      label: 'Caso de estudio',
+      readTime: (m) => `${m} min de lectura`,
+      toc: 'En este artículo',
+      chosen: 'Elegida',
+      pros: 'Ventaja',
+      cons: 'Contrapartida',
+      illustrative: 'Ejemplo ilustrativo',
+      stages: 'Ruta de despliegue',
+    },
     backLink: 'Volver a los casos de estudio',
     notFoundTitle: 'Caso de estudio no encontrado',
     notFoundDesc: 'Este caso de estudio todavía no tiene página propia.',

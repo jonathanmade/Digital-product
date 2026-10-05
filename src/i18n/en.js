@@ -310,6 +310,16 @@ export default {
   },
 
   caseStudyDetail: {
+    article: {
+      label: 'Case study',
+      readTime: (m) => `${m} min read`,
+      toc: 'In this article',
+      chosen: 'Chosen',
+      pros: 'Upside',
+      cons: 'Trade-off',
+      illustrative: 'Illustrative sample',
+      stages: 'Release path',
+    },
     backLink: 'Back to case studies',
     notFoundTitle: 'Case study not found',
     notFoundDesc: "This case study doesn't have a page yet.",
