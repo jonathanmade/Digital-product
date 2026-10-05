@@ -4,6 +4,7 @@ import MedallionScene3D from '../../components/MedallionScene3D/MedallionScene3D
 import EmbedFlowDiagram from '../../components/EmbedFlowDiagram/EmbedFlowDiagram'
 import { useLanguage } from '../../context/LanguageContext'
 import { useSeo } from '../../hooks/useSeo'
+import { FABRIC_ICONS } from './fabricIcons'
 import ArticleBody from './ArticleBody'
 import { readingMinutes } from './readingTime'
 import './CaseStudyDetail.css'
@@ -140,6 +141,16 @@ export default function CaseStudyDetail() {
 
         <div className="cs-section">
           <h2 className="cs-h2">{t.caseStudyDetail.techStackTitle}</h2>
+          {study.techIcons && (
+            <ul className="cs-tech-icons">
+              {study.techIcons.map(key => (
+                <li key={key}>
+                  <img src={FABRIC_ICONS[key].src} alt="" width="40" height="40" loading="lazy" />
+                  <span>{FABRIC_ICONS[key].name}</span>
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="cs-tags">
             {study.techStack.map(tech => <span key={tech} className="p-tag">{tech}</span>)}
           </div>
