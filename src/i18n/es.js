@@ -113,12 +113,12 @@ export default {
   },
 
   medallion: {
-    eyebrow: 'Arquitectura',
-    titlePre: 'Arquitectura ',
-    titleHighlight: 'Medallion',
+    eyebrow: 'Metodología',
+    titlePre: 'Así fluyen tus datos: ',
+    titleHighlight: 'del caos a la decisión',
     titlePost: '',
     desc:
-      'Un pipeline gobernado, no solo un diagrama. Fabric extrae tus fuentes, notebooks refinan cada capa en un DAG orquestado y un modelo semántico con ontología alimentan Power BI y el Copilot de IA.',
+      'Aplicamos la metodología Medallion: cada fuente se extrae intacta, se refina capa a capa con notebooks orquestados y se publica en un modelo semántico gobernado. El resultado: cada cifra trazable hasta su origen, lista para Power BI y para la IA.',
     stages: {
       extract: { label: '1 · Extracción', title: 'Data Pipeline', desc: 'Un pipeline de Fabric aterriza cada fuente tal cual, programado o por eventos.', activity: 'Copy data', sourcesLabel: 'Fuentes' },
       dag: { label: '2 · Transformación', title: 'DAG de notebooks', desc: 'Un notebook por capa, encadenados en un DAG: ordenados, reintentables y trazables de extremo a extremo.' },
