@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import { useLanguage } from '../../context/LanguageContext'
+import powerBiIcon from '../../assets/icons/fabric/power_bi_48_color.svg'
 import './PowerBIDemo.css'
 
 function useCounter(target, duration = 1800, active) {
@@ -63,21 +64,62 @@ const ALL = compute('all')
 function KPICard({ label, value, format, delta, trendText, active }) {
   const count = useCounter(value, 900, active)
   return (
-    <div className="kpi-card" style={{ '--kpi-color': 'var(--cyan)' }}>
-      <div className="kpi-value">{format(count)}</div>
-      <div className="kpi-label">{label}</div>
-      <div className="kpi-trend flat">
-        {delta == null ? trendText : `${delta >= 0 ? '↑' : '↓'} ${Math.abs(delta).toFixed(0)}% ${trendText}`}
+    <div className="pbi-card">
+      <div className="pbi-card-value">{format(count)}</div>
+      <div className="pbi-card-label">{label}</div>
+      <div className="pbi-card-note">
+        {delta == null ? trendText : `${delta >= 0 ? '▲' : '▼'} ${Math.abs(delta).toFixed(0)}% ${trendText}`}
       </div>
     </div>
+  )
+}
+
+function Visual({ title, className = '', children }) {
+  return (
+    <div className={`pbi-visual ${className}`}>
+      <div className="pbi-visual-head">
+        <span className="pbi-visual-title">{title}</span>
+        <span className="pbi-visual-more" aria-hidden="true">···</span>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function SeasonChart({ title, months, legend, series, active }) {
+  const max = Math.max(...series.all)
+  const W = 560, H = 190, padL = 34, padB = 22, padT = 8
+  const x = (i) => padL + (i / 11) * (W - padL - 8)
+  const y = (v) => padT + (1 - v / max) * (H - padT - padB)
+  const line = (arr) => arr.map((v, i) => `${x(i)},${y(v)}`).join(' ')
+  const ticks = [0, 0.5, 1].map(f => Math.round(max * f))
+  return (
+    <Visual title={title}>
+      <div className="season-legend">
+        <span><i className="dot m" />{legend.member}</span>
+        <span><i className="dot c" />{legend.casual}</span>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="season-svg" preserveAspectRatio="none">
+        {ticks.map(t => (
+          <g key={t}>
+            <line x1={padL} x2={W - 8} y1={y(t)} y2={y(t)} className="grid" />
+            <text x={padL - 6} y={y(t)} className="axis" textAnchor="end" dy="0.32em">{t}</text>
+          </g>
+        ))}
+        {months.map((m, i) => (
+          <text key={i} x={x(i)} y={H - 6} className="axis" textAnchor="middle">{m}</text>
+        ))}
+        {sum(series.member) > 0 && <polyline key={`m${series.member.join()}`} points={line(series.member)} className={`s-line m${active ? ' draw' : ''}`} />}
+        {sum(series.casual) > 0 && <polyline key={`c${series.casual.join()}`} points={line(series.casual)} className={`s-line c${active ? ' draw' : ''}`} />}
+      </svg>
+    </Visual>
   )
 }
 
 function BarChart({ active, label, data, labels, casual, stacked }) {
   const max = Math.max(...data)
   return (
-    <div className="chart-box">
-      <div className="chart-label">{label}</div>
+    <Visual title={label}>
       <div className="bar-chart">
         {data.map((v, i) => (
           <div key={i} className="bar-col">
@@ -92,40 +134,7 @@ function BarChart({ active, label, data, labels, casual, stacked }) {
           </div>
         ))}
       </div>
-    </div>
-  )
-}
-
-function LineChart({ active, label, data }) {
-  const max = Math.max(...ALL.monthly)
-  const pts = data.map((v, i) => `${(i / (data.length - 1)) * 280},${86 - (v / max) * 76}`).join(' ')
-  return (
-    <div className="chart-box">
-      <div className="chart-label">{label}</div>
-      <svg width="100%" height="100" viewBox="0 0 280 90" preserveAspectRatio="none" className="line-chart">
-        <defs>
-          <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--cyan)" />
-            <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0.4" />
-          </linearGradient>
-          <linearGradient id="area-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-        <polygon points={`0,90 ${pts} 280,90`} fill="url(#area-gradient)" />
-        <polyline
-          key={pts}
-          points={pts}
-          fill="none"
-          stroke="url(#line-gradient)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={active ? 'line-draw' : ''}
-        />
-      </svg>
-    </div>
+    </Visual>
   )
 }
 
@@ -141,8 +150,7 @@ function DonutChart({ label, centerLabel, names, values }) {
     return [...acc, { ...s, dashLen, offset }]
   }, [])
   return (
-    <div className="chart-box donut-box">
-      <div className="chart-label">{label}</div>
+    <Visual title={label} className="donut-box">
       <div className="donut-wrap">
         <svg width="100" height="100" viewBox="0 0 100 100">
           {arcs.map((s) => (
@@ -171,7 +179,7 @@ function DonutChart({ label, centerLabel, names, values }) {
           ))}
         </div>
       </div>
-    </div>
+    </Visual>
   )
 }
 
@@ -180,8 +188,10 @@ export default function PowerBIDemo() {
   const { t } = useLanguage()
   const p = t.powerbi
   const [type, setType] = useState('all')
+  const [page, setPage] = useState(0)
   const d = compute(type)
   const delta = (v, base) => (type === 'all' ? null : ((v - base) / base) * 100)
+  const trendText = type === 'all' ? p.baseline : p.vsAll
 
   const kpis = [
     { label: p.kpis[0], value: d.total, format: n => n.toLocaleString(), delta: delta(d.total, ALL.total) },
@@ -189,6 +199,17 @@ export default function PowerBIDemo() {
     { label: p.kpis[2], value: Math.round(d.weekend), format: n => `${n}%`, delta: delta(d.weekend, ALL.weekend) },
     { label: p.kpis[3], value: Math.round(d.bikes[1]), format: n => `${n}%`, delta: delta(d.bikes[1], ALL.bikes[1]) },
   ]
+  const peakIdx = d.monthly.indexOf(Math.max(...d.monthly))
+  const summerPct = Math.round((sum(d.monthly.slice(5, 8)) / sum(d.monthly)) * 100)
+  const seasonKpis = [
+    { label: p.peakMonth, value: peakIdx, format: () => p.monthNames[peakIdx], delta: null },
+    { label: p.summerShare, value: summerPct, format: n => `${n}%`, delta: null },
+  ]
+  const seasonSeries = {
+    all: d.monthly,
+    member: type === 'casual' ? d.monthly.map(() => 0) : MONTHLY.member,
+    casual: type === 'member' ? d.monthly.map(() => 0) : MONTHLY.casual,
+  }
 
   return (
     <section id="powerbi" className="powerbi">
@@ -202,51 +223,79 @@ export default function PowerBIDemo() {
         </div>
 
         <div className={`pbi-shell${visible ? ' visible' : ''}`}>
-          <div className="pbi-topbar">
-            <div className="pbi-dots">
-              <span style={{ background: '#ff5f57' }} />
-              <span style={{ background: '#febc2e' }} />
-              <span style={{ background: '#28c840' }} />
+          <div className="pbi-appbar">
+            <img src={powerBiIcon} alt="" width="20" height="20" />
+            <span className="pbi-app">{p.appName}</span>
+            <span className="pbi-crumb">{p.workspace} <i>›</i> {p.shellTitle}</span>
+            <span className="pbi-badge">{p.liveBadge}</span>
+          </div>
+
+          <div className="pbi-ribbon">
+            <span className="pbi-report-name">{p.shellTitle}</span>
+            <span className="pbi-menu" aria-hidden="true">
+              {p.menu.map(m => <span key={m}>{m}</span>)}
+            </span>
+            <button type="button" className="pbi-reset" onClick={() => setType('all')} disabled={type === 'all'}>
+              {p.resetFilters}
+            </button>
+          </div>
+
+          <div className="pbi-canvas">
+            <div className="pbi-visual pbi-slicer" role="group" aria-label={p.slicerLabel}>
+              <div className="pbi-visual-head">
+                <span className="pbi-visual-title">{p.slicerLabel}</span>
+                <span className="pbi-visual-more" aria-hidden="true">···</span>
+              </div>
+              {['all', 'member', 'casual'].map(k => (
+                <button
+                  key={k}
+                  type="button"
+                  className={`slicer-opt${type === k ? ' active' : ''}`}
+                  aria-pressed={type === k}
+                  onClick={() => setType(k)}
+                >
+                  <span className="check" aria-hidden="true" />
+                  {p.slicer[k]}
+                </button>
+              ))}
             </div>
-            <div className="pbi-title">{p.shellTitle}</div>
-            <div className="pbi-badge">{p.liveBadge}</div>
-          </div>
 
-          <div className="pbi-slicer" role="group" aria-label={p.slicerLabel}>
-            <span className="slicer-label">{p.slicerLabel}</span>
-            {['all', 'member', 'casual'].map(k => (
-              <button
-                key={k}
-                type="button"
-                className={`slicer-btn${type === k ? ' active' : ''}`}
-                aria-pressed={type === k}
-                onClick={() => setType(k)}
-              >
-                {p.slicer[k]}
-              </button>
-            ))}
-          </div>
-
-          <div className="kpi-row">
-            {kpis.map(k => (
-              <KPICard key={k.label} {...k} trendText={type === 'all' ? p.baseline : p.vsAll} active={visible} />
-            ))}
-          </div>
-
-          <div className="charts-row">
-            <BarChart active={visible} label={p.barChartLabel} data={d.weekday} casual={d.casualWeekday} stacked={type === 'all'} labels={p.weekdays} />
-            <LineChart active={visible} label={p.lineChartLabel} data={d.monthly} />
-            <DonutChart label={p.donutLabel} centerLabel={p.donutCenter} names={p.bikeTypes} values={d.bikes} />
+            {page === 0 ? (
+              <div className="pbi-page">
+                <div className="pbi-cards">
+                  {kpis.map(k => <KPICard key={k.label} {...k} trendText={trendText} active={visible} />)}
+                </div>
+                <div className="pbi-charts">
+                  <BarChart active={visible} label={p.barChartLabel} data={d.weekday} casual={d.casualWeekday} stacked={type === 'all'} labels={p.weekdays} />
+                  <DonutChart label={p.donutLabel} centerLabel={p.donutCenter} names={p.bikeTypes} values={d.bikes} />
+                </div>
+              </div>
+            ) : (
+              <div className="pbi-page">
+                <div className="pbi-cards two">
+                  {seasonKpis.map(k => <KPICard key={k.label} {...k} trendText="" active={visible} />)}
+                </div>
+                <SeasonChart title={p.seasonTitle} months={p.months} legend={p.legend} series={seasonSeries} active={visible} />
+              </div>
+            )}
           </div>
 
           <p className="pbi-insight" aria-live="polite">{p.insights[type]}</p>
 
-          <div className="pbi-footer">
-            <span>{p.footer.source}</span>
-            <span>·</span>
-            <span><strong>{p.footer.note}</strong></span>
-            <span>·</span>
-            <span>{p.footer.platform}</span>
+          <div className="pbi-pages" role="tablist">
+            {p.tabs.map((tab, i) => (
+              <button
+                key={tab}
+                type="button"
+                role="tab"
+                aria-selected={page === i}
+                className={`pbi-tab${page === i ? ' active' : ''}`}
+                onClick={() => setPage(i)}
+              >
+                {tab}
+              </button>
+            ))}
+            <span className="pbi-status">{p.pageLabel} {page + 1} {p.ofLabel} {p.tabs.length} · {p.footer.note}</span>
           </div>
         </div>
       </div>
