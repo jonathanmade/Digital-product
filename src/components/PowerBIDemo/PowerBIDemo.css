@@ -310,3 +310,71 @@
     display: none;
   }
 }
+
+/* Slicer + insight (Cyclistic) */
+.pbi-slicer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.slicer-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+.slicer-btn {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.slicer-btn:hover {
+  border-color: var(--cyan);
+}
+
+.slicer-btn.active {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--bg);
+}
+
+.pbi-insight {
+  padding: 14px 20px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text2);
+  border-top: 1px solid var(--border);
+  text-wrap: pretty;
+}
+
+.bar-fill {
+  position: relative;
+}
+
+.bar-casual {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  background: rgba(var(--panel-rgb), 0.55);
+  border-radius: 2px 2px 0 0;
+}
+
+.kpi-trend.flat {
+  color: var(--muted);
+}

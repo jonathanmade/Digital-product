@@ -20,85 +20,75 @@ function useCounter(target, duration = 1800, active) {
   return value
 }
 
-function RevenueIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v10M9.5 9.5c0-1.1 1.12-2 2.5-2s2.5.7 2.5 1.75-1.12 1.75-2.5 1.75-2.5.8-2.5 1.9 1.12 1.85 2.5 1.85 2.5-.65 2.5-1.85" />
-    </svg>
-  )
+// Illustrative sample data modelled on the Cyclistic bike-share case study.
+// Rides in thousands per month, per rider type.
+const MONTHLY = {
+  member: [118, 125, 170, 255, 340, 420, 460, 450, 410, 330, 215, 140],
+  casual: [28, 32, 60, 120, 210, 320, 380, 365, 270, 150, 60, 35],
+}
+// Share of rides per weekday (Mon..Sun), percent.
+const WEEKDAY_SHARE = {
+  member: [15.6, 16.4, 16.8, 16.6, 15.8, 10.4, 8.4],
+  casual: [11, 9.5, 10, 11, 13.5, 23, 22],
+}
+// Bike type mix (classic, electric, docked), percent.
+const BIKE_MIX = { member: [56, 44, 0], casual: [47, 40, 13] }
+// Average ride length in minutes.
+const AVG_MIN = { member: 12.4, casual: 27.8 }
+
+const sum = (a) => a.reduce((x, y) => x + y, 0)
+
+function compute(type) {
+  const types = type === 'all' ? ['member', 'casual'] : [type]
+  const monthly = MONTHLY.member.map((_, i) => sum(types.map(k => MONTHLY[k][i])))
+  const total = sum(monthly)
+  const weekday = WEEKDAY_SHARE.member.map((_, d) =>
+    sum(types.map(k => sum(MONTHLY[k]) * WEEKDAY_SHARE[k][d] / 100)))
+  const casualWeekday = WEEKDAY_SHARE.casual.map((sh) =>
+    types.includes('casual') ? sum(MONTHLY.casual) * sh / 100 : 0)
+  const weigh = (fn) => sum(types.map(k => sum(MONTHLY[k]) * fn(k))) / total
+  return {
+    monthly,
+    weekday,
+    casualWeekday,
+    total: Math.round(total * 1000),
+    avgMin: weigh(k => AVG_MIN[k]),
+    weekend: weigh(k => (WEEKDAY_SHARE[k][5] + WEEKDAY_SHARE[k][6])),
+    bikes: [0, 1, 2].map(b => weigh(k => BIKE_MIX[k][b])),
+  }
 }
 
-function PipelineIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />
-    </svg>
-  )
-}
+const ALL = compute('all')
 
-function UsersIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="9" cy="8" r="3.2" />
-      <path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6" />
-      <circle cx="17" cy="8.5" r="2.4" />
-      <path d="M15.5 14.2c2.6.4 4 2.3 4 5.8" />
-    </svg>
-  )
-}
-
-function LatencyIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3.5 2" />
-    </svg>
-  )
-}
-
-// Non-translatable per-KPI data (icon, target number, prefix/suffix, trend
-// direction) kept local, matched by index with the translated copy.
-const KPI_META = [
-  { icon: RevenueIcon, target: 4872340, prefix: '€', suffix: '', trendUp: true },
-  { icon: PipelineIcon, target: 247, prefix: '', suffix: '', trendUp: true },
-  { icon: UsersIcon, target: 532, prefix: '', suffix: '', trendUp: true },
-  { icon: LatencyIcon, target: 380, prefix: '', suffix: 'ms', trendUp: false },
-]
-
-function KPICard({ kpi, active }) {
-  const count = useCounter(kpi.target, 1800, active)
-  const Icon = kpi.icon
-
+function KPICard({ label, value, format, delta, trendText, active }) {
+  const count = useCounter(value, 900, active)
   return (
     <div className="kpi-card" style={{ '--kpi-color': 'var(--cyan)' }}>
-      <div className="kpi-icon"><Icon /></div>
-      <div className="kpi-value">
-        {kpi.prefix}{count.toLocaleString()}{kpi.suffix}
-      </div>
-      <div className="kpi-label">{kpi.label}</div>
-      <div className={`kpi-trend ${kpi.trendUp ? 'up' : 'down'}`}>
-        {kpi.trendUp ? '↑' : '↓'} {kpi.trend}
+      <div className="kpi-value">{format(count)}</div>
+      <div className="kpi-label">{label}</div>
+      <div className="kpi-trend flat">
+        {delta == null ? trendText : `${delta >= 0 ? '↑' : '↓'} ${Math.abs(delta).toFixed(0)}% ${trendText}`}
       </div>
     </div>
   )
 }
 
-const BAR_DATA = [42, 68, 55, 80, 73, 91, 64, 88, 77, 95, 82, 100]
-const MONTHS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D']
-
-function BarChart({ active, label }) {
+function BarChart({ active, label, data, labels, casual, stacked }) {
+  const max = Math.max(...data)
   return (
     <div className="chart-box">
       <div className="chart-label">{label}</div>
       <div className="bar-chart">
-        {BAR_DATA.map((h, i) => (
+        {data.map((v, i) => (
           <div key={i} className="bar-col">
             <div
               className={`bar-fill${active ? ' animated' : ''}`}
-              style={{ '--bar-height': `${h}%`, animationDelay: `${i * 0.06}s` }}
-            />
-            <span className="bar-month">{MONTHS[i]}</span>
+              style={{ '--bar-height': `${(v / max) * 100}%`, animationDelay: `${i * 0.05}s` }}
+              title={`${Math.round(v)}K`}
+            >
+              {stacked && <span className="bar-casual" style={{ height: `${(casual[i] / v) * 100}%` }} />}
+            </div>
+            <span className="bar-month">{labels[i]}</span>
           </div>
         ))}
       </div>
@@ -106,10 +96,9 @@ function BarChart({ active, label }) {
   )
 }
 
-const LINE_POINTS = [20, 35, 28, 50, 42, 65, 58, 72, 68, 85, 78, 92]
-
-function LineChart({ active, label }) {
-  const pts = LINE_POINTS.map((y, i) => `${(i / (LINE_POINTS.length - 1)) * 280},${90 - y * 0.8}`).join(' ')
+function LineChart({ active, label, data }) {
+  const max = Math.max(...ALL.monthly)
+  const pts = data.map((v, i) => `${(i / (data.length - 1)) * 280},${86 - (v / max) * 76}`).join(' ')
   return (
     <div className="chart-box">
       <div className="chart-label">{label}</div>
@@ -124,11 +113,9 @@ function LineChart({ active, label }) {
             <stop offset="100%" stopColor="var(--cyan)" stopOpacity="0" />
           </linearGradient>
         </defs>
-        <polygon
-          points={`0,90 ${pts} 280,90`}
-          fill="url(#area-gradient)"
-        />
+        <polygon points={`0,90 ${pts} 280,90`} fill="url(#area-gradient)" />
         <polyline
+          key={pts}
           points={pts}
           fill="none"
           stroke="url(#line-gradient)"
@@ -142,50 +129,44 @@ function LineChart({ active, label }) {
   )
 }
 
-const DONUT_SEGMENTS = [
-  { label: 'SAP', pct: 42, color: 'var(--cyan)' },
-  { label: 'Salesforce', pct: 28, color: 'rgba(var(--cyan-rgb), 0.7)' },
-  { label: 'Odoo', pct: 18, color: 'rgba(var(--cyan-rgb), 0.45)' },
-  { label: 'WMS', pct: 12, color: 'rgba(var(--cyan-rgb), 0.25)' },
-]
+const DONUT_COLORS = ['var(--cyan)', 'rgba(var(--cyan-rgb), 0.55)', 'rgba(var(--cyan-rgb), 0.28)']
 
-function DonutChart({ label, centerLabel }) {
+function DonutChart({ label, centerLabel, names, values }) {
   const r = 36, cx = 50, cy = 50
   const circ = 2 * Math.PI * r
-  let offset = 0
+  const segs = values.map((pct, i) => ({ name: names[i], pct, color: DONUT_COLORS[i] })).filter(s => s.pct > 0.5)
+  const arcs = segs.reduce((acc, s) => {
+    const dashLen = circ * (s.pct / 100)
+    const offset = acc.length ? acc[acc.length - 1].offset + acc[acc.length - 1].dashLen : 0
+    return [...acc, { ...s, dashLen, offset }]
+  }, [])
   return (
     <div className="chart-box donut-box">
       <div className="chart-label">{label}</div>
       <div className="donut-wrap">
         <svg width="100" height="100" viewBox="0 0 100 100">
-          {DONUT_SEGMENTS.map((s) => {
-            const dashLen = circ * (s.pct / 100)
-            const seg = (
-              <circle
-                key={s.label}
-                cx={cx} cy={cy} r={r}
-                fill="none"
-                stroke={s.color}
-                strokeWidth="14"
-                strokeDasharray={`${dashLen} ${circ - dashLen}`}
-                strokeDashoffset={-offset}
-                transform={`rotate(-90 ${cx} ${cy})`}
-                style={{ filter: `drop-shadow(0 0 3px ${s.color})` }}
-              />
-            )
-            offset += dashLen
-            return seg
-          })}
+          {arcs.map((s) => (
+            <circle
+              key={s.name}
+              cx={cx} cy={cy} r={r}
+              fill="none"
+              stroke={s.color}
+              strokeWidth="14"
+              strokeDasharray={`${s.dashLen} ${circ - s.dashLen}`}
+              strokeDashoffset={-s.offset}
+              transform={`rotate(-90 ${cx} ${cy})`}
+            />
+          ))}
           <text x={cx} y={cy} textAnchor="middle" dy="0.35em" fontSize="11" fill="var(--heading)" fontFamily="'Geist Mono', monospace" fontWeight="700">
             {centerLabel}
           </text>
         </svg>
         <div className="donut-legend">
-          {DONUT_SEGMENTS.map(s => (
-            <div key={s.label} className="legend-item">
+          {arcs.map(s => (
+            <div key={s.name} className="legend-item">
               <span className="legend-dot" style={{ background: s.color }} />
-              <span className="legend-label">{s.label}</span>
-              <span className="legend-pct">{s.pct}%</span>
+              <span className="legend-label">{s.name}</span>
+              <span className="legend-pct">{Math.round(s.pct)}%</span>
             </div>
           ))}
         </div>
@@ -197,58 +178,75 @@ function DonutChart({ label, centerLabel }) {
 export default function PowerBIDemo() {
   const { ref, visible } = useScrollReveal(0.15)
   const { t } = useLanguage()
+  const p = t.powerbi
+  const [type, setType] = useState('all')
+  const d = compute(type)
+  const delta = (v, base) => (type === 'all' ? null : ((v - base) / base) * 100)
 
-  const kpis = t.powerbi.kpis.map((kpi, i) => ({ ...kpi, ...KPI_META[i] }))
+  const kpis = [
+    { label: p.kpis[0], value: d.total, format: n => n.toLocaleString(), delta: delta(d.total, ALL.total) },
+    { label: p.kpis[1], value: Math.round(d.avgMin * 10), format: n => (n / 10).toFixed(1), delta: delta(d.avgMin, ALL.avgMin) },
+    { label: p.kpis[2], value: Math.round(d.weekend), format: n => `${n}%`, delta: delta(d.weekend, ALL.weekend) },
+    { label: p.kpis[3], value: Math.round(d.bikes[1]), format: n => `${n}%`, delta: delta(d.bikes[1], ALL.bikes[1]) },
+  ]
 
   return (
     <section id="powerbi" className="powerbi">
       <div className="section-inner" ref={ref}>
         <div className={`reveal-group${visible ? ' visible' : ''}`}>
-          <p className="section-tag">{t.powerbi.eyebrow}</p>
+          <p className="section-tag">{p.eyebrow}</p>
           <h2 className="section-title">
-            {t.powerbi.titlePre}<span>{t.powerbi.titleHighlight}</span>{t.powerbi.titlePost}
+            {p.titlePre}<span>{p.titleHighlight}</span>{p.titlePost}
           </h2>
-          <p className="section-desc">
-            {t.powerbi.desc}
-          </p>
+          <p className="section-desc">{p.desc}</p>
         </div>
 
         <div className={`pbi-shell${visible ? ' visible' : ''}`}>
-          {/* Shell header */}
           <div className="pbi-topbar">
             <div className="pbi-dots">
               <span style={{ background: '#ff5f57' }} />
               <span style={{ background: '#febc2e' }} />
               <span style={{ background: '#28c840' }} />
             </div>
-            <div className="pbi-title">{t.powerbi.shellTitle}</div>
-            <div className="pbi-badge">
-              <span className="live-dot" />
-              {t.powerbi.liveBadge}
-            </div>
+            <div className="pbi-title">{p.shellTitle}</div>
+            <div className="pbi-badge">{p.liveBadge}</div>
           </div>
 
-          {/* KPI row */}
-          <div className="kpi-row">
-            {kpis.map(kpi => (
-              <KPICard key={kpi.label} kpi={kpi} active={visible} />
+          <div className="pbi-slicer" role="group" aria-label={p.slicerLabel}>
+            <span className="slicer-label">{p.slicerLabel}</span>
+            {['all', 'member', 'casual'].map(k => (
+              <button
+                key={k}
+                type="button"
+                className={`slicer-btn${type === k ? ' active' : ''}`}
+                aria-pressed={type === k}
+                onClick={() => setType(k)}
+              >
+                {p.slicer[k]}
+              </button>
             ))}
           </div>
 
-          {/* Charts row */}
-          <div className="charts-row">
-            <BarChart active={visible} label={t.powerbi.barChartLabel} />
-            <LineChart active={visible} label={t.powerbi.lineChartLabel} />
-            <DonutChart label={t.powerbi.donutLabel} centerLabel={t.powerbi.donutCenter} />
+          <div className="kpi-row">
+            {kpis.map(k => (
+              <KPICard key={k.label} {...k} trendText={type === 'all' ? p.baseline : p.vsAll} active={visible} />
+            ))}
           </div>
 
-          {/* Watermark */}
+          <div className="charts-row">
+            <BarChart active={visible} label={p.barChartLabel} data={d.weekday} casual={d.casualWeekday} stacked={type === 'all'} labels={p.weekdays} />
+            <LineChart active={visible} label={p.lineChartLabel} data={d.monthly} />
+            <DonutChart label={p.donutLabel} centerLabel={p.donutCenter} names={p.bikeTypes} values={d.bikes} />
+          </div>
+
+          <p className="pbi-insight" aria-live="polite">{p.insights[type]}</p>
+
           <div className="pbi-footer">
-            <span>{t.powerbi.footer.lastRefreshLabel} <strong>{t.powerbi.footer.lastRefreshValue}</strong></span>
+            <span>{p.footer.source}</span>
             <span>·</span>
-            <span>{t.powerbi.footer.platform}</span>
+            <span><strong>{p.footer.note}</strong></span>
             <span>·</span>
-            <span>{t.powerbi.footer.version}</span>
+            <span>{p.footer.platform}</span>
           </div>
         </div>
       </div>
