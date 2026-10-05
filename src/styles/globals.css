@@ -187,7 +187,7 @@ section {
   color: var(--muted);
   font-size: 16px;
   line-height: 1.65;
-  max-width: 62ch;
+  max-width: 80ch;
   margin-bottom: 60px;
 }
 
