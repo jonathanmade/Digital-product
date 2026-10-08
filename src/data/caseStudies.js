@@ -1,3 +1,5 @@
+import { PHARMA_MEDALLION_ARTICLE } from './articles/pharmaMedallion'
+
 // Narrative page-level copy (summary, challenge, result labels) is bilingual
 // inline ({ en, es }). Everything else — title, client, tags, techStack, and
 // the `layers` array that feeds MedallionScene3D — is shared across
@@ -6,6 +8,7 @@
 export const CASE_STUDIES = {
   'pharma-medallion-fabric': {
     slug: 'pharma-medallion-fabric',
+    article: PHARMA_MEDALLION_ARTICLE,
     title: 'Medallion Architecture · Microsoft Fabric',
     client: 'Pharmaceutical Group · Multinational',
     tags: ['Microsoft Fabric', 'SAP', 'PySpark', 'Power BI', 'Delta Lake', 'Azure'],
@@ -114,17 +117,18 @@ export const CASE_STUDIES = {
         status: 'Active',
       },
     ],
+    techIcons: ['fabric', 'pipeline', 'copy', 'notebook', 'lakehouse', 'onelake', 'semantic', 'powerbi'],
     techStack: [
-      'Azure Data Factory',
-      'Event Hubs',
-      'ADLS Gen2',
-      'Delta Lake',
-      'Databricks',
+      'SAP',
+      'Salesforce',
+      'Odoo',
       'PySpark',
-      'Great Expectations',
-      'Power BI',
+      'Delta Lake',
       'DAX',
       'Direct Lake',
+      'Azure DevOps',
+      'Azure Repos',
+      'Azure Pipelines',
     ],
     results: [
       { value: '4', label: { en: 'Data Sources', es: 'Fuentes de Datos' } },

@@ -4,6 +4,9 @@ import MedallionScene3D from '../../components/MedallionScene3D/MedallionScene3D
 import EmbedFlowDiagram from '../../components/EmbedFlowDiagram/EmbedFlowDiagram'
 import { useLanguage } from '../../context/LanguageContext'
 import { useSeo } from '../../hooks/useSeo'
+import { FABRIC_ICONS } from './fabricIcons'
+import ArticleBody from './ArticleBody'
+import { readingMinutes } from './readingTime'
 import './CaseStudyDetail.css'
 
 function BackIcon() {
@@ -44,8 +47,14 @@ export default function CaseStudyDetail() {
         <Link to="/#work" className="back-link"><BackIcon /> {t.caseStudyDetail.backLink}</Link>
 
         <header className="cs-header">
-          <h1 className="section-title">{study.title}</h1>
-          <p className="cs-client">{study.client}</p>
+          {study.article && (
+            <div className="art-meta">
+              <span className="art-kicker">{t.caseStudyDetail.article.label}</span>
+              <span>{t.caseStudyDetail.article.readTime(readingMinutes(study.article, lang))}</span>
+            </div>
+          )}
+          <h1 className="section-title">{study.article ? study.article.headline[lang] : study.title}</h1>
+          <p className="cs-client">{study.article ? `${study.title} · ${study.client}` : study.client}</p>
           <div className="cs-tags">
             {study.tags.map(tag => <span key={tag} className="p-tag">{tag}</span>)}
           </div>
@@ -58,6 +67,10 @@ export default function CaseStudyDetail() {
           <p className="cs-summary">{study.summary[lang]}</p>
         </div>
 
+        {study.article ? (
+          <ArticleBody article={study.article} layers={study.layers} />
+        ) : (
+          <>
         <div className="cs-section">
           <h2 className="cs-h2">{t.caseStudyDetail.challengeTitle}</h2>
           <p className="cs-body">{study.challenge[lang]}</p>
@@ -123,8 +136,21 @@ export default function CaseStudyDetail() {
           </div>
         )}
 
+          </>
+        )}
+
         <div className="cs-section">
           <h2 className="cs-h2">{t.caseStudyDetail.techStackTitle}</h2>
+          {study.techIcons && (
+            <ul className="cs-tech-icons">
+              {study.techIcons.map(key => (
+                <li key={key}>
+                  <img src={FABRIC_ICONS[key].src} alt="" width="40" height="40" loading="lazy" />
+                  <span>{FABRIC_ICONS[key].name}</span>
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="cs-tags">
             {study.techStack.map(tech => <span key={tech} className="p-tag">{tech}</span>)}
           </div>
