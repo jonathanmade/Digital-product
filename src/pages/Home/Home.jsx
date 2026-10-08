@@ -11,7 +11,8 @@ import Work from '../../components/Work/Work'
 import PowerBIDemo from '../../components/PowerBIDemo/PowerBIDemo'
 import AISection from '../../components/AISection/AISection'
 import TrustBar from '../../components/TrustBar/TrustBar'
-import Testimonials from '../../components/Testimonials/Testimonials'
+// Testimonials hidden until there are real client projects to show.
+// Component, CSS and i18n copy are kept; re-add the import and <Testimonials /> to restore.
 import Contact from '../../components/Contact/Contact'
 
 const SEO = {
@@ -49,7 +50,6 @@ export default function Home() {
       <PowerBIDemo />
       <AISection />
       <TrustBar />
-      <Testimonials />
       <Contact />
     </>
   )

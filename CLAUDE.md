@@ -45,7 +45,7 @@
 7. **PowerBIDemo** — Simulated dashboard with animated KPIs and SVG charts
 8. **AISection** — "AI built on solid data ground" capability list
 9. **TrustBar** — Flat chip strip of the real stack (no gauges)
-10. **Testimonials** — 2 placeholder cards, clearly marked pending
+10. **Testimonials** — OCULTA (no se renderiza en Home.jsx) hasta tener proyectos reales; componente, CSS e i18n se conservan
 11. **Contact** — Book a Strategy Call + mailto CTA (no fake form/terminal)
 
 ## Animations
